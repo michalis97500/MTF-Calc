@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.779
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoordsDemoApp", "CoordsDemoApp\CoordsDemoApp.csproj", "{935D96DA-9AB3-4A8B-B15F-F362749A155A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{935D96DA-9AB3-4A8B-B15F-F362749A155A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{935D96DA-9AB3-4A8B-B15F-F362749A155A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{935D96DA-9AB3-4A8B-B15F-F362749A155A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{935D96DA-9AB3-4A8B-B15F-F362749A155A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D7BAC91C-7805-4A4B-ABB6-7F388C2C3F0A}
+	EndGlobalSection
+EndGlobal
