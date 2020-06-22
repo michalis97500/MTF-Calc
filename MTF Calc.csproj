@@ -40,16 +40,16 @@
       <HintPath>..\..\..\..\..\Program Files\Basler\pylon 5\Development\Assemblies\Basler.Pylon\x86\Basler.Pylon.dll</HintPath>
     </Reference>
     <Reference Include="mv.impact.acquire">
-      <HintPath>..\..\..\..\..\Program Files\MATRIX VISION\mvIMPACT Acquire\bin\.NET\mv.impact.acquire.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files\MATRIX VISION\mvIMPACT Acquire\bin\.NET\mv.impact.acquire.dll</HintPath>
     </Reference>
     <Reference Include="mv.impact.acquire.display">
-      <HintPath>..\..\..\..\..\Program Files\MATRIX VISION\mvIMPACT Acquire\bin\.NET\mv.impact.acquire.display.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files\MATRIX VISION\mvIMPACT Acquire\bin\.NET\mv.impact.acquire.display.dll</HintPath>
     </Reference>
     <Reference Include="mv.impact.acquire.display.extensions">
-      <HintPath>..\..\..\..\..\Program Files\MATRIX VISION\mvIMPACT Acquire\bin\.NET\mv.impact.acquire.display.extensions.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files\MATRIX VISION\mvIMPACT Acquire\bin\.NET\mv.impact.acquire.display.extensions.dll</HintPath>
     </Reference>
     <Reference Include="mv.impact.acquire.examples.helper">
-      <HintPath>..\..\..\..\..\Program Files\MATRIX VISION\mvIMPACT Acquire\bin\.NET\mv.impact.acquire.examples.helper.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files\MATRIX VISION\mvIMPACT Acquire\bin\.NET\mv.impact.acquire.examples.helper.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

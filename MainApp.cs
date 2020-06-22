@@ -482,7 +482,6 @@ namespace MTF_Calc
         {
             counter = 0;
             Clickable = true;
-               
             MessageBox.Show("Place the PKI Test graticule on the stage, focus and center the PKI Crosshairs on the screen. Click on the center of the crosshair to begin");
             
         }

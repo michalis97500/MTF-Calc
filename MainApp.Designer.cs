@@ -68,7 +68,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ImageDisplay.Location = new System.Drawing.Point(195, 12);
             this.ImageDisplay.Name = "ImageDisplay";
-            this.ImageDisplay.Size = new System.Drawing.Size(1063, 516);
+            this.ImageDisplay.Size = new System.Drawing.Size(1063, 615);
             this.ImageDisplay.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.ImageDisplay.TabIndex = 1;
             this.ImageDisplay.TabStop = false;
@@ -165,7 +165,7 @@
             // 
             // FieldSizeTextbox
             // 
-            this.FieldSizeTextbox.Location = new System.Drawing.Point(116, 488);
+            this.FieldSizeTextbox.Location = new System.Drawing.Point(116, 607);
             this.FieldSizeTextbox.Name = "FieldSizeTextbox";
             this.FieldSizeTextbox.Size = new System.Drawing.Size(72, 20);
             this.FieldSizeTextbox.TabIndex = 12;
@@ -205,7 +205,7 @@
             // 
             // FieldSizeButton
             // 
-            this.FieldSizeButton.Location = new System.Drawing.Point(15, 488);
+            this.FieldSizeButton.Location = new System.Drawing.Point(15, 607);
             this.FieldSizeButton.Name = "FieldSizeButton";
             this.FieldSizeButton.Size = new System.Drawing.Size(85, 20);
             this.FieldSizeButton.TabIndex = 16;
@@ -252,7 +252,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1270, 540);
+            this.ClientSize = new System.Drawing.Size(1270, 639);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.FieldSizeRatio);
             this.Controls.Add(this.SerialSelect);
