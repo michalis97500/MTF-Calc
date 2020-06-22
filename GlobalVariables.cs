@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
 
 namespace MTF_Calc
@@ -42,9 +43,14 @@ namespace MTF_Calc
         bool Clickable = false;
         int positivetarget;
         int negativetarget;
-        double FieldSize;
-        bool ImageCalibrationStarted = false;
+        public struct FieldSize
+        {
+            public const double X = 480;
+            public const double Y=320;
+        }
         int counter = 0;
+        bool paint = false;
+        
 
 
         private void NumberCheck(object sender, KeyPressEventArgs e)

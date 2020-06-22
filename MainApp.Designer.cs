@@ -43,12 +43,17 @@
             this.CalibrateStageButton = new System.Windows.Forms.Button();
             this.CalibrateImageButton = new System.Windows.Forms.Button();
             this.StageConnectButton = new System.Windows.Forms.Button();
+            this.FieldSizeButton = new System.Windows.Forms.Button();
+            this.SerialSelect = new System.Windows.Forms.ComboBox();
+            this.FieldSizeRatio = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.ImageDisplay)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FieldSizeRatio)).BeginInit();
             this.SuspendLayout();
             // 
             // load_image_button
             // 
-            this.load_image_button.Location = new System.Drawing.Point(92, 41);
+            this.load_image_button.Location = new System.Drawing.Point(92, 88);
             this.load_image_button.Name = "load_image_button";
             this.load_image_button.Size = new System.Drawing.Size(76, 22);
             this.load_image_button.TabIndex = 0;
@@ -63,7 +68,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ImageDisplay.Location = new System.Drawing.Point(195, 12);
             this.ImageDisplay.Name = "ImageDisplay";
-            this.ImageDisplay.Size = new System.Drawing.Size(835, 451);
+            this.ImageDisplay.Size = new System.Drawing.Size(1063, 516);
             this.ImageDisplay.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.ImageDisplay.TabIndex = 1;
             this.ImageDisplay.TabStop = false;
@@ -71,7 +76,7 @@
             // 
             // SingleImageButton
             // 
-            this.SingleImageButton.Location = new System.Drawing.Point(12, 41);
+            this.SingleImageButton.Location = new System.Drawing.Point(12, 88);
             this.SingleImageButton.Name = "SingleImageButton";
             this.SingleImageButton.Size = new System.Drawing.Size(74, 22);
             this.SingleImageButton.TabIndex = 2;
@@ -81,7 +86,7 @@
             // 
             // LiveFeedButton
             // 
-            this.LiveFeedButton.Location = new System.Drawing.Point(12, 69);
+            this.LiveFeedButton.Location = new System.Drawing.Point(12, 116);
             this.LiveFeedButton.Name = "LiveFeedButton";
             this.LiveFeedButton.Size = new System.Drawing.Size(74, 23);
             this.LiveFeedButton.TabIndex = 4;
@@ -91,7 +96,7 @@
             // 
             // StopLiveFeedButton
             // 
-            this.StopLiveFeedButton.Location = new System.Drawing.Point(92, 69);
+            this.StopLiveFeedButton.Location = new System.Drawing.Point(92, 116);
             this.StopLiveFeedButton.Name = "StopLiveFeedButton";
             this.StopLiveFeedButton.Size = new System.Drawing.Size(76, 23);
             this.StopLiveFeedButton.TabIndex = 5;
@@ -102,9 +107,9 @@
             // cameraconnectbutton
             // 
             this.cameraconnectbutton.AutoSize = true;
-            this.cameraconnectbutton.Location = new System.Drawing.Point(44, 12);
+            this.cameraconnectbutton.Location = new System.Drawing.Point(11, 12);
             this.cameraconnectbutton.Name = "cameraconnectbutton";
-            this.cameraconnectbutton.Size = new System.Drawing.Size(95, 23);
+            this.cameraconnectbutton.Size = new System.Drawing.Size(99, 32);
             this.cameraconnectbutton.TabIndex = 6;
             this.cameraconnectbutton.Text = "Connect camera";
             this.cameraconnectbutton.UseVisualStyleBackColor = true;
@@ -112,9 +117,9 @@
             // 
             // GetBMPValuesVer
             // 
-            this.GetBMPValuesVer.Location = new System.Drawing.Point(34, 137);
+            this.GetBMPValuesVer.Location = new System.Drawing.Point(15, 184);
             this.GetBMPValuesVer.Name = "GetBMPValuesVer";
-            this.GetBMPValuesVer.Size = new System.Drawing.Size(109, 48);
+            this.GetBMPValuesVer.Size = new System.Drawing.Size(72, 48);
             this.GetBMPValuesVer.TabIndex = 7;
             this.GetBMPValuesVer.Text = "Get BMP Values Vertical";
             this.GetBMPValuesVer.UseVisualStyleBackColor = true;
@@ -122,7 +127,7 @@
             // 
             // XposVert
             // 
-            this.XposVert.Location = new System.Drawing.Point(12, 111);
+            this.XposVert.Location = new System.Drawing.Point(12, 158);
             this.XposVert.Name = "XposVert";
             this.XposVert.Size = new System.Drawing.Size(75, 20);
             this.XposVert.TabIndex = 8;
@@ -130,7 +135,7 @@
             // 
             // YposVert
             // 
-            this.YposVert.Location = new System.Drawing.Point(93, 111);
+            this.YposVert.Location = new System.Drawing.Point(93, 158);
             this.YposVert.Name = "YposVert";
             this.YposVert.Size = new System.Drawing.Size(75, 20);
             this.YposVert.TabIndex = 9;
@@ -138,17 +143,18 @@
             // 
             // StartTestButton
             // 
-            this.StartTestButton.Location = new System.Drawing.Point(54, 298);
+            this.StartTestButton.Location = new System.Drawing.Point(11, 396);
             this.StartTestButton.Name = "StartTestButton";
-            this.StartTestButton.Size = new System.Drawing.Size(75, 23);
+            this.StartTestButton.Size = new System.Drawing.Size(99, 26);
             this.StartTestButton.TabIndex = 10;
             this.StartTestButton.Text = "Start Test";
             this.StartTestButton.UseVisualStyleBackColor = true;
+            this.StartTestButton.Visible = false;
             this.StartTestButton.Click += new System.EventHandler(this.StartTestButton_Click);
             // 
             // CenterStageButton
             // 
-            this.CenterStageButton.Location = new System.Drawing.Point(44, 383);
+            this.CenterStageButton.Location = new System.Drawing.Point(11, 357);
             this.CenterStageButton.Name = "CenterStageButton";
             this.CenterStageButton.Size = new System.Drawing.Size(99, 33);
             this.CenterStageButton.TabIndex = 11;
@@ -159,27 +165,29 @@
             // 
             // FieldSizeTextbox
             // 
-            this.FieldSizeTextbox.Location = new System.Drawing.Point(15, 228);
+            this.FieldSizeTextbox.Location = new System.Drawing.Point(116, 488);
             this.FieldSizeTextbox.Name = "FieldSizeTextbox";
-            this.FieldSizeTextbox.Size = new System.Drawing.Size(152, 20);
+            this.FieldSizeTextbox.Size = new System.Drawing.Size(72, 20);
             this.FieldSizeTextbox.TabIndex = 12;
+            this.FieldSizeTextbox.Visible = false;
             this.FieldSizeTextbox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NumberCheck);
             // 
             // CalibrateStageButton
             // 
-            this.CalibrateStageButton.Location = new System.Drawing.Point(44, 336);
+            this.CalibrateStageButton.Location = new System.Drawing.Point(11, 284);
             this.CalibrateStageButton.Name = "CalibrateStageButton";
-            this.CalibrateStageButton.Size = new System.Drawing.Size(99, 41);
+            this.CalibrateStageButton.Size = new System.Drawing.Size(99, 30);
             this.CalibrateStageButton.TabIndex = 13;
             this.CalibrateStageButton.Text = "Calibrate stage";
             this.CalibrateStageButton.UseVisualStyleBackColor = true;
+            this.CalibrateStageButton.Visible = false;
             this.CalibrateStageButton.Click += new System.EventHandler(this.CalibrateStageButton_Click);
             // 
             // CalibrateImageButton
             // 
-            this.CalibrateImageButton.Location = new System.Drawing.Point(49, 259);
+            this.CalibrateImageButton.Location = new System.Drawing.Point(11, 320);
             this.CalibrateImageButton.Name = "CalibrateImageButton";
-            this.CalibrateImageButton.Size = new System.Drawing.Size(89, 28);
+            this.CalibrateImageButton.Size = new System.Drawing.Size(99, 31);
             this.CalibrateImageButton.TabIndex = 14;
             this.CalibrateImageButton.Text = "Calibrate Image";
             this.CalibrateImageButton.UseVisualStyleBackColor = true;
@@ -187,19 +195,68 @@
             // 
             // StageConnectButton
             // 
-            this.StageConnectButton.Location = new System.Drawing.Point(44, 191);
+            this.StageConnectButton.Location = new System.Drawing.Point(12, 50);
             this.StageConnectButton.Name = "StageConnectButton";
-            this.StageConnectButton.Size = new System.Drawing.Size(88, 28);
+            this.StageConnectButton.Size = new System.Drawing.Size(98, 32);
             this.StageConnectButton.TabIndex = 15;
             this.StageConnectButton.Text = "Connect Stage";
             this.StageConnectButton.UseVisualStyleBackColor = true;
             this.StageConnectButton.Click += new System.EventHandler(this.StageConnectButton_Click);
             // 
+            // FieldSizeButton
+            // 
+            this.FieldSizeButton.Location = new System.Drawing.Point(15, 488);
+            this.FieldSizeButton.Name = "FieldSizeButton";
+            this.FieldSizeButton.Size = new System.Drawing.Size(85, 20);
+            this.FieldSizeButton.TabIndex = 16;
+            this.FieldSizeButton.Text = "Set field ratio";
+            this.FieldSizeButton.UseVisualStyleBackColor = true;
+            this.FieldSizeButton.Visible = false;
+            // 
+            // SerialSelect
+            // 
+            this.SerialSelect.FormattingEnabled = true;
+            this.SerialSelect.Location = new System.Drawing.Point(116, 57);
+            this.SerialSelect.Name = "SerialSelect";
+            this.SerialSelect.Size = new System.Drawing.Size(59, 21);
+            this.SerialSelect.TabIndex = 17;
+            // 
+            // FieldSizeRatio
+            // 
+            this.FieldSizeRatio.Location = new System.Drawing.Point(106, 249);
+            this.FieldSizeRatio.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.FieldSizeRatio.Name = "FieldSizeRatio";
+            this.FieldSizeRatio.Size = new System.Drawing.Size(69, 20);
+            this.FieldSizeRatio.TabIndex = 18;
+            this.FieldSizeRatio.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.FieldSizeRatio.ValueChanged += new System.EventHandler(this.FieldSizeRatio_ValueChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(16, 251);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(84, 13);
+            this.label1.TabIndex = 19;
+            this.label1.Text = "Field size ratio %";
+            // 
             // MainApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1042, 475);
+            this.ClientSize = new System.Drawing.Size(1270, 540);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.FieldSizeRatio);
+            this.Controls.Add(this.SerialSelect);
+            this.Controls.Add(this.FieldSizeButton);
             this.Controls.Add(this.StageConnectButton);
             this.Controls.Add(this.CalibrateImageButton);
             this.Controls.Add(this.CalibrateStageButton);
@@ -218,6 +275,7 @@
             this.Name = "MainApp";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.ImageDisplay)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FieldSizeRatio)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -240,6 +298,10 @@
         private System.Windows.Forms.Button CalibrateStageButton;
         private System.Windows.Forms.Button CalibrateImageButton;
         private System.Windows.Forms.Button StageConnectButton;
+        private System.Windows.Forms.Button FieldSizeButton;
+        private System.Windows.Forms.ComboBox SerialSelect;
+        private System.Windows.Forms.NumericUpDown FieldSizeRatio;
+        private System.Windows.Forms.Label label1;
     }
 }
 

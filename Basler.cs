@@ -1,9 +1,12 @@
 ﻿using Basler.Pylon;
+using MTF_Calc;
 using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Threading;
 using System.Windows.Forms;
+
 
 namespace CameraInterfaceExample
 {
@@ -12,7 +15,8 @@ namespace CameraInterfaceExample
     {
         private Camera camera;
         private PixelDataConverter converter = new PixelDataConverter();
-
+        public Bitmap captured;
+        public bool terminated = false;
         public event EventHandler<FrameEventArgs> NewFrame;
 
         public void ConnectCamera(bool _bool)
@@ -25,7 +29,7 @@ namespace CameraInterfaceExample
                 }
                 camera.Open();
                 camera.StreamGrabber.ImageGrabbed += new EventHandler<ImageGrabbedEventArgs>(StreamGrabber_ImageGrabbed);
-                ResetToFactoryDefault();
+                //ResetToFactoryDefault();
             }
             catch (Exception ex)
             {
@@ -38,6 +42,15 @@ namespace CameraInterfaceExample
             try
             {
                 camera.StreamGrabber.Start(GrabStrategy.LatestImages, GrabLoop.ProvidedByStreamGrabber);
+                Thread thread = new Thread(() =>
+                {
+                    while(!terminated)
+                    {
+                        UpdateImage(picbox);
+                    }
+                    
+                });
+                thread.Start();
             }
             catch (Exception ex)
             {
@@ -50,6 +63,7 @@ namespace CameraInterfaceExample
             try
             {
                 camera.StreamGrabber.Stop();
+                terminated = true;
             }
             catch (Exception ex)
             {
@@ -75,18 +89,16 @@ namespace CameraInterfaceExample
                 converter.Convert(ptrBmp, bmpData.Stride * bitmap.Height, grabResult);
                 bitmap.UnlockBits(bmpData);
 
-                // Make a copy of the bitmap and send it to clients via our NewFrame event (clients should dispose of this)
-                var frameBitmap = (Bitmap)bitmap.Clone();
+               
+                captured = (Bitmap)bitmap.Clone();
 
-                InvokeNewFrameEvent(new FrameEventArgs(frameBitmap));
-
-                // dispose of the bitmap we created
                 bitmap.Dispose();
                 bitmap = null;
             }
             catch (Exception ex)
             {
                 Debug.Print(ex.Message);
+                //MessageBox.Show(ex.Message);
             }
         }
 
@@ -173,6 +185,25 @@ namespace CameraInterfaceExample
                 // Set pixel format to RGB8. This gives 24 bits per pixel images
                 bOK = camera.Parameters[PLCamera.PixelFormat].TrySetValue(PLCamera.PixelFormat.RGB8);
             }
+        }
+
+        public void UpdateImage(PictureBox picbox)
+        {
+
+            if (picbox.InvokeRequired)
+            {
+                picbox.Invoke(new MethodInvoker(
+            delegate ()
+            {
+            picbox.Image = captured;
+            }));
+            }
+            else
+            {
+                picbox.Image = captured;
+            }
+
+
         }
     }
 }

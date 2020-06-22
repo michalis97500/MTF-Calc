@@ -35,9 +35,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Basler.Pylon, Version=1.1.0.0, Culture=neutral, PublicKeyToken=e389355f398382ab, processorArchitecture=x86">
+    <Reference Include="Basler.Pylon, Version=1.0.0.0, Culture=neutral, PublicKeyToken=e389355f398382ab, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files\Basler\pylon 6\Development\Assemblies\Basler.Pylon\x86\Basler.Pylon.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files\Basler\pylon 5\Development\Assemblies\Basler.Pylon\x86\Basler.Pylon.dll</HintPath>
     </Reference>
     <Reference Include="mv.impact.acquire">
       <HintPath>..\..\..\..\..\Program Files\MATRIX VISION\mvIMPACT Acquire\bin\.NET\mv.impact.acquire.dll</HintPath>
@@ -82,9 +82,7 @@
     <Compile Include="StageControl.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ThreeDPoint.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="ThreeDPoint.cs" />
     <EmbeddedResource Include="MainApp.resx">
       <DependentUpon>MainApp.cs</DependentUpon>
     </EmbeddedResource>

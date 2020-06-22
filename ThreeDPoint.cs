@@ -3,9 +3,9 @@
 namespace MTF_Calc
 {
 
-    public partial class MainApp
+    //public partial class MainApp
 
-    {
+    //{
         public class ThreeDPoint
         {
             #region Fields
@@ -238,6 +238,6 @@ namespace MTF_Calc
             }
         }
     }
-}
+//}
 
 

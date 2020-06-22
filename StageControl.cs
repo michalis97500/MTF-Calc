@@ -217,6 +217,7 @@ namespace MTF_Calc
                             ycenter = (y_end - y_start) / 2;
                             zcenter = (z_end - z_start) / 2;
                             CenterStageButton.Visible = true;
+                            CalibrateImageButton.Visible = true;
                             DialogResult result = MessageBox.Show("Calibration Complete. Send stage to center?", "Calibration complete", MessageBoxButtons.YesNo);
                             if (result == DialogResult.Yes)
                             {
@@ -260,16 +261,30 @@ namespace MTF_Calc
         }
         public void SerialConnection()
         {
+            try
+            {
+                if (SerialSelect.Text == "")
+                {
+                    MessageBox.Show("Please select a COM port");
 
-            StageSerialPort.PortName = "COM3";
-            StageSerialPort.BaudRate = 9600;
-            StageSerialPort.Parity = Parity.None;
-            StageSerialPort.DataBits = 8;
-            StageSerialPort.StopBits = StopBits.Two;
-            StageSerialPort.Handshake = Handshake.RequestToSend;
-            StageSerialPort.WriteTimeout = 500;
-            StageSerialPort.Open();
-
+                }
+                else
+                {
+                    StageSerialPort.PortName = SerialSelect.Text;
+                    StageSerialPort.BaudRate = 9600;
+                    StageSerialPort.Parity = Parity.None;
+                    StageSerialPort.DataBits = 8;
+                    StageSerialPort.StopBits = StopBits.Two;
+                    StageSerialPort.Handshake = Handshake.RequestToSend;
+                    StageSerialPort.WriteTimeout = 500;
+                    StageSerialPort.Open();
+                    CalibrateStageButton.Visible = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error in opening the serial port : " + ex);
+            }
 
         }
 
