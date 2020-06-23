@@ -88,7 +88,7 @@ namespace MTF_Calc
 
         private void LiveFeedButton_Click(object sender, EventArgs e)
         {
-
+            
             camera.LiveImage(ImageDisplay);
             
 
@@ -522,7 +522,7 @@ namespace MTF_Calc
         {
             try
             {
-                double targetIllumBottomLED = (1 * Convert.ToDouble(value));
+                double targetIllumBottomLED = (1 * (Convert.ToDouble(value)/100));
                 if (StageSerialPort.IsOpen)
                 {
                     StringBuilder buffer = new StringBuilder();
@@ -550,7 +550,7 @@ namespace MTF_Calc
             // lineariseIlluminationB is set at 100 so for low levels 1 click has an effect.
             // lineariseIlluminationA is set so 100% gives us max (255);
 
-            int illum = (int)(100 * reqillum * reqillum + 155 * reqillum + 0);
+            int illum = (int)(155 * reqillum * reqillum + 100 * reqillum + 0);
 
             if (illum > 255)
             {

@@ -41,6 +41,7 @@ namespace CameraInterfaceExample
         {
             try
             {
+                terminated = false;
                 camera.StreamGrabber.Start(GrabStrategy.LatestImages, GrabLoop.ProvidedByStreamGrabber);
                 Thread thread = new Thread(() =>
                 {
@@ -64,6 +65,7 @@ namespace CameraInterfaceExample
             {
                 camera.StreamGrabber.Stop();
                 terminated = true;
+                
             }
             catch (Exception ex)
             {
