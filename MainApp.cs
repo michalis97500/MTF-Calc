@@ -652,5 +652,52 @@ namespace MTF_Calc
             }
             
         }
+
+        private void MoveStageButton_Click(object sender, EventArgs e)
+        {
+            if (StageSerialPort.IsOpen)
+                {
+                    try
+                    {
+                        if ((xcoord.Text == "") | (zcoord.Text == "") | (ycoord.Text == ""))
+                        {
+                            MessageBox.Show("Please input stage coordinates ");
+                        }
+                        else
+                        {
+                            if ((xcoord.Text == xLabel.Text) & (zcoord.Text == zLabel.Text) & (ycoord.Text == yLabel.Text))
+                            {
+                                MessageBox.Show("Stage already at coordinates ");
+                            }
+                            else
+                            {
+                                //Get X,Y,Z -> convert to double
+                                double x = Convert.ToDouble(xcoord.Text);
+                                double y = Convert.ToDouble(ycoord.Text);
+                                double z = Convert.ToDouble(zcoord.Text);
+                                var destination = new ThreeDPoint(x, y, z);
+                                Debug.Print(string.Format("Moving stage to: ({0},{1},{2})", x, y, z));
+                                MoveStage(destination, Timeouts.ASYNC);
+                            
+
+
+                            }
+
+                        }
+
+
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.Print("Stage error " + ex.Message);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("No COM port connected ");
+                }
+            }
+        
     }
 }

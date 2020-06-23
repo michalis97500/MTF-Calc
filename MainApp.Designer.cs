@@ -49,6 +49,16 @@
             this.label1 = new System.Windows.Forms.Label();
             this.IlluminationControl = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
+            this.zLabel = new System.Windows.Forms.Label();
+            this.yLabel = new System.Windows.Forms.Label();
+            this.xLabel = new System.Windows.Forms.Label();
+            this.zcoord = new System.Windows.Forms.TextBox();
+            this.ycoord = new System.Windows.Forms.TextBox();
+            this.xcoord = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.MoveStageButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.ImageDisplay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FieldSizeRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.IlluminationControl)).BeginInit();
@@ -253,7 +263,7 @@
             // 
             // IlluminationControl
             // 
-            this.IlluminationControl.Location = new System.Drawing.Point(116, 462);
+            this.IlluminationControl.Location = new System.Drawing.Point(116, 439);
             this.IlluminationControl.Name = "IlluminationControl";
             this.IlluminationControl.Size = new System.Drawing.Size(69, 20);
             this.IlluminationControl.TabIndex = 21;
@@ -262,17 +272,115 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(16, 464);
+            this.label2.Location = new System.Drawing.Point(16, 441);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(84, 13);
             this.label2.TabIndex = 22;
             this.label2.Text = "Illumination level";
+            // 
+            // zLabel
+            // 
+            this.zLabel.AutoSize = true;
+            this.zLabel.Location = new System.Drawing.Point(156, 530);
+            this.zLabel.Name = "zLabel";
+            this.zLabel.Size = new System.Drawing.Size(12, 13);
+            this.zLabel.TabIndex = 31;
+            this.zLabel.Text = "z";
+            // 
+            // yLabel
+            // 
+            this.yLabel.AutoSize = true;
+            this.yLabel.Location = new System.Drawing.Point(156, 501);
+            this.yLabel.Name = "yLabel";
+            this.yLabel.Size = new System.Drawing.Size(12, 13);
+            this.yLabel.TabIndex = 30;
+            this.yLabel.Text = "y";
+            // 
+            // xLabel
+            // 
+            this.xLabel.AutoSize = true;
+            this.xLabel.Location = new System.Drawing.Point(156, 475);
+            this.xLabel.Name = "xLabel";
+            this.xLabel.Size = new System.Drawing.Size(12, 13);
+            this.xLabel.TabIndex = 29;
+            this.xLabel.Text = "x";
+            // 
+            // zcoord
+            // 
+            this.zcoord.Location = new System.Drawing.Point(57, 527);
+            this.zcoord.Name = "zcoord";
+            this.zcoord.Size = new System.Drawing.Size(90, 20);
+            this.zcoord.TabIndex = 28;
+            this.zcoord.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NumberCheck);
+            // 
+            // ycoord
+            // 
+            this.ycoord.Location = new System.Drawing.Point(57, 501);
+            this.ycoord.Name = "ycoord";
+            this.ycoord.Size = new System.Drawing.Size(90, 20);
+            this.ycoord.TabIndex = 27;
+            this.ycoord.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NumberCheck);
+            // 
+            // xcoord
+            // 
+            this.xcoord.Location = new System.Drawing.Point(57, 475);
+            this.xcoord.Name = "xcoord";
+            this.xcoord.Size = new System.Drawing.Size(90, 20);
+            this.xcoord.TabIndex = 26;
+            this.xcoord.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NumberCheck);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 530);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(45, 13);
+            this.label3.TabIndex = 25;
+            this.label3.Text = "Z Coord";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 504);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(45, 13);
+            this.label4.TabIndex = 24;
+            this.label4.Text = "Y Coord";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 478);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(45, 13);
+            this.label5.TabIndex = 23;
+            this.label5.Text = "X Coord";
+            // 
+            // MoveStageButton
+            // 
+            this.MoveStageButton.Location = new System.Drawing.Point(9, 564);
+            this.MoveStageButton.Name = "MoveStageButton";
+            this.MoveStageButton.Size = new System.Drawing.Size(60, 22);
+            this.MoveStageButton.TabIndex = 32;
+            this.MoveStageButton.Text = "Move ";
+            this.MoveStageButton.UseVisualStyleBackColor = true;
+            this.MoveStageButton.Click += new System.EventHandler(this.MoveStageButton_Click);
             // 
             // MainApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1270, 639);
+            this.Controls.Add(this.MoveStageButton);
+            this.Controls.Add(this.zLabel);
+            this.Controls.Add(this.yLabel);
+            this.Controls.Add(this.xLabel);
+            this.Controls.Add(this.zcoord);
+            this.Controls.Add(this.ycoord);
+            this.Controls.Add(this.xcoord);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.IlluminationControl);
             this.Controls.Add(this.label1);
@@ -327,6 +435,16 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown IlluminationControl;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label zLabel;
+        private System.Windows.Forms.Label yLabel;
+        private System.Windows.Forms.Label xLabel;
+        private System.Windows.Forms.TextBox zcoord;
+        private System.Windows.Forms.TextBox ycoord;
+        private System.Windows.Forms.TextBox xcoord;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button MoveStageButton;
     }
 }
 
