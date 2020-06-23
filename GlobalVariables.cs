@@ -43,6 +43,7 @@ namespace MTF_Calc
         bool Clickable = false;
         int positivetarget;
         int negativetarget;
+        bool stagecalibrated = false;
         /// <summary>
         /// The wait time for the serial port response. Reset during the SendCommand
         /// </summary>

@@ -143,6 +143,10 @@ namespace MTF_Calc
 
                         //SetTextz(zposition.ToString());
                         this.zposition = zposition.ToString();
+                        Debug.Print(this.xposition);
+                        Debug.Print(this.yposition);
+                        Debug.Print(this.zposition);
+
 
 
                     }
@@ -218,6 +222,7 @@ namespace MTF_Calc
                             zcenter = (z_end - z_start) / 2;
                             CenterStageButton.Visible = true;
                             CalibrateImageButton.Visible = true;
+                            stagecalibrated = true;
                             DialogResult result = MessageBox.Show("Calibration Complete. Send stage to center?", "Calibration complete", MessageBoxButtons.YesNo);
                             if (result == DialogResult.Yes)
                             {

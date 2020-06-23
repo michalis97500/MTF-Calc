@@ -698,6 +698,37 @@ namespace MTF_Calc
                     MessageBox.Show("No COM port connected ");
                 }
             }
-        
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            PositionXYZ();
+            xLabel.Text = xposition;
+            yLabel.Text = yposition;
+            zLabel.Text = zposition;
+        }
+
+        private void FindGraticuleButton_Click(object sender, EventArgs e)
+        {
+            if (StageSerialPort.IsOpen)
+            {
+                if (stagecalibrated == true)
+                {
+                    double x = 32800;
+                    double y = 22540;
+                    double z = 9100;
+                    var destination = new ThreeDPoint(x, y, z);
+                    MoveStage(destination, Timeouts.ASYNC);
+                    PositionXYZ();
+                }
+                else
+                {
+                    MessageBox.Show("Stage is not calibrated");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Stage is not connected");
+            }
+        }
     }
 }

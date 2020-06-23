@@ -59,6 +59,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.MoveStageButton = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.FindGraticuleButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.ImageDisplay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FieldSizeRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.IlluminationControl)).BeginInit();
@@ -79,9 +81,9 @@
             this.ImageDisplay.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.ImageDisplay.Location = new System.Drawing.Point(195, 12);
+            this.ImageDisplay.Location = new System.Drawing.Point(209, 12);
             this.ImageDisplay.Name = "ImageDisplay";
-            this.ImageDisplay.Size = new System.Drawing.Size(1063, 615);
+            this.ImageDisplay.Size = new System.Drawing.Size(1049, 615);
             this.ImageDisplay.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.ImageDisplay.TabIndex = 1;
             this.ImageDisplay.TabStop = false;
@@ -156,9 +158,9 @@
             // 
             // StartTestButton
             // 
-            this.StartTestButton.Location = new System.Drawing.Point(11, 396);
+            this.StartTestButton.Location = new System.Drawing.Point(9, 392);
             this.StartTestButton.Name = "StartTestButton";
-            this.StartTestButton.Size = new System.Drawing.Size(99, 26);
+            this.StartTestButton.Size = new System.Drawing.Size(89, 26);
             this.StartTestButton.TabIndex = 10;
             this.StartTestButton.Text = "Start Test";
             this.StartTestButton.UseVisualStyleBackColor = true;
@@ -167,9 +169,9 @@
             // 
             // CenterStageButton
             // 
-            this.CenterStageButton.Location = new System.Drawing.Point(11, 357);
+            this.CenterStageButton.Location = new System.Drawing.Point(9, 353);
             this.CenterStageButton.Name = "CenterStageButton";
-            this.CenterStageButton.Size = new System.Drawing.Size(99, 33);
+            this.CenterStageButton.Size = new System.Drawing.Size(89, 33);
             this.CenterStageButton.TabIndex = 11;
             this.CenterStageButton.Text = "Center stage";
             this.CenterStageButton.UseVisualStyleBackColor = true;
@@ -187,9 +189,9 @@
             // 
             // CalibrateStageButton
             // 
-            this.CalibrateStageButton.Location = new System.Drawing.Point(11, 284);
+            this.CalibrateStageButton.Location = new System.Drawing.Point(9, 280);
             this.CalibrateStageButton.Name = "CalibrateStageButton";
-            this.CalibrateStageButton.Size = new System.Drawing.Size(99, 30);
+            this.CalibrateStageButton.Size = new System.Drawing.Size(89, 30);
             this.CalibrateStageButton.TabIndex = 13;
             this.CalibrateStageButton.Text = "Calibrate stage";
             this.CalibrateStageButton.UseVisualStyleBackColor = true;
@@ -198,9 +200,9 @@
             // 
             // CalibrateImageButton
             // 
-            this.CalibrateImageButton.Location = new System.Drawing.Point(11, 320);
+            this.CalibrateImageButton.Location = new System.Drawing.Point(9, 316);
             this.CalibrateImageButton.Name = "CalibrateImageButton";
-            this.CalibrateImageButton.Size = new System.Drawing.Size(99, 31);
+            this.CalibrateImageButton.Size = new System.Drawing.Size(89, 31);
             this.CalibrateImageButton.TabIndex = 14;
             this.CalibrateImageButton.Text = "Calibrate Image";
             this.CalibrateImageButton.UseVisualStyleBackColor = true;
@@ -366,11 +368,33 @@
             this.MoveStageButton.UseVisualStyleBackColor = true;
             this.MoveStageButton.Click += new System.EventHandler(this.MoveStageButton_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(75, 564);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(67, 22);
+            this.button1.TabIndex = 33;
+            this.button1.Text = "Position";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // FindGraticuleButton
+            // 
+            this.FindGraticuleButton.Location = new System.Drawing.Point(104, 353);
+            this.FindGraticuleButton.Name = "FindGraticuleButton";
+            this.FindGraticuleButton.Size = new System.Drawing.Size(84, 33);
+            this.FindGraticuleButton.TabIndex = 34;
+            this.FindGraticuleButton.Text = "Find Graticule";
+            this.FindGraticuleButton.UseVisualStyleBackColor = true;
+            this.FindGraticuleButton.Click += new System.EventHandler(this.FindGraticuleButton_Click);
+            // 
             // MainApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1270, 639);
+            this.Controls.Add(this.FindGraticuleButton);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.MoveStageButton);
             this.Controls.Add(this.zLabel);
             this.Controls.Add(this.yLabel);
@@ -445,6 +469,8 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button MoveStageButton;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button FindGraticuleButton;
     }
 }
 
