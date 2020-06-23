@@ -407,83 +407,95 @@ namespace MTF_Calc
         }
         private void ImageDisplay_Click(object sender, EventArgs e)
         {
-            if (Clickable == true)
+            try
             {
-                var mouseEventArgs = e as MouseEventArgs;
-                int widthInPixels = 0;
-                int heightInPixels = 0;
-                // coordinate in image pixels
-                widthInPixels = ImageDisplay.Image.Width;
-                heightInPixels = ImageDisplay.Image.Height;
-                int imagePixelX = widthInPixels * mouseEventArgs.X / ImageDisplay.Width;
-                int imagePixelY = heightInPixels * mouseEventArgs.Y / ImageDisplay.Height;
-                Debug.Print("{0} , {1}", imagePixelX,imagePixelY);
-                DialogResult result = MessageBox.Show("Coordinates have been recorded. Proceed?", "Coordinates recorded", MessageBoxButtons.YesNo);
-                if (result == DialogResult.Yes)
+                camera.TerminateCapture();
+                if (Clickable == true)
                 {
-                    CurrentPosition[0] = imagePixelX;
-                    CurrentPosition[1] = imagePixelY;
-                    
+                    var mouseEventArgs = e as MouseEventArgs;
+                    int widthInPixels = 0;
+                    int heightInPixels = 0;
+                    // coordinate in image pixels
+                    widthInPixels = ImageDisplay.Image.Width;
+                    heightInPixels = ImageDisplay.Image.Height;
+                    int imagePixelX = widthInPixels * mouseEventArgs.X / ImageDisplay.Width;
+                    int imagePixelY = heightInPixels * mouseEventArgs.Y / ImageDisplay.Height;
+                    Debug.Print("{0} , {1}", imagePixelX, imagePixelY);
+                    DialogResult result = MessageBox.Show("Coordinates have been recorded. Proceed?", "Coordinates recorded", MessageBoxButtons.YesNo);
+                    if (result == DialogResult.Yes)
+                    {
+                        CurrentPosition[0] = imagePixelX;
+                        CurrentPosition[1] = imagePixelY;
 
-                    if (counter == 4)
-                    {
-                        paint = true;
-                        DrawRectangle(ImageDisplay, 3, 10);
-                        DrawRectangle(ImageDisplay, 10, 3);
-                        CalibrateImageLB();
-                        MessageBox.Show("Calibration Complete");
-                        Clickable = false;
-                        StartTestButton.Visible = true;
+
+                        if (counter == 4)
+                        {
+                            paint = true;
+                            DrawRectangle(ImageDisplay, 3, 10);
+                            DrawRectangle(ImageDisplay, 10, 3);
+                            CalibrateImageLB();
+                            MessageBox.Show("Calibration Complete");
+                            Clickable = false;
+                            StartTestButton.Visible = true;
+                            camera.LiveImage(ImageDisplay);
+                        }
+
+                        if (counter == 3)
+                        {
+                            paint = true;
+                            DrawRectangle(ImageDisplay, 3, 10);
+                            DrawRectangle(ImageDisplay, 10, 3);
+                            CalibrateImageRBCornerToLB();
+                            counter++;
+                            camera.LiveImage(ImageDisplay);
+                        }
+
+                        if (counter == 2)
+                        {
+                            paint = true;
+                            DrawRectangle(ImageDisplay, 3, 10);
+                            DrawRectangle(ImageDisplay, 10, 3);
+                            CalibrateImageRUCornerToRB();
+                            counter++;
+                            camera.LiveImage(ImageDisplay);
+                        }
+
+                        if (counter == 1)
+                        {
+                            paint = true;
+                            DrawRectangle(ImageDisplay, 3, 10);
+                            DrawRectangle(ImageDisplay, 10, 3);
+                            CalibrateImageLUCornerToRU();
+                            counter++;
+                            camera.LiveImage(ImageDisplay);
+
+                        }
+                        if (counter == 0)
+                        {
+                            paint = true;
+                            DrawRectangle(ImageDisplay, 3, 10);
+                            DrawRectangle(ImageDisplay, 10, 3);
+                            CalibrateImageCenterToLU();
+                            counter++;
+                            camera.LiveImage(ImageDisplay);
+                        }
                     }
-                   
-                    if (counter == 3)
-                    {
-                        paint = true;
-                        DrawRectangle(ImageDisplay, 3, 10);
-                        DrawRectangle(ImageDisplay, 10, 3);
-                        CalibrateImageRBCornerToLB();
-                        counter++;
-                    }
-                    
-                    if (counter == 2)
-                    {
-                        paint = true;
-                        DrawRectangle(ImageDisplay, 3, 10);
-                        DrawRectangle(ImageDisplay, 10, 3);
-                        CalibrateImageRUCornerToRB();
-                        counter++;
-                    }
-                    
-                    if (counter == 1)
-                    {
-                        paint = true;
-                        DrawRectangle(ImageDisplay, 3, 10);
-                        DrawRectangle(ImageDisplay, 10, 3);
-                        CalibrateImageLUCornerToRU();
-                        counter++;
-                        
-                    }
-                    if (counter == 0)
-                    {
-                        paint = true;
-                        DrawRectangle(ImageDisplay, 3, 10);
-                        DrawRectangle(ImageDisplay, 10, 3);
-                        CalibrateImageCenterToLU();
-                        
-                        
-                        counter++;
-                    }
+
                 }
-                
+            }
+            catch (Exception ex)
+            {
+                Debug.Print("Error : " + ex);
             }
         }
 
         private void CalibrateImageButton_Click(object sender, EventArgs e)
         {
+            camera.TerminateCapture();
             counter = 0;
             Clickable = true;
             MessageBox.Show("Place the PKI Test graticule on the stage, focus and center the PKI Crosshairs on the screen. Click on the center of the crosshair to begin");
-            
+            camera.LiveImage(ImageDisplay);
         }
 
         private void StageConnectButton_Click(object sender, EventArgs e)
@@ -506,6 +518,109 @@ namespace MTF_Calc
         }
     */
         
+        private void SetIllumination(Decimal value)
+        {
+            try
+            {
+                double targetIllumBottomLED = (1 * Convert.ToDouble(value));
+                if (StageSerialPort.IsOpen)
+                {
+                    StringBuilder buffer = new StringBuilder();
+                    buffer.AppendFormat("!{0}{1:X2}\r", "a", LineariseIllumination(targetIllumBottomLED));
+                    buffer.Append("!\r");
+                    SendCommand(buffer.ToString(), true);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.Print("Error in illumination settings : " + ex);
+            }
+        }
+
+        private int LineariseIllumination(double reqillum)
+        {
+            // Ensure shuts down fully
+            if (reqillum < 0.01)
+            {
+                return 0;
+            }
+
+            // For LEDs there is light even at illum=1;  the camera saturates at 100,
+            // but we will leave plenty in hand to blast it through dark samples.
+            // lineariseIlluminationB is set at 100 so for low levels 1 click has an effect.
+            // lineariseIlluminationA is set so 100% gives us max (255);
+
+            int illum = (int)(100 * reqillum * reqillum + 155 * reqillum + 0);
+
+            if (illum > 255)
+            {
+                illum = 255;
+            }
+            if (illum < 0)
+            {
+                illum = 0;
+            }
+
+            return illum;
+        }
+        private bool SendCommand(string commandString, bool waitForReply)
+        {
+            bool retValue = false;
+            try
+            {
+                this.readbuffer.Initialize();
+                StageSerialPort.DiscardInBuffer();
+                StageSerialPort.Write(commandString);
+                //Trace.WriteLine("SendCommand() commandString = " + commandString);
+                if (waitForReply)
+                {
+                    //set the time out
+                    waitTime = (DateTime.Now).AddMilliseconds(60000);
+                    while (StageSerialPort.BytesToRead <= 3 && DateTime.Now < waitTime)
+                    {
+                        //wait for the three bytes or time out.
+                        Thread.Sleep(30);
+                    }
+                    //read the reply
+                    if (this.StageSerialPort.BytesToRead > 0)
+                    {
+                        StageSerialPort.Read(readbuffer, 0, 3);
+                        //string reply = new string(readbuffer);
+                        //Trace.WriteLine("SendCommand() readBuffer = " + reply);
+
+                        //check reply signature is correct
+                        if (readbuffer[0] == '!' && readbuffer[1] == '~')
+                        {
+                            retValue = true;
+                           
+                        }
+                        else
+                        {
+                            retValue = false;
+                        }
+                    }
+                    else
+                    {
+                        // Timed out, no bytes to read
+                        retValue = false;
+                    }
+                }
+                else
+                {
+                    retValue = true;
+                }
+            }
+            catch (System.Exception ex)
+            {
+                retValue = false;
+                Debug.Print("Error in sending command : " + ex);
+                
+            }
+
+            return retValue;
+        }
+
+
         private void DrawRectangle(PictureBox picbox, int len,int hei)
         {
             if (paint == true)
@@ -527,6 +642,15 @@ namespace MTF_Calc
         {
             double x = (double)FieldSizeRatio.Value;
             Debug.Print(Convert.ToString((double)FieldSizeRatio.Value));
+        }
+
+        private void IlluminationControl_ValueChanged(object sender, EventArgs e)
+        {
+            if(StageSerialPort.IsOpen)
+            {
+                SetIllumination(IlluminationControl.Value);
+            }
+            
         }
     }
 }

@@ -47,8 +47,12 @@
             this.SerialSelect = new System.Windows.Forms.ComboBox();
             this.FieldSizeRatio = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.IlluminationControl = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.ImageDisplay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FieldSizeRatio)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.IlluminationControl)).BeginInit();
             this.SuspendLayout();
             // 
             // load_image_button
@@ -248,11 +252,29 @@
             this.label1.TabIndex = 19;
             this.label1.Text = "Field size ratio %";
             // 
+            // trackBar1
+            // 
+            this.trackBar1.Location = new System.Drawing.Point(12, 462);
+            this.trackBar1.Maximum = 100;
+            this.trackBar1.Name = "trackBar1";
+            this.trackBar1.Size = new System.Drawing.Size(91, 45);
+            this.trackBar1.TabIndex = 20;
+            // 
+            // IlluminationControl
+            // 
+            this.IlluminationControl.Location = new System.Drawing.Point(116, 462);
+            this.IlluminationControl.Name = "IlluminationControl";
+            this.IlluminationControl.Size = new System.Drawing.Size(69, 20);
+            this.IlluminationControl.TabIndex = 21;
+            this.IlluminationControl.ValueChanged += new System.EventHandler(this.IlluminationControl_ValueChanged);
+            // 
             // MainApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1270, 639);
+            this.Controls.Add(this.IlluminationControl);
+            this.Controls.Add(this.trackBar1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.FieldSizeRatio);
             this.Controls.Add(this.SerialSelect);
@@ -276,6 +298,8 @@
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.ImageDisplay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.FieldSizeRatio)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.IlluminationControl)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -302,6 +326,8 @@
         private System.Windows.Forms.ComboBox SerialSelect;
         private System.Windows.Forms.NumericUpDown FieldSizeRatio;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.NumericUpDown IlluminationControl;
     }
 }
 

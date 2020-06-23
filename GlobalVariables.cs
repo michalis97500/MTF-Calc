@@ -43,6 +43,10 @@ namespace MTF_Calc
         bool Clickable = false;
         int positivetarget;
         int negativetarget;
+        /// <summary>
+        /// The wait time for the serial port response. Reset during the SendCommand
+        /// </summary>
+        private DateTime waitTime = DateTime.Now;
         public struct FieldSize
         {
             public const double X = 480;
