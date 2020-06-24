@@ -73,8 +73,7 @@ namespace MTF_Calc
             }
             catch (ArgumentException)
             {
-                MessageBox.Show("There was an error." +
-            "Check the path to the image file.");
+                MessageBox.Show("There was an error." + "Check the path to the image file.");
             }
         }
 
