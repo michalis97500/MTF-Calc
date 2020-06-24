@@ -11,8 +11,8 @@ namespace MTF_Calc
     {
         public string filename;
         public Bitmap SelectedBMP;
-        public bool cameraconnected = false;
-        Color[] ColorArray = new Color[100];
+        public bool cameraconnected = true;
+        //Color[] ColorArray = new Color[100];
         int[] ColorAvgVert = new int[100];
         int[] ColorAvgHori = new int[100];
         List<double> xlist = new List<double>();

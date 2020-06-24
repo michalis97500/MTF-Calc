@@ -28,6 +28,7 @@ namespace CameraInterfaceExample
                     camera = new Camera(CameraSelectionStrategy.FirstFound);
                 }
                 camera.Open();
+                _bool = true;
                 camera.StreamGrabber.ImageGrabbed += new EventHandler<ImageGrabbedEventArgs>(StreamGrabber_ImageGrabbed);
                 //ResetToFactoryDefault();
             }

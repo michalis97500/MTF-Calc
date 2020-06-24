@@ -108,16 +108,18 @@ namespace MTF_Calc
         {
             if (bmp != null)
             {
+                Color[] TempColorArray = new Color[length+1];
+                
                 for (int i = yposition; i < yposition + length; i++)
                 {
-
-                    ColorArray[i - yposition] = bmp.GetPixel(xposition, i);
-                    int pR = ColorArray[i - yposition].R;
-                    int pG = ColorArray[i - yposition].G;
-                    int pB = ColorArray[i - yposition].B;
+                    
+                    TempColorArray[i - yposition] = bmp.GetPixel(xposition, i);
+                    int pR = TempColorArray[i - yposition].R;
+                    int pG = TempColorArray[i - yposition].G;
+                    int pB = TempColorArray[i - yposition].B;
                     int avg = (pR + pG + pB) / 3;
                     ColorAvgVert[i - yposition] = avg;
-                    ColorAvgVertical[i - yposition] = avg;
+                    ColorAvgVertical.Add(avg);
                     Console.WriteLine(avg);
                 }
             }
@@ -131,15 +133,17 @@ namespace MTF_Calc
         {
             if (bmp != null)
             {
+                Color[] TempColorArray = new Color[length + 1];
                 for (int i = xposition; i < xposition + length; i++)
                 {
 
-                    ColorArray[i - xposition] = bmp.GetPixel(yposition, i);
-                    int pR = ColorArray[i - xposition].R;
-                    int pG = ColorArray[i - xposition].G;
-                    int pB = ColorArray[i - xposition].B;
+                    TempColorArray[i - xposition] = bmp.GetPixel(i, yposition);
+                    int pR = TempColorArray[i - xposition].R;
+                    int pG = TempColorArray[i - xposition].G;
+                    int pB = TempColorArray[i - xposition].B;
                     int avg = (pR + pG + pB) / 3;
                     ColorAvgHori[i - xposition] = avg;
+                    ColorAvgHorizontal.Add(avg);
                     Console.WriteLine(avg);
                 }
             }
@@ -194,6 +198,8 @@ namespace MTF_Calc
                             MTFCalc(Convert.ToDouble(i),1);
                             FindPeaks(ColorAvgVertical);
                             MTFCalc(Convert.ToDouble(i),0);
+                            ColorAvgHorizontal.Clear();
+                            ColorAvgVertical.Clear();
                             Debug.Print(Convert.ToString(MTFData[i, 0, 0]));
                             Debug.Print(Convert.ToString(MTFData[i, 1, 0]));
                             Debug.Print(Convert.ToString(MTFData[i, 0, 1]));
@@ -230,7 +236,7 @@ namespace MTF_Calc
                 TroughList.Clear();
                 for (int i = 0; i < list.Count; i++)
                 {
-                    if (i == 0 || i == list.Count)
+                    if (i == 0 || i == (list.Count -1))
                     {
                         Console.WriteLine("No adjacent values");
                     }
