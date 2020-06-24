@@ -22,7 +22,7 @@ namespace MTF_Calc
         List<int> ColorAvgHorizontal = new List<int>();
         List<int> PeakList = new List<int>();
         List<int> TroughList = new List<int>();
-        double[,,] MTFData = new double[30, 2,2];
+        double[,,] MTFData = new double[30, 2 ,2]; //MTF value,Position value (0-4 for 5 positions),Direction Value (1 Horizontal, 0 Vertical)
         double[,] ImageCalibrationPositions = new double[5, 5];
         double[,,] StageCalibrationPositions = new double[5, 5, 5];
         public int xcenter;
@@ -51,8 +51,8 @@ namespace MTF_Calc
         private DateTime waitTime = DateTime.Now;
         public struct FieldSize
         {
-            public const double X = 480;
-            public const double Y=320;
+            public const double X = 400;
+            public const double Y = 300;
         }
         int counter = 0;
         bool paint = false;

@@ -10,6 +10,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Windows;
 using System.Threading;
+using System.IO;
 
 namespace MTF_Calc
 {
@@ -106,13 +107,15 @@ namespace MTF_Calc
 
         private void GenerateLineArrayVertical(int xposition, int yposition, Bitmap bmp, int length)
         {
-            if (bmp != null)
+            if (bmp != null) //check that be BMP given is not empty
             {
-                Color[] TempColorArray = new Color[length+1];
+                Color[] TempColorArray = new Color[length+1]; //create a temporary array to hold values for RGB
                 
                 for (int i = yposition; i < yposition + length; i++)
                 {
-                    
+                    ///summary
+                    ///This loop will take the coordinates given and run through them finding RGB colors at each pixel.
+                    ///The RGB values are then averaged and put on a list to be used later
                     TempColorArray[i - yposition] = bmp.GetPixel(xposition, i);
                     int pR = TempColorArray[i - yposition].R;
                     int pG = TempColorArray[i - yposition].G;
@@ -133,6 +136,7 @@ namespace MTF_Calc
         {
             if (bmp != null)
             {
+                ///see GenerateLineArrayVertical
                 Color[] TempColorArray = new Color[length + 1];
                 for (int i = xposition; i < xposition + length; i++)
                 {
@@ -182,6 +186,9 @@ namespace MTF_Calc
                         double x, y, z;
                         for(int i=0;i<5;i++)
                         {
+                            ///Summary
+                            ///For all 5 positions of calibration this loop attempts to move the stage at each one, take a picture, 
+                            ///analyze and record MTF and then move to the next one.
                             x = StageCalibrationPositions[i, 0, 0];
                             y = StageCalibrationPositions[i, 1, 0];
                             z = StageCalibrationPositions[i, 0, 1];
@@ -205,7 +212,7 @@ namespace MTF_Calc
                             Debug.Print(Convert.ToString(MTFData[i, 0, 1]));
 
                         }
-                        
+                        SaveData();
                         
 
 
@@ -227,6 +234,36 @@ namespace MTF_Calc
             }
         }
 
+        private void SaveData()
+        {
+            //saves data in MTFData[] to a txt file
+
+            try
+            {
+                string path = @"c:\temp\MyTest.txt";
+                FileStream fs = File.Create(path);
+                // Create the file, or overwrite if the file exists.
+                using (StreamWriter sw = new StreamWriter(path))
+                {
+                    for (int x = 0; x < 29; x++)
+                    {
+                        for (int y = 0; y < 1; y++)
+                        {
+                            for (int z = 0; z < 1; z++)
+                            {
+                                sw.WriteLine(Convert.ToString(MTFData[x,y,z]));
+                            }
+                        }
+                    }
+                    
+                }
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+        }
         private void FindPeaks(List<int> list)
         {
             //Clear lists and find peaks/troughs of the list variable and append them to global Peak/Trough lists
@@ -281,14 +318,17 @@ namespace MTF_Calc
                         mtf = upper / lower;
                         for (int x = 0; x < MTFData.Length; x++)
                         {
-                            if (MTFData[x, 0,0] == 0)
+                            ///Find the first empty element of the MTF Data 
+                            if (MTFData[x, 0, 0] == 0)
                             {
+                                ///Write the MTF value to the 1st diemnsion, write the position value to the 2nd, write the direction to the 3rd
                                 MTFData[x, 0, 0] = mtf;
                                 MTFData[x, 1, 0] = value;
                                 MTFData[x, 0, 1] = Convert.ToDouble(direction);
-                                
                                 break;
+
                             }
+                            
                         }
 
                     }
@@ -319,7 +359,7 @@ namespace MTF_Calc
             }
         }
 
-        private void CalibrateImageCenterToLU()
+        private void CalibrateImageCenterToLB()
         {
             try
             {
@@ -336,7 +376,7 @@ namespace MTF_Calc
                 StageCalibrationPositions[0, 0, 1] = z;
                 ThreeDPoint lcorner = new ThreeDPoint(x + (FieldSize.X * ((double)FieldSizeRatio.Value/100) / 2), y - (FieldSize.Y * ((double)FieldSizeRatio.Value/100) / 2), z);
                 MoveStage(lcorner, Timeouts.ASYNC);
-                MessageBox.Show("Ensure the crosshair is at left top corner of the field and click on the crosshair");
+                MessageBox.Show("Ensure the crosshair is at left botton corner of the field and click on the crosshair");
 
 
             }
@@ -346,7 +386,7 @@ namespace MTF_Calc
             }
 
         }
-        private void CalibrateImageLUCornerToRU()
+        private void CalibrateImageLBCornerToRB()
         {
 
             try
@@ -362,14 +402,14 @@ namespace MTF_Calc
                 StageCalibrationPositions[1, 0, 1] = z;
                 ThreeDPoint rcorner = new ThreeDPoint(x - (FieldSize.X * ((double)FieldSizeRatio.Value)/100), y , z);
                 MoveStage(rcorner, Timeouts.ASYNC);
-                MessageBox.Show("Ensure the crosshair is at right top corner of the field and click on the crosshair");
+                MessageBox.Show("Ensure the crosshair is at right bottom corner of the field and click on the crosshair");
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error in image calibration 2 : " + ex);
             }
         }
-        private void CalibrateImageRUCornerToRB()
+        private void CalibrateImageRBCornerToRU()
         {
 
             try
@@ -385,7 +425,7 @@ namespace MTF_Calc
                 StageCalibrationPositions[2, 0, 1] = z;
                 ThreeDPoint rbtcorner = new ThreeDPoint(x, y+ (FieldSize.Y * ((double)FieldSizeRatio.Value)/100), z);
                 MoveStage(rbtcorner, Timeouts.ASYNC);
-                MessageBox.Show("Ensure the crosshair is at right bottom corner of the field and click on the crosshair");
+                MessageBox.Show("Ensure the crosshair is at right top corner of the field and click on the crosshair");
             }
             catch (Exception ex)
             {
@@ -393,7 +433,7 @@ namespace MTF_Calc
             }
         }
 
-        private void CalibrateImageRBCornerToLB()
+        private void CalibrateImageRUCornerToLU()
         {
 
             try
@@ -409,7 +449,7 @@ namespace MTF_Calc
                 StageCalibrationPositions[3, 0, 1] = z;
                 ThreeDPoint lbcorner = new ThreeDPoint(x + (FieldSize.X * ((double)FieldSizeRatio.Value)/100), y, z);
                 MoveStage(lbcorner, Timeouts.ASYNC);
-                MessageBox.Show("Ensure the crosshair is at left bottom corner of the field and click on the crosshair");
+                MessageBox.Show("Ensure the crosshair is at left top corner of the field and click on the crosshair");
             }
             catch (Exception ex)
             {
@@ -480,7 +520,8 @@ namespace MTF_Calc
                             paint = true;
                             DrawRectangle(ImageDisplay, 3, 10);
                             DrawRectangle(ImageDisplay, 10, 3);
-                            CalibrateImageRBCornerToLB();
+                            //CalibrateImageRBCornerToLB();
+                            CalibrateImageRUCornerToLU();
                             counter++;
                             camera.LiveImage(ImageDisplay);
                         }
@@ -490,7 +531,8 @@ namespace MTF_Calc
                             paint = true;
                             DrawRectangle(ImageDisplay, 3, 10);
                             DrawRectangle(ImageDisplay, 10, 3);
-                            CalibrateImageRUCornerToRB();
+                            //CalibrateImageRUCornerToRB();
+                            CalibrateImageRBCornerToRU();
                             counter++;
                             camera.LiveImage(ImageDisplay);
                         }
@@ -500,7 +542,8 @@ namespace MTF_Calc
                             paint = true;
                             DrawRectangle(ImageDisplay, 3, 10);
                             DrawRectangle(ImageDisplay, 10, 3);
-                            CalibrateImageLUCornerToRU();
+                            //CalibrateImageLUCornerToRU();
+                            CalibrateImageLBCornerToRB();
                             counter++;
                             camera.LiveImage(ImageDisplay);
 
@@ -510,7 +553,8 @@ namespace MTF_Calc
                             paint = true;
                             DrawRectangle(ImageDisplay, 3, 10);
                             DrawRectangle(ImageDisplay, 10, 3);
-                            CalibrateImageCenterToLU();
+                            //CalibrateImageCenterToLU();
+                            CalibrateImageCenterToLB();
                             counter++;
                             camera.LiveImage(ImageDisplay);
                         }
@@ -538,21 +582,7 @@ namespace MTF_Calc
             SerialConnection();
         }
 
-    /*    private void FieldSizeButton_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(FieldSizeTextbox.Text) || string.IsNullOrWhiteSpace(FieldSizeTextbox.Text))
-            {
-                MessageBox.Show("No input found");
-
-            }
-            else
-            {
-
-                //FieldSize = Convert.ToDouble(FieldSizeTextbox.Text);
-            }
-        }
-    */
-        
+          
         private void SetIllumination(Decimal value)
         {
             try
@@ -734,7 +764,7 @@ namespace MTF_Calc
                 }
             }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void PositionButton_Click(object sender, EventArgs e)
         {
             PositionXYZ();
             xLabel.Text = xposition;

@@ -59,7 +59,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.MoveStageButton = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.PositionButton = new System.Windows.Forms.Button();
             this.FindGraticuleButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.ImageDisplay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FieldSizeRatio)).BeginInit();
@@ -368,15 +368,15 @@
             this.MoveStageButton.UseVisualStyleBackColor = true;
             this.MoveStageButton.Click += new System.EventHandler(this.MoveStageButton_Click);
             // 
-            // button1
+            // PositionButton
             // 
-            this.button1.Location = new System.Drawing.Point(75, 564);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(67, 22);
-            this.button1.TabIndex = 33;
-            this.button1.Text = "Position";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.PositionButton.Location = new System.Drawing.Point(75, 564);
+            this.PositionButton.Name = "PositionButton";
+            this.PositionButton.Size = new System.Drawing.Size(67, 22);
+            this.PositionButton.TabIndex = 33;
+            this.PositionButton.Text = "Position";
+            this.PositionButton.UseVisualStyleBackColor = true;
+            this.PositionButton.Click += new System.EventHandler(this.PositionButton_Click);
             // 
             // FindGraticuleButton
             // 
@@ -394,7 +394,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1270, 639);
             this.Controls.Add(this.FindGraticuleButton);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.PositionButton);
             this.Controls.Add(this.MoveStageButton);
             this.Controls.Add(this.zLabel);
             this.Controls.Add(this.yLabel);
@@ -469,7 +469,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button MoveStageButton;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button PositionButton;
         private System.Windows.Forms.Button FindGraticuleButton;
     }
 }
