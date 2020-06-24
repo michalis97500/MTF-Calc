@@ -173,6 +173,33 @@ namespace MTF_Calc
                     
                     if (cameraconnected == true)
                     {
+                        camera.TerminateCapture();
+                        
+                        double x, y, z;
+                        for(int i=0;i<5;i++)
+                        {
+                            x = StageCalibrationPositions[i, 0, 0];
+                            y = StageCalibrationPositions[i, 1, 0];
+                            z = StageCalibrationPositions[i, 0, 1];
+                            var destination = new ThreeDPoint(x,y,z);
+                            MoveStage(destination, Timeouts.ASYNC);
+                            camera.LiveImage(ImageDisplay);
+                            camera.TerminateCapture();
+                            int x_image = Convert.ToInt32(ImageCalibrationPositions[i, 0]);
+                            int y_image = Convert.ToInt32(ImageCalibrationPositions[i, 1]);
+                            Bitmap bitmap = (Bitmap)ImageDisplay.Image;
+                            GenerateLineArrayHorizontal(x_image, y_image, bitmap, 40);
+                            GenerateLineArrayVertical(x_image, y_image, bitmap, 40);
+                            FindPeaks(ColorAvgHorizontal);
+                            MTFCalc(Convert.ToDouble(i),1);
+                            FindPeaks(ColorAvgVertical);
+                            MTFCalc(Convert.ToDouble(i),0);
+                            Debug.Print(Convert.ToString(MTFData[i, 0, 0]));
+                            Debug.Print(Convert.ToString(MTFData[i, 1, 0]));
+                            Debug.Print(Convert.ToString(MTFData[i, 0, 1]));
+
+                        }
+                        
                         
 
 
@@ -231,7 +258,7 @@ namespace MTF_Calc
             }
         }
 
-        private void MTFCalc(double value)
+        private void MTFCalc(double value,int direction)
         {
             //check that the global lists have any values + same number of values. 
             if (PeakList.Count + positivetarget == TroughList.Count + negativetarget)
@@ -248,10 +275,12 @@ namespace MTF_Calc
                         mtf = upper / lower;
                         for (int x = 0; x < MTFData.Length; x++)
                         {
-                            if (MTFData[x, 0] == 0)
+                            if (MTFData[x, 0,0] == 0)
                             {
-                                MTFData[x, 0] = mtf;
-                                MTFData[x, 1] = value;
+                                MTFData[x, 0, 0] = mtf;
+                                MTFData[x, 1, 0] = value;
+                                MTFData[x, 0, 1] = Convert.ToDouble(direction);
+                                
                                 break;
                             }
                         }

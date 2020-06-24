@@ -19,9 +19,10 @@ namespace MTF_Calc
         List<double> ylist = new List<double>();
         List<double> zlist = new List<double>();
         List<int> ColorAvgVertical = new List<int>();
+        List<int> ColorAvgHorizontal = new List<int>();
         List<int> PeakList = new List<int>();
         List<int> TroughList = new List<int>();
-        double[,] MTFData = new double[30, 2];
+        double[,,] MTFData = new double[30, 2,2];
         double[,] ImageCalibrationPositions = new double[5, 5];
         double[,,] StageCalibrationPositions = new double[5, 5, 5];
         public int xcenter;
