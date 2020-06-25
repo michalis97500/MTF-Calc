@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using System.Windows;
 using System.Threading;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace MTF_Calc
 {
@@ -40,7 +41,13 @@ namespace MTF_Calc
             {
                 SerialSelect.Items.Add(port);
             }
-            OverlayPictureBox.Parent = ImageDisplay;
+            GroupSelectionBox.Items.Add("G1");
+            GroupSelectionBox.Items.Add("G2");
+            GroupSelectionBox.Items.Add("G3");
+            GroupSelectionBox.Items.Add("G4");
+            GroupSelectionBox.Items.Add("G5");
+
+
         }
 
 
@@ -162,73 +169,7 @@ namespace MTF_Calc
         {
             try
             {
-               
-                if (StageSerialPort.IsOpen)
-                {
-                    
-                    if (cameraconnected == true)
-                    {
-                        camera.TerminateCapture();
-                        DialogResult result = MessageBox.Show("Is the USAF target positive? (Yes for positive, No for negative)", "Target select", MessageBoxButtons.YesNo);
-                        if (result == DialogResult.Yes)
-                        {
-
-                            positivetarget = 1;
-                            negativetarget = 0;
-
-                        }
-                        else
-                        {
-                            negativetarget = 1;
-                            positivetarget = 0;
-
-                        }
-
-                        double x, y, z;
-                        for(int i=0;i<5;i++)
-                        {
-                            ///Summary
-                            ///For all 5 positions of calibration this loop attempts to move the stage at each one, take a picture, 
-                            ///analyze and record MTF and then move to the next one.
-                            x = StageCalibrationPositions[i, 0, 0];
-                            y = StageCalibrationPositions[i, 1, 0];
-                            z = StageCalibrationPositions[i, 0, 1];
-                            var destination = new ThreeDPoint(x,y,z);
-                            MoveStage(destination, Timeouts.ASYNC);
-                            camera.LiveImage(ImageDisplay);
-                            camera.TerminateCapture();
-                            int x_image = Convert.ToInt32(ImageCalibrationPositions[i, 0]);
-                            int y_image = Convert.ToInt32(ImageCalibrationPositions[i, 1]);
-                            Bitmap bitmap = (Bitmap)ImageDisplay.Image;
-                            GenerateLineArrayHorizontal(x_image, y_image, bitmap, 40);
-                            GenerateLineArrayVertical(x_image, y_image, bitmap, 40);
-                            FindPeaks(ColorAvgHorizontal);
-                            MTFCalc(Convert.ToDouble(i),1);
-                            FindPeaks(ColorAvgVertical);
-                            MTFCalc(Convert.ToDouble(i),0);
-                            ColorAvgHorizontal.Clear();
-                            ColorAvgVertical.Clear();
-                            Debug.Print(Convert.ToString(MTFData[i, 0, 0]));
-                            Debug.Print(Convert.ToString(MTFData[i, 1, 0]));
-                            Debug.Print(Convert.ToString(MTFData[i, 0, 1]));
-
-                        }
-                        SaveData();
-                        
-                        
-
-
-                    }
-                    else
-                    {
-                        MessageBox.Show("Camera is not connected");
-                    }
-
-                }
-                else
-                {
-                    MessageBox.Show("Serial port is not connected");
-                }
+                StartTest();
             }
             catch (Exception ex)
             {
@@ -236,6 +177,111 @@ namespace MTF_Calc
             }
         }
 
+        private void StartTest()
+        {
+
+            if (StageSerialPort.IsOpen)
+            {
+
+                if (cameraconnected == true)
+                {
+                    camera.TerminateCapture();
+                    DialogResult result = MessageBox.Show("Is the USAF target positive? (Yes for positive, No for negative)", "Target select", MessageBoxButtons.YesNo);
+                    if (result == DialogResult.Yes)
+                    {
+
+                        positivetarget = 1;
+                        negativetarget = 0;
+
+                    }
+                    else
+                    {
+                        negativetarget = 1;
+                        positivetarget = 0;
+
+                    }
+
+                    double x, y, z;
+                    double x_relative_horizontal = 0;
+                    double y_relative_horizontal = 0;
+                    double x_relative_vertical = 0;
+                    double y_relative_vertical = 0;
+                    if(GroupSelectionBox.SelectedIndex == 0)
+                    {
+                        x_relative_horizontal = GroupPositions.G1.Xhori;
+                        x_relative_vertical = GroupPositions.G1.Xvert;
+                        y_relative_horizontal = GroupPositions.G1.Yhori;
+                        y_relative_vertical = GroupPositions.G1.Yvert;
+
+                    }
+                    if (GroupSelectionBox.SelectedIndex == 1)
+                    {
+                        x_relative_horizontal = GroupPositions.G2.Xhori;
+                        x_relative_vertical = GroupPositions.G2.Xvert;
+                        y_relative_horizontal = GroupPositions.G2.Yhori;
+                        y_relative_vertical = GroupPositions.G2.Yvert;
+                    }
+               
+
+                    for (int i = 0; i < 5; i++)
+                    {
+                        ///Summary
+                        ///For all 5 positions of calibration this loop attempts to move the stage at each one, take a picture, 
+                        ///analyze and record MTF and then move to the next one.
+                        x = StageCalibrationPositions[i, 0, 0];
+                        y = StageCalibrationPositions[i, 1, 0];
+                        z = StageCalibrationPositions[i, 0, 1]; 
+                        //Move to Capture Horizontal
+                        var destination_hori = new ThreeDPoint(x+x_relative_horizontal, y+y_relative_horizontal, z);
+                        MoveStage(destination_hori, Timeouts.ASYNC);
+                        camera.LiveImage(ImageDisplay);
+                        camera.TerminateCapture();
+                        int x_image = Convert.ToInt32(ImageCalibrationPositions[i, 0]);
+                        int y_image = Convert.ToInt32(ImageCalibrationPositions[i, 1]);
+                        Bitmap bitmap = (Bitmap)ImageDisplay.Image;
+                        GenerateLineArrayHorizontal(x_image, y_image, bitmap, 40);
+                        bitmap.Dispose();
+                        bitmap = null;
+                        //Move to capture Vertical
+                        var destination_vert = new ThreeDPoint(x + x_relative_vertical, y + y_relative_vertical, z);
+                        MoveStage(destination_vert, Timeouts.ASYNC);
+                        camera.LiveImage(ImageDisplay);
+                        camera.TerminateCapture();
+                        x_image = Convert.ToInt32(ImageCalibrationPositions[i, 0]);
+                        y_image = Convert.ToInt32(ImageCalibrationPositions[i, 1]);
+                        bitmap = (Bitmap)ImageDisplay.Image;
+                        GenerateLineArrayVertical(x_image, y_image, bitmap, 40);
+                        bitmap.Dispose();
+                        bitmap = null;
+                        //Do Math
+                        FindPeaks(ColorAvgHorizontal);
+                        MTFCalc(Convert.ToDouble(i), 1);
+                        FindPeaks(ColorAvgVertical);
+                        MTFCalc(Convert.ToDouble(i), 0);
+                        ColorAvgHorizontal.Clear();
+                        ColorAvgVertical.Clear();
+                        Debug.Print(Convert.ToString(MTFData[i, 0, 0]));
+                        Debug.Print(Convert.ToString(MTFData[i, 1, 0]));
+                        Debug.Print(Convert.ToString(MTFData[i, 0, 1]));
+
+                    }
+                    SaveData();
+
+
+
+
+                }
+                else
+                {
+                    MessageBox.Show("Camera is not connected");
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("Serial port is not connected");
+            }
+        }
         private void SaveData()
         {
             //saves data in MTFData[] to a txt file
@@ -554,7 +600,7 @@ namespace MTF_Calc
                         if (counter == 0)
                         {
                             paint = true;
-                            DrawRectangle(OverlayPictureBox, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
+                            DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
                             DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
                             //CalibrateImageCenterToLU();
                             CalibrateImageCenterToLB();

@@ -59,10 +59,24 @@ namespace MTF_Calc
 
         public struct GroupPositions
         {
-            public const double G1Xvert = 77;
-            public const double G1Yvert = 10;
-            public const double G1Xhori = 44;
-            public const double G1Yhori = -13;
+            public struct G1
+            {
+                public const double Xvert = 77;
+                public const double Yvert = -10;
+                public const double Xhori = 44;
+                public const double Yhori = +13;
+
+            }
+            public struct G2
+            {
+                public const double Xvert = 77;
+                public const double Yvert = 10;
+                public const double Xhori = 44;
+                public const double Yhori = -13;
+
+            }
+
+
         }
         
 
