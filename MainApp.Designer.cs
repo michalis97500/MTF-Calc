@@ -62,9 +62,11 @@
             this.PositionButton = new System.Windows.Forms.Button();
             this.FindGraticuleButton = new System.Windows.Forms.Button();
             this.FindUSAFButton = new System.Windows.Forms.Button();
+            this.OverlayPictureBox = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.ImageDisplay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FieldSizeRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.IlluminationControl)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OverlayPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // load_image_button
@@ -400,11 +402,25 @@
             this.FindUSAFButton.UseVisualStyleBackColor = true;
             this.FindUSAFButton.Click += new System.EventHandler(this.FindUSAFButton_Click);
             // 
+            // OverlayPictureBox
+            // 
+            this.OverlayPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.OverlayPictureBox.BackColor = System.Drawing.Color.Transparent;
+            this.OverlayPictureBox.Location = new System.Drawing.Point(209, 12);
+            this.OverlayPictureBox.Name = "OverlayPictureBox";
+            this.OverlayPictureBox.Size = new System.Drawing.Size(1049, 615);
+            this.OverlayPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.OverlayPictureBox.TabIndex = 36;
+            this.OverlayPictureBox.TabStop = false;
+            // 
             // MainApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1270, 639);
+            this.Controls.Add(this.OverlayPictureBox);
             this.Controls.Add(this.FindUSAFButton);
             this.Controls.Add(this.FindGraticuleButton);
             this.Controls.Add(this.PositionButton);
@@ -444,6 +460,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.ImageDisplay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.FieldSizeRatio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.IlluminationControl)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OverlayPictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -485,6 +502,7 @@
         private System.Windows.Forms.Button PositionButton;
         private System.Windows.Forms.Button FindGraticuleButton;
         private System.Windows.Forms.Button FindUSAFButton;
+        private System.Windows.Forms.PictureBox OverlayPictureBox;
     }
 }
 

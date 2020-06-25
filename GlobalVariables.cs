@@ -56,6 +56,14 @@ namespace MTF_Calc
         }
         int counter = 0;
         bool paint = false;
+
+        public struct GroupPositions
+        {
+            public const double G1Xvert = 77;
+            public const double G1Yvert = 10;
+            public const double G1Xhori = 44;
+            public const double G1Yhori = -13;
+        }
         
 
 

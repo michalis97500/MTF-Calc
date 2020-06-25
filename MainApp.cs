@@ -40,7 +40,7 @@ namespace MTF_Calc
             {
                 SerialSelect.Items.Add(port);
             }
-
+            OverlayPictureBox.Parent = ImageDisplay;
         }
 
 
@@ -554,7 +554,7 @@ namespace MTF_Calc
                         if (counter == 0)
                         {
                             paint = true;
-                            DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
+                            DrawRectangle(OverlayPictureBox, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
                             DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
                             //CalibrateImageCenterToLU();
                             CalibrateImageCenterToLB();
@@ -770,10 +770,12 @@ namespace MTF_Calc
 
         private void PositionButton_Click(object sender, EventArgs e)
         {
+            
             PositionXYZ();
             xLabel.Text = xposition;
             yLabel.Text = yposition;
             zLabel.Text = zposition;
+
         }
 
         private void FindGraticuleButton_Click(object sender, EventArgs e)

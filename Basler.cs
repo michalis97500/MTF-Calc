@@ -198,6 +198,7 @@ namespace CameraInterfaceExample
                 picbox.Invoke(new MethodInvoker(
             delegate ()
             {
+
             picbox.Image = captured;
             }));
             }
