@@ -20,20 +20,7 @@ namespace MTF_Calc
         public MainApp()
         {
             
-            DialogResult result = MessageBox.Show("Is the USAF target positive? (Yes for positive, No for negative)","Target select" , MessageBoxButtons.YesNo);
-            if (result == DialogResult.Yes)
-            {
-                
-                positivetarget = 1;
-                negativetarget = 0;
 
-            }
-            else
-            {
-                negativetarget = 1;
-                positivetarget = 0;
-                    
-            }
             DialogResult result1 = MessageBox.Show("Is the connected camera a Basler? (Yes for Basler, No for MatrixVision)", "Camera select", MessageBoxButtons.YesNo);
             if (result1 == DialogResult.Yes)
             {
@@ -175,13 +162,28 @@ namespace MTF_Calc
         {
             try
             {
+               
                 if (StageSerialPort.IsOpen)
                 {
                     
                     if (cameraconnected == true)
                     {
                         camera.TerminateCapture();
-                        
+                        DialogResult result = MessageBox.Show("Is the USAF target positive? (Yes for positive, No for negative)", "Target select", MessageBoxButtons.YesNo);
+                        if (result == DialogResult.Yes)
+                        {
+
+                            positivetarget = 1;
+                            negativetarget = 0;
+
+                        }
+                        else
+                        {
+                            negativetarget = 1;
+                            positivetarget = 0;
+
+                        }
+
                         double x, y, z;
                         for(int i=0;i<5;i++)
                         {
@@ -212,6 +214,7 @@ namespace MTF_Calc
 
                         }
                         SaveData();
+                        
                         
 
 
