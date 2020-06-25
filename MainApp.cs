@@ -288,10 +288,10 @@ namespace MTF_Calc
 
             try
             {
-                string path = @"c:\temp\MyTest.txt";
+                string path = @"C:\Users\ChrisM18128\Documents\MyTest.txt";
                 FileStream fs = File.Create(path);
                 // Create the file, or overwrite if the file exists.
-                using (StreamWriter sw = new StreamWriter(path))
+                using (StreamWriter sw = new StreamWriter(path,true))
                 {
                     for (int x = 0; x < 29; x++)
                     {
@@ -299,7 +299,9 @@ namespace MTF_Calc
                         {
                             for (int z = 0; z < 1; z++)
                             {
-                                sw.WriteLine(Convert.ToString(MTFData[x,y,z]));
+                                //sw.WriteLine(Convert.ToString(MTFData[x,y,z]));
+                                Debug.WriteLine(MTFData[x,y,z]);
+                               
                             }
                         }
                     }
@@ -309,7 +311,7 @@ namespace MTF_Calc
 
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                Console.WriteLine("Error in savedata : " + ex.ToString());
             }
         }
         private void FindPeaks(List<int> list)
@@ -371,6 +373,7 @@ namespace MTF_Calc
                             {
                                 ///Write the MTF value to the 1st diemnsion, write the position value to the 2nd, write the direction to the 3rd
                                 MTFData[x, 0, 0] = mtf;
+                                Console.WriteLine(mtf);
                                 MTFData[x, 1, 0] = value;
                                 MTFData[x, 0, 1] = Convert.ToDouble(direction);
                                 break;
