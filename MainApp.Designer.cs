@@ -61,6 +61,7 @@
             this.MoveStageButton = new System.Windows.Forms.Button();
             this.PositionButton = new System.Windows.Forms.Button();
             this.FindGraticuleButton = new System.Windows.Forms.Button();
+            this.FindUSAFButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.ImageDisplay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FieldSizeRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.IlluminationControl)).BeginInit();
@@ -380,7 +381,7 @@
             // 
             // FindGraticuleButton
             // 
-            this.FindGraticuleButton.Location = new System.Drawing.Point(104, 353);
+            this.FindGraticuleButton.Location = new System.Drawing.Point(104, 315);
             this.FindGraticuleButton.Name = "FindGraticuleButton";
             this.FindGraticuleButton.Size = new System.Drawing.Size(84, 33);
             this.FindGraticuleButton.TabIndex = 34;
@@ -388,11 +389,23 @@
             this.FindGraticuleButton.UseVisualStyleBackColor = true;
             this.FindGraticuleButton.Click += new System.EventHandler(this.FindGraticuleButton_Click);
             // 
+            // FindUSAFButton
+            // 
+            this.FindUSAFButton.Location = new System.Drawing.Point(104, 354);
+            this.FindUSAFButton.Name = "FindUSAFButton";
+            this.FindUSAFButton.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.FindUSAFButton.Size = new System.Drawing.Size(84, 32);
+            this.FindUSAFButton.TabIndex = 35;
+            this.FindUSAFButton.Text = "Find USAF";
+            this.FindUSAFButton.UseVisualStyleBackColor = true;
+            this.FindUSAFButton.Click += new System.EventHandler(this.FindUSAFButton_Click);
+            // 
             // MainApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1270, 639);
+            this.Controls.Add(this.FindUSAFButton);
             this.Controls.Add(this.FindGraticuleButton);
             this.Controls.Add(this.PositionButton);
             this.Controls.Add(this.MoveStageButton);
@@ -471,6 +484,7 @@
         private System.Windows.Forms.Button MoveStageButton;
         private System.Windows.Forms.Button PositionButton;
         private System.Windows.Forms.Button FindGraticuleButton;
+        private System.Windows.Forms.Button FindUSAFButton;
     }
 }
 

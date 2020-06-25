@@ -495,6 +495,7 @@ namespace MTF_Calc
                     // coordinate in image pixels
                     widthInPixels = ImageDisplay.Image.Width;
                     heightInPixels = ImageDisplay.Image.Height;
+                    
                     int imagePixelX = widthInPixels * mouseEventArgs.X / ImageDisplay.Width;
                     int imagePixelY = heightInPixels * mouseEventArgs.Y / ImageDisplay.Height;
                     Debug.Print("{0} , {1}", imagePixelX, imagePixelY);
@@ -508,8 +509,8 @@ namespace MTF_Calc
                         if (counter == 4)
                         {
                             paint = true;
-                            DrawRectangle(ImageDisplay, 3, 10);
-                            DrawRectangle(ImageDisplay, 10, 3);
+                            DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]),Convert.ToInt32(CurrentPosition[1]));
+                            DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
                             CalibrateImageLB();
                             MessageBox.Show("Calibration Complete");
                             Clickable = false;
@@ -520,8 +521,8 @@ namespace MTF_Calc
                         if (counter == 3)
                         {
                             paint = true;
-                            DrawRectangle(ImageDisplay, 3, 10);
-                            DrawRectangle(ImageDisplay, 10, 3);
+                            DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
+                            DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
                             //CalibrateImageRBCornerToLB();
                             CalibrateImageRUCornerToLU();
                             counter++;
@@ -531,8 +532,8 @@ namespace MTF_Calc
                         if (counter == 2)
                         {
                             paint = true;
-                            DrawRectangle(ImageDisplay, 3, 10);
-                            DrawRectangle(ImageDisplay, 10, 3);
+                            DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
+                            DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
                             //CalibrateImageRUCornerToRB();
                             CalibrateImageRBCornerToRU();
                             counter++;
@@ -542,8 +543,8 @@ namespace MTF_Calc
                         if (counter == 1)
                         {
                             paint = true;
-                            DrawRectangle(ImageDisplay, 3, 10);
-                            DrawRectangle(ImageDisplay, 10, 3);
+                            DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
+                            DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
                             //CalibrateImageLUCornerToRU();
                             CalibrateImageLBCornerToRB();
                             counter++;
@@ -553,8 +554,8 @@ namespace MTF_Calc
                         if (counter == 0)
                         {
                             paint = true;
-                            DrawRectangle(ImageDisplay, 3, 10);
-                            DrawRectangle(ImageDisplay, 10, 3);
+                            DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
+                            DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
                             //CalibrateImageCenterToLU();
                             CalibrateImageCenterToLB();
                             counter++;
@@ -577,6 +578,7 @@ namespace MTF_Calc
             Clickable = true;
             MessageBox.Show("Place the PKI Test graticule on the stage, focus and center the PKI Crosshairs on the screen. Click on the center of the crosshair to begin");
             camera.LiveImage(ImageDisplay);
+
         }
 
         private void StageConnectButton_Click(object sender, EventArgs e)
@@ -688,7 +690,7 @@ namespace MTF_Calc
         }
 
 
-        private void DrawRectangle(PictureBox picbox, int len,int hei)
+        private void DrawRectangle(PictureBox picbox, int len,int hei,int xpos,int ypos)
         {
             if (paint == true)
             {
@@ -696,7 +698,7 @@ namespace MTF_Calc
                 {
                     Debug.Print(Convert.ToString(CurrentPosition[0]));
                     Debug.Print(Convert.ToString(CurrentPosition[1]));
-                    Rectangle rectangle = new Rectangle(Convert.ToInt32(CurrentPosition[0] - (len/2)), Convert.ToInt32(CurrentPosition[1]) - (hei/2) , len, hei);
+                    Rectangle rectangle = new Rectangle(xpos - (len/2), ypos - (hei/2) , len, hei);
                     SolidBrush brush = new SolidBrush(Color.FromArgb(170, 254, 50, 50));
                     graphics.FillRectangle(brush, rectangle);
                 }
@@ -783,6 +785,30 @@ namespace MTF_Calc
                     double x = 32800;
                     double y = 22540;
                     double z = 9100;
+                    var destination = new ThreeDPoint(x, y, z);
+                    MoveStage(destination, Timeouts.ASYNC);
+                    PositionXYZ();
+                }
+                else
+                {
+                    MessageBox.Show("Stage is not calibrated");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Stage is not connected");
+            }
+        }
+
+        private void FindUSAFButton_Click(object sender, EventArgs e)
+        {
+            if (StageSerialPort.IsOpen)
+            {
+                if (stagecalibrated == true)
+                {
+                    double x = 40500;
+                    double y = 23235;
+                    double z = 9335;
                     var destination = new ThreeDPoint(x, y, z);
                     MoveStage(destination, Timeouts.ASYNC);
                     PositionXYZ();
