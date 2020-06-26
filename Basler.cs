@@ -30,6 +30,7 @@ namespace CameraInterfaceExample
                 camera.Open();
                 _bool = true;
                 camera.StreamGrabber.ImageGrabbed += new EventHandler<ImageGrabbedEventArgs>(StreamGrabber_ImageGrabbed);
+                
                 //ResetToFactoryDefault();
             }
             catch (Exception ex)
@@ -64,8 +65,9 @@ namespace CameraInterfaceExample
         {
             try
             {
-                camera.StreamGrabber.Stop();
                 terminated = true;
+                camera.StreamGrabber.Stop();
+                            
                 
             }
             catch (Exception ex)
@@ -76,7 +78,13 @@ namespace CameraInterfaceExample
 
         public void SingleImageCapture(PictureBox picbox)
         {
-
+            if(camera.StreamGrabber.IsGrabbing)
+            {
+                camera.StreamGrabber.Stop();
+            }
+            
+            camera.StreamGrabber.GrabOne(1000);
+            UpdateImage(picbox);
         }
         void StreamGrabber_ImageGrabbed(object sender, ImageGrabbedEventArgs e)
         {
@@ -192,21 +200,19 @@ namespace CameraInterfaceExample
 
         public void UpdateImage(PictureBox picbox)
         {
-
-            if (picbox.InvokeRequired)
-            {
-                picbox.Invoke(new MethodInvoker(
-            delegate ()
-            {
-
-            picbox.Image = captured;
-            }));
-            }
-            else
-            {
+            
+                if (picbox.InvokeRequired)
+                {
+                picbox.Invoke(new MethodInvoker( delegate ()
+                {
                 picbox.Image = captured;
-            }
-
+                }));
+                }
+                else
+                {
+                picbox.Image = captured;
+                }
+            
 
         }
     }

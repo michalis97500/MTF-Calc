@@ -12,6 +12,7 @@ using System.Windows;
 using System.Threading;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace MTF_Calc
 {
@@ -223,7 +224,7 @@ namespace MTF_Calc
                     }
                
 
-                    for (int i = 0; i < 5; i++)
+                    for (int i = 0; i < 2; i++)
                     {
                         ///Summary
                         ///For all 5 positions of calibration this loop attempts to move the stage at each one, take a picture, 
@@ -234,25 +235,19 @@ namespace MTF_Calc
                         //Move to Capture Horizontal
                         var destination_hori = new ThreeDPoint(x+x_relative_horizontal, y+y_relative_horizontal, z);
                         MoveStage(destination_hori, Timeouts.ASYNC);
-                        camera.LiveImage(ImageDisplay);
-                        camera.TerminateCapture();
+                        camera.SingleImageCapture(ImageDisplay);
                         int x_image = Convert.ToInt32(ImageCalibrationPositions[i, 0]);
                         int y_image = Convert.ToInt32(ImageCalibrationPositions[i, 1]);
                         Bitmap bitmap = (Bitmap)ImageDisplay.Image;
-                        GenerateLineArrayHorizontal(x_image, y_image, bitmap, 40);
-                        bitmap.Dispose();
-                        bitmap = null;
+                        GenerateLineArrayHorizontal(x_image, y_image, bitmap, 45);
                         //Move to capture Vertical
                         var destination_vert = new ThreeDPoint(x + x_relative_vertical, y + y_relative_vertical, z);
                         MoveStage(destination_vert, Timeouts.ASYNC);
-                        camera.LiveImage(ImageDisplay);
-                        camera.TerminateCapture();
+                        camera.SingleImageCapture(ImageDisplay);
                         x_image = Convert.ToInt32(ImageCalibrationPositions[i, 0]);
                         y_image = Convert.ToInt32(ImageCalibrationPositions[i, 1]);
                         bitmap = (Bitmap)ImageDisplay.Image;
-                        GenerateLineArrayVertical(x_image, y_image, bitmap, 40);
-                        bitmap.Dispose();
-                        bitmap = null;
+                        GenerateLineArrayVertical(x_image, y_image, bitmap, 45);
                         //Do Math
                         FindPeaks(ColorAvgHorizontal);
                         MTFCalc(Convert.ToDouble(i), 1);
@@ -264,8 +259,9 @@ namespace MTF_Calc
                         Debug.Print(Convert.ToString(MTFData[i, 1, 0]));
                         Debug.Print(Convert.ToString(MTFData[i, 0, 1]));
 
+
                     }
-                    SaveData();
+                    //SaveData();
 
 
 
@@ -354,37 +350,48 @@ namespace MTF_Calc
         private void MTFCalc(double value,int direction)
         {
             //check that the global lists have any values + same number of values. 
-            if (PeakList.Count + positivetarget == TroughList.Count + negativetarget)
-            {
-                if (PeakList.Any())
+            //if (PeakList.Count + positivetarget == TroughList.Count + negativetarget)
+           // {
+                if (PeakList.Any() && TroughList.Any())
                 {
+                    double mtf;
+                    double upper;
+                    double lower;
+                    double peaks = 0 ;
+                    double troughs = 0;
                     for (int i = 0; i < PeakList.Count; i++)
                     {
-                        double mtf;
-                        double upper;
-                        double lower;
-                        upper = PeakList[i] - TroughList[i];
-                        lower = PeakList[i] + TroughList[i];
-                        mtf = upper / lower;
-                        for (int x = 0; x < MTFData.Length; x++)
-                        {
-                            ///Find the first empty element of the MTF Data 
-                            if (MTFData[x, 0, 0] == 0)
-                            {
-                                ///Write the MTF value to the 1st diemnsion, write the position value to the 2nd, write the direction to the 3rd
-                                MTFData[x, 0, 0] = mtf;
-                                Console.WriteLine(mtf);
-                                MTFData[x, 1, 0] = value;
-                                MTFData[x, 0, 1] = Convert.ToDouble(direction);
-                                break;
-
-                            }
-                            
-                        }
-
+                        peaks += Convert.ToDouble(PeakList[i]);
                     }
+                    for (int i = 0; i < TroughList.Count; i++)
+                    {
+                        troughs += Convert.ToDouble(TroughList[i]);
+                    }
+
+                    upper = (peaks/PeakList.Count) - (troughs/TroughList.Count);
+                    lower = (peaks/PeakList.Count) + (troughs/TroughList.Count);
+                    mtf = upper / lower;
+                    for (int x = 0; x < MTFData.Length; x++)
+                    {
+                    ///Find the first empty element of the MTF Data 
+                        if (MTFData[x, 0, 0] == 0)
+                        {
+                            ///Write the MTF value to the 1st diemnsion, write the position value to the 2nd, write the direction to the 3rd
+                            MTFData[x, 0, 0] = mtf;
+                            Console.WriteLine(mtf);
+                            Console.WriteLine(value);
+                            Console.WriteLine(direction);
+                            MTFData[x, 1, 0] = value;
+                            MTFData[x, 0, 1] = Convert.ToDouble(direction);
+                            break;
+
+                        }
+                            
+                    }
+
+                    
                 }
-            }
+            //}
         }
 
         private void CenterStageButton_Click(object sender, EventArgs e)
@@ -605,7 +612,7 @@ namespace MTF_Calc
                             paint = true;
                             DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
                             DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
-                            //CalibrateImageCenterToLU();
+                            
                             CalibrateImageCenterToLB();
                             counter++;
                             camera.LiveImage(ImageDisplay);
@@ -741,18 +748,29 @@ namespace MTF_Calc
 
         private void DrawRectangle(PictureBox picbox, int len,int hei,int xpos,int ypos)
         {
-            if (paint == true)
+
+            if (picbox.InvokeRequired)
             {
-                using (Graphics graphics = Graphics.FromImage(picbox.Image))
+                picbox.Invoke(new MethodInvoker( delegate ()
                 {
-                    Debug.Print(Convert.ToString(CurrentPosition[0]));
-                    Debug.Print(Convert.ToString(CurrentPosition[1]));
-                    Rectangle rectangle = new Rectangle(xpos - (len/2), ypos - (hei/2) , len, hei);
-                    SolidBrush brush = new SolidBrush(Color.FromArgb(170, 254, 50, 50));
-                    graphics.FillRectangle(brush, rectangle);
-                }
-                picbox.Refresh();
-            }
+                    if (paint == true)
+                    {
+                        using (Graphics graphics = Graphics.FromImage(picbox.Image))
+                        {
+                        Debug.Print(Convert.ToString(CurrentPosition[0]));
+                        Debug.Print(Convert.ToString(CurrentPosition[1]));
+                        Rectangle rectangle = new Rectangle(xpos - (len/2), ypos - (hei/2) , len, hei);
+                        SolidBrush brush = new SolidBrush(Color.FromArgb(170, 254, 50, 50));
+                        graphics.FillRectangle(brush, rectangle);
+                        }
+                
+                        picbox.Refresh();
+                    }
+
+                }));
+             }
+   
+            
         }
        
 

@@ -61,10 +61,10 @@ namespace MTF_Calc
         {
             public struct G1
             {
-                public const double Xvert = 77;
-                public const double Yvert = -10;
-                public const double Xhori = 44;
-                public const double Yhori = +13;
+                public const double Xvert = 80;
+                public const double Yvert = -5;
+                public const double Xhori = 40;
+                public const double Yhori = +5;
 
             }
             public struct G2
