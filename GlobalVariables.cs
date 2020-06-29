@@ -23,8 +23,8 @@ namespace MTF_Calc
         List<int> PeakList = new List<int>();
         List<int> TroughList = new List<int>();
         double[,,] MTFData = new double[30, 2 ,2]; //MTF value,Position value (0-4 for 5 positions),Direction Value (1 Horizontal, 0 Vertical)
-        double[,] ImageCalibrationPositions = new double[5, 5];
-        double[,,] StageCalibrationPositions = new double[5, 5, 5];
+        double[,] ImageCalibrationPositions = new double[8, 8];
+        double[,,] StageCalibrationPositions = new double[8, 8, 8];
         public int xcenter;
         public int ycenter;
         public int zcenter;
@@ -89,6 +89,7 @@ namespace MTF_Calc
             }
             //Only allow user to input numbers, otherwise there are exception errors
         }
+
 
     }
 }

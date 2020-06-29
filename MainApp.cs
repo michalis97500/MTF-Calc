@@ -434,7 +434,7 @@ namespace MTF_Calc
                 StageCalibrationPositions[0, 0, 1] = z;
                 ThreeDPoint lcorner = new ThreeDPoint(x + (FieldSize.X * ((double)FieldSizeRatio.Value/100) / 2), y - (FieldSize.Y * ((double)FieldSizeRatio.Value/100) / 2), z);
                 MoveStage(lcorner, Timeouts.ASYNC);
-                MessageBox.Show("Ensure the crosshair is at left botton corner of the field and click on the crosshair");
+                MessageBox.Show("Ensure the box is at the left bottom corner");
 
 
             }
@@ -444,7 +444,7 @@ namespace MTF_Calc
             }
 
         }
-        private void CalibrateImageLBCornerToRB()
+        private void CalibrateImageLBCornerToBE()
         {
 
             try
@@ -458,18 +458,18 @@ namespace MTF_Calc
                 StageCalibrationPositions[1, 0, 0] = x;
                 StageCalibrationPositions[1, 1, 0] = y;
                 StageCalibrationPositions[1, 0, 1] = z;
-                ThreeDPoint rcorner = new ThreeDPoint(x - (FieldSize.X * ((double)FieldSizeRatio.Value)/100), y , z);
+                ThreeDPoint rcorner = new ThreeDPoint(x - (FieldSize.X * ((double)FieldSizeRatio.Value)/100)/2, y , z);
                 MoveStage(rcorner, Timeouts.ASYNC);
-                MessageBox.Show("Ensure the crosshair is at right bottom corner of the field and click on the crosshair");
+                MessageBox.Show("Ensure the box is at the bottom edge");
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error in image calibration 2 : " + ex);
             }
         }
-        private void CalibrateImageRBCornerToRU()
-        {
 
+        private void CalibrateImageBEToRB()
+        {
             try
             {
                 ImageCalibrationPositions[2, 0] = CurrentPosition[0];
@@ -481,23 +481,23 @@ namespace MTF_Calc
                 StageCalibrationPositions[2, 0, 0] = x;
                 StageCalibrationPositions[2, 1, 0] = y;
                 StageCalibrationPositions[2, 0, 1] = z;
-                ThreeDPoint rbtcorner = new ThreeDPoint(x, y+ (FieldSize.Y * ((double)FieldSizeRatio.Value)/100), z);
-                MoveStage(rbtcorner, Timeouts.ASYNC);
-                MessageBox.Show("Ensure the crosshair is at right top corner of the field and click on the crosshair");
+                ThreeDPoint btedge = new ThreeDPoint(x - (FieldSize.X * ((double)FieldSizeRatio.Value)/2 / 100), y, z);
+                MoveStage(btedge, Timeouts.ASYNC);
+                MessageBox.Show("Ensure the box is at right bottom corner");
+
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error in image calibration 3 : " + ex);
+                Debug.WriteLine("Error in image calibration bt edge : " + ex);
             }
         }
-
-        private void CalibrateImageRUCornerToLU()
+        private void CalibrateImageRBCornerToRE()
         {
 
             try
             {
                 ImageCalibrationPositions[3, 0] = CurrentPosition[0];
-                ImageCalibrationPositions[3, 1] = CurrentPosition[1]; 
+                ImageCalibrationPositions[3, 1] = CurrentPosition[1];
                 PositionXYZ();
                 double x = Convert.ToDouble(xposition);
                 double y = Convert.ToDouble(yposition);
@@ -505,16 +505,16 @@ namespace MTF_Calc
                 StageCalibrationPositions[3, 0, 0] = x;
                 StageCalibrationPositions[3, 1, 0] = y;
                 StageCalibrationPositions[3, 0, 1] = z;
-                ThreeDPoint lbcorner = new ThreeDPoint(x + (FieldSize.X * ((double)FieldSizeRatio.Value)/100), y, z);
-                MoveStage(lbcorner, Timeouts.ASYNC);
-                MessageBox.Show("Ensure the crosshair is at left top corner of the field and click on the crosshair");
+                ThreeDPoint rightedge = new ThreeDPoint(x, y+ (FieldSize.Y * ((double)FieldSizeRatio.Value) /2 /100), z);
+                MoveStage(rightedge, Timeouts.ASYNC);
+                MessageBox.Show("Ensure the box is at right edge");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error in image calibration 4 : " + ex);
+                MessageBox.Show("Error in image calibration 3 : " + ex);
             }
         }
-        private void CalibrateImageLB()
+        private void CalibrateImageREToRU()
         {
 
             try
@@ -528,10 +528,105 @@ namespace MTF_Calc
                 StageCalibrationPositions[4, 0, 0] = x;
                 StageCalibrationPositions[4, 1, 0] = y;
                 StageCalibrationPositions[4, 0, 1] = z;
+                ThreeDPoint rupper = new ThreeDPoint(x, y + (FieldSize.Y * ((double)FieldSizeRatio.Value) / 2 / 100), z);
+                MoveStage(rupper, Timeouts.ASYNC);
+                MessageBox.Show("Ensure the box is at right top corner");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error in image calibration 3 : " + ex);
+            }
+        }
+
+        private void CalibrateImageRUCornerToUE()
+        {
+
+            try
+            {
+                ImageCalibrationPositions[5, 0] = CurrentPosition[0];
+                ImageCalibrationPositions[5, 1] = CurrentPosition[1]; 
+                PositionXYZ();
+                double x = Convert.ToDouble(xposition);
+                double y = Convert.ToDouble(yposition);
+                double z = Convert.ToDouble(zposition);
+                StageCalibrationPositions[5, 0, 0] = x;
+                StageCalibrationPositions[5, 1, 0] = y;
+                StageCalibrationPositions[5, 0, 1] = z;
+                ThreeDPoint upperedge = new ThreeDPoint(x + (FieldSize.X * ((double)FieldSizeRatio.Value) /2 /100), y, z);
+                MoveStage(upperedge, Timeouts.ASYNC);
+                MessageBox.Show("Ensure the box is at the upper edge");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error in image calibration 4 : " + ex);
+            }
+        }
+        private void CalibrateImageUEToLU()
+        {
+
+            try
+            {
+                ImageCalibrationPositions[6, 0] = CurrentPosition[0];
+                ImageCalibrationPositions[6, 1] = CurrentPosition[1];
+                PositionXYZ();
+                double x = Convert.ToDouble(xposition);
+                double y = Convert.ToDouble(yposition);
+                double z = Convert.ToDouble(zposition);
+                StageCalibrationPositions[6, 0, 0] = x;
+                StageCalibrationPositions[6, 1, 0] = y;
+                StageCalibrationPositions[6, 0, 1] = z;
+                ThreeDPoint upperedge = new ThreeDPoint(x + (FieldSize.X * ((double)FieldSizeRatio.Value) / 2 / 100), y, z);
+                MoveStage(upperedge, Timeouts.ASYNC);
+                MessageBox.Show("Ensure the box is at the top left corner");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error in image calibration 4 : " + ex);
+            }
+        }
+        private void CalibrateImageLUCornerToLE()
+        {
+
+            try
+            {
+                ImageCalibrationPositions[7, 0] = CurrentPosition[0];
+                ImageCalibrationPositions[7, 1] = CurrentPosition[1];
+                PositionXYZ();
+                double x = Convert.ToDouble(xposition);
+                double y = Convert.ToDouble(yposition);
+                double z = Convert.ToDouble(zposition);
+                StageCalibrationPositions[7, 0, 0] = x;
+                StageCalibrationPositions[7, 1, 0] = y;
+                StageCalibrationPositions[7, 0, 1] = z;
                 
-                //ThreeDPoint lbcorner = new ThreeDPoint(x + (FieldSize), y, z);
-                //MoveStage(lbcorner, Timeouts.ASYNC);
-                //MessageBox.Show("Ensure the crosshair is at left bottom corner of the field of size {0} and click on the crosshair", Convert.ToString(FieldSize));
+                ThreeDPoint leftedge = new ThreeDPoint(x , y - (FieldSize.Y * ((double)FieldSizeRatio.Value) / 2 / 100), z);
+                MoveStage(leftedge, Timeouts.ASYNC);
+                MessageBox.Show("Ensure the crosshair is at left edge");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error in image calibration 5 : " + ex);
+            }
+        }
+
+        private void CalibrateImageLE()
+        {
+
+            try
+            {
+                ImageCalibrationPositions[8, 0] = CurrentPosition[0];
+                ImageCalibrationPositions[8, 1] = CurrentPosition[1];
+                PositionXYZ();
+                double x = Convert.ToDouble(xposition);
+                double y = Convert.ToDouble(yposition);
+                double z = Convert.ToDouble(zposition);
+                StageCalibrationPositions[8, 0, 0] = x;
+                StageCalibrationPositions[8, 1, 0] = y;
+                StageCalibrationPositions[8, 0, 1] = z;
+
+               // ThreeDPoint leftedge = new ThreeDPoint(x, y - (FieldSize.Y * ((double)FieldSizeRatio.Value) / 2 / 100), z);
+              //  MoveStage(leftedge, Timeouts.ASYNC);
+               // MessageBox.Show("Ensure the crosshair is at left edge");
             }
             catch (Exception ex)
             {
@@ -542,9 +637,10 @@ namespace MTF_Calc
         {
             try
             {
-                camera.TerminateCapture();
+                
                 if (Clickable == true)
                 {
+                    camera.TerminateCapture();
                     var mouseEventArgs = e as MouseEventArgs;
                     int widthInPixels = 0;
                     int heightInPixels = 0;
@@ -562,15 +658,57 @@ namespace MTF_Calc
                         CurrentPosition[1] = imagePixelY;
 
 
-                        if (counter == 4)
+                        if (counter == 8)
+                        {
+                            paint = true;
+                            DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
+                            DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
+
+                            CalibrateImageLE();
+                            MessageBox.Show("Calibration Complete");
+                            Clickable = false;
+                            StartTestButton.Visible = true;
+                            counter++;
+                            camera.LiveImage(ImageDisplay);
+                        }
+                        if (counter == 7)
                         {
                             paint = true;
                             DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]),Convert.ToInt32(CurrentPosition[1]));
                             DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
-                            CalibrateImageLB();
-                            MessageBox.Show("Calibration Complete");
-                            Clickable = false;
-                            StartTestButton.Visible = true;
+                            CalibrateImageLUCornerToLE();
+                            counter++;
+                            camera.LiveImage(ImageDisplay);
+                        }
+                        if (counter == 6)
+                        {
+                            paint = true;
+                            DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
+                            DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
+
+                            CalibrateImageUEToLU();
+                            counter++;
+                            camera.LiveImage(ImageDisplay);
+                        }
+
+                        if (counter == 5)
+                        {
+                            paint = true;
+                            DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
+                            DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
+                            
+                            CalibrateImageRUCornerToUE();
+                            counter++;
+                            camera.LiveImage(ImageDisplay);
+                        }
+                        if (counter == 4)
+                        {
+                            paint = true;
+                            DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
+                            DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
+
+                            CalibrateImageREToRU();
+                            counter++;
                             camera.LiveImage(ImageDisplay);
                         }
 
@@ -579,19 +717,18 @@ namespace MTF_Calc
                             paint = true;
                             DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
                             DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
-                            //CalibrateImageRBCornerToLB();
-                            CalibrateImageRUCornerToLU();
+                            
+                            CalibrateImageRBCornerToRE();
                             counter++;
                             camera.LiveImage(ImageDisplay);
                         }
-
                         if (counter == 2)
                         {
                             paint = true;
                             DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
                             DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
-                            //CalibrateImageRUCornerToRB();
-                            CalibrateImageRBCornerToRU();
+
+                            CalibrateImageBEToRB();
                             counter++;
                             camera.LiveImage(ImageDisplay);
                         }
@@ -601,8 +738,8 @@ namespace MTF_Calc
                             paint = true;
                             DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
                             DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
-                            //CalibrateImageLUCornerToRU();
-                            CalibrateImageLBCornerToRB();
+                            
+                            CalibrateImageLBCornerToBE();
                             counter++;
                             camera.LiveImage(ImageDisplay);
 
@@ -769,6 +906,22 @@ namespace MTF_Calc
 
                 }));
              }
+            else
+            {
+                if (paint == true)
+                {
+                    using (Graphics graphics = Graphics.FromImage(picbox.Image))
+                    {
+                        Debug.Print(Convert.ToString(CurrentPosition[0]));
+                        Debug.Print(Convert.ToString(CurrentPosition[1]));
+                        Rectangle rectangle = new Rectangle(xpos - (len / 2), ypos - (hei / 2), len, hei);
+                        SolidBrush brush = new SolidBrush(Color.FromArgb(170, 254, 50, 50));
+                        graphics.FillRectangle(brush, rectangle);
+                    }
+
+                    picbox.Refresh();
+                }
+            }
    
             
         }
