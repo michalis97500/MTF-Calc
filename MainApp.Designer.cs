@@ -63,6 +63,7 @@
             this.FindGraticuleButton = new System.Windows.Forms.Button();
             this.FindUSAFButton = new System.Windows.Forms.Button();
             this.GroupSelectionBox = new System.Windows.Forms.ComboBox();
+            this.TestPositionsButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.ImageDisplay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FieldSizeRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.IlluminationControl)).BeginInit();
@@ -99,6 +100,7 @@
             this.SingleImageButton.TabIndex = 2;
             this.SingleImageButton.Text = "Single Image";
             this.SingleImageButton.UseVisualStyleBackColor = true;
+            this.SingleImageButton.Visible = false;
             this.SingleImageButton.Click += new System.EventHandler(this.SingleImageButton_Click);
             // 
             // LiveFeedButton
@@ -109,6 +111,7 @@
             this.LiveFeedButton.TabIndex = 4;
             this.LiveFeedButton.Text = "Live Feed";
             this.LiveFeedButton.UseVisualStyleBackColor = true;
+            this.LiveFeedButton.Visible = false;
             this.LiveFeedButton.Click += new System.EventHandler(this.LiveFeedButton_Click);
             // 
             // StopLiveFeedButton
@@ -119,6 +122,7 @@
             this.StopLiveFeedButton.TabIndex = 5;
             this.StopLiveFeedButton.Text = "Stop Live";
             this.StopLiveFeedButton.UseVisualStyleBackColor = true;
+            this.StopLiveFeedButton.Visible = false;
             this.StopLiveFeedButton.Click += new System.EventHandler(this.StopLiveFeedButton_Click);
             // 
             // cameraconnectbutton
@@ -191,9 +195,9 @@
             // 
             // CalibrateStageButton
             // 
-            this.CalibrateStageButton.Location = new System.Drawing.Point(9, 280);
+            this.CalibrateStageButton.Location = new System.Drawing.Point(9, 279);
             this.CalibrateStageButton.Name = "CalibrateStageButton";
-            this.CalibrateStageButton.Size = new System.Drawing.Size(89, 30);
+            this.CalibrateStageButton.Size = new System.Drawing.Size(89, 31);
             this.CalibrateStageButton.TabIndex = 13;
             this.CalibrateStageButton.Text = "Calibrate stage";
             this.CalibrateStageButton.UseVisualStyleBackColor = true;
@@ -202,12 +206,13 @@
             // 
             // CalibrateImageButton
             // 
-            this.CalibrateImageButton.Location = new System.Drawing.Point(9, 316);
+            this.CalibrateImageButton.Location = new System.Drawing.Point(104, 316);
             this.CalibrateImageButton.Name = "CalibrateImageButton";
             this.CalibrateImageButton.Size = new System.Drawing.Size(89, 31);
             this.CalibrateImageButton.TabIndex = 14;
             this.CalibrateImageButton.Text = "Calibrate Image";
             this.CalibrateImageButton.UseVisualStyleBackColor = true;
+            this.CalibrateImageButton.Visible = false;
             this.CalibrateImageButton.Click += new System.EventHandler(this.CalibrateImageButton_Click);
             // 
             // StageConnectButton
@@ -382,9 +387,9 @@
             // 
             // FindGraticuleButton
             // 
-            this.FindGraticuleButton.Location = new System.Drawing.Point(104, 315);
+            this.FindGraticuleButton.Location = new System.Drawing.Point(93, 184);
             this.FindGraticuleButton.Name = "FindGraticuleButton";
-            this.FindGraticuleButton.Size = new System.Drawing.Size(84, 33);
+            this.FindGraticuleButton.Size = new System.Drawing.Size(84, 48);
             this.FindGraticuleButton.TabIndex = 34;
             this.FindGraticuleButton.Text = "Find Graticule";
             this.FindGraticuleButton.UseVisualStyleBackColor = true;
@@ -392,10 +397,10 @@
             // 
             // FindUSAFButton
             // 
-            this.FindUSAFButton.Location = new System.Drawing.Point(104, 354);
+            this.FindUSAFButton.Location = new System.Drawing.Point(104, 279);
             this.FindUSAFButton.Name = "FindUSAFButton";
             this.FindUSAFButton.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.FindUSAFButton.Size = new System.Drawing.Size(84, 32);
+            this.FindUSAFButton.Size = new System.Drawing.Size(89, 31);
             this.FindUSAFButton.TabIndex = 35;
             this.FindUSAFButton.Text = "Find USAF";
             this.FindUSAFButton.UseVisualStyleBackColor = true;
@@ -405,16 +410,27 @@
             // 
             this.GroupSelectionBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.GroupSelectionBox.FormattingEnabled = true;
-            this.GroupSelectionBox.Location = new System.Drawing.Point(106, 392);
+            this.GroupSelectionBox.Location = new System.Drawing.Point(104, 397);
             this.GroupSelectionBox.Name = "GroupSelectionBox";
-            this.GroupSelectionBox.Size = new System.Drawing.Size(79, 21);
+            this.GroupSelectionBox.Size = new System.Drawing.Size(84, 21);
             this.GroupSelectionBox.TabIndex = 36;
+            // 
+            // TestPositionsButton
+            // 
+            this.TestPositionsButton.Location = new System.Drawing.Point(9, 316);
+            this.TestPositionsButton.Name = "TestPositionsButton";
+            this.TestPositionsButton.Size = new System.Drawing.Size(86, 31);
+            this.TestPositionsButton.TabIndex = 37;
+            this.TestPositionsButton.Text = "Test Positions";
+            this.TestPositionsButton.UseVisualStyleBackColor = true;
+            this.TestPositionsButton.Click += new System.EventHandler(this.TestPositionsButton_Click);
             // 
             // MainApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1270, 639);
+            this.Controls.Add(this.TestPositionsButton);
             this.Controls.Add(this.GroupSelectionBox);
             this.Controls.Add(this.FindUSAFButton);
             this.Controls.Add(this.FindGraticuleButton);
@@ -497,6 +513,7 @@
         private System.Windows.Forms.Button FindGraticuleButton;
         private System.Windows.Forms.Button FindUSAFButton;
         private System.Windows.Forms.ComboBox GroupSelectionBox;
+        private System.Windows.Forms.Button TestPositionsButton;
     }
 }
 

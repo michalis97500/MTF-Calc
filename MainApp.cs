@@ -97,6 +97,14 @@ namespace MTF_Calc
         private void cameraconnectbutton_Click(object sender, EventArgs e)
         {
             camera.ConnectCamera(cameraconnected);
+            if(cameraconnected == true)
+            {
+                LiveFeedButton.Visible = true;
+                StopLiveFeedButton.Visible = true;
+                SingleImageButton.Visible = true;
+
+
+            }
         }
 
         private void GenerateLineArrayVertical(int xposition, int yposition, Bitmap bmp, int length)
@@ -224,8 +232,12 @@ namespace MTF_Calc
                     }
                
 
-                    for (int i = 0; i < 2; i++)
+                    for (int i = 0; i < 9; i++)
                     {
+                        if(PositionsToUse[i] == 0 )
+                        {
+                            continue;
+                        }
                         ///Summary
                         ///For all 5 positions of calibration this loop attempts to move the stage at each one, take a picture, 
                         ///analyze and record MTF and then move to the next one.
@@ -663,7 +675,6 @@ namespace MTF_Calc
                             paint = true;
                             DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
                             DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
-
                             CalibrateImageLE();
                             MessageBox.Show("Calibration Complete");
                             Clickable = false;
@@ -685,7 +696,6 @@ namespace MTF_Calc
                             paint = true;
                             DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
                             DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
-
                             CalibrateImageUEToLU();
                             counter++;
                             camera.LiveImage(ImageDisplay);
@@ -696,7 +706,6 @@ namespace MTF_Calc
                             paint = true;
                             DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
                             DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
-                            
                             CalibrateImageRUCornerToUE();
                             counter++;
                             camera.LiveImage(ImageDisplay);
@@ -706,7 +715,6 @@ namespace MTF_Calc
                             paint = true;
                             DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
                             DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
-
                             CalibrateImageREToRU();
                             counter++;
                             camera.LiveImage(ImageDisplay);
@@ -717,7 +725,6 @@ namespace MTF_Calc
                             paint = true;
                             DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
                             DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
-                            
                             CalibrateImageRBCornerToRE();
                             counter++;
                             camera.LiveImage(ImageDisplay);
@@ -727,7 +734,6 @@ namespace MTF_Calc
                             paint = true;
                             DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
                             DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
-
                             CalibrateImageBEToRB();
                             counter++;
                             camera.LiveImage(ImageDisplay);
@@ -738,7 +744,6 @@ namespace MTF_Calc
                             paint = true;
                             DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
                             DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
-                            
                             CalibrateImageLBCornerToBE();
                             counter++;
                             camera.LiveImage(ImageDisplay);
@@ -749,7 +754,6 @@ namespace MTF_Calc
                             paint = true;
                             DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
                             DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
-                            
                             CalibrateImageCenterToLB();
                             counter++;
                             camera.LiveImage(ImageDisplay);
@@ -1044,6 +1048,58 @@ namespace MTF_Calc
             {
                 MessageBox.Show("Stage is not connected");
             }
+        }
+
+        private void TestPositionsButton_Click(object sender, EventArgs e)
+        {
+            var form = new TestPositionForm();
+            form.ShowDialog();
+            if( form.Center == true) 
+            { 
+                PositionsToUse[0] = 1;
+            }
+            else { PositionsToUse[0] = 0; }
+            if (form.LBCorner == true)
+            {
+                PositionsToUse[1] = 1;
+            }
+            else { PositionsToUse[1] = 0; }
+            if (form.BEdge == true)
+            {
+                PositionsToUse[2] = 1;
+            }
+            else { PositionsToUse[2] = 0; }
+            if (form.RBCorner == true)
+            {
+                PositionsToUse[3] = 1;
+            }
+            else { PositionsToUse[3] = 0; }
+            if (form.REdge == true)
+            {
+                PositionsToUse[4] = 1;
+            }
+            else { PositionsToUse[4] = 0; }
+            if (form.RTCorner == true)
+            {
+                PositionsToUse[5] = 1;
+            }
+            else { PositionsToUse[5] = 0; }
+            if (form.UEdge == true)
+            {
+                PositionsToUse[6] = 1;
+            }
+            else { PositionsToUse[6] = 0; }
+            if (form.LTCorner == true)
+            {
+                PositionsToUse[7] = 1;
+            }
+            else { PositionsToUse[7] = 0; }
+            if (form.LEdge == true)
+            {
+                PositionsToUse[8] = 1;
+            }
+            else { PositionsToUse[8] = 0; }
+            CalibrateImageButton.Visible = true;
         }
     }
 }

@@ -82,6 +82,12 @@
     <Compile Include="StageControl.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="TestPositionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestPositionForm.Designer.cs">
+      <DependentUpon>TestPositionForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ThreeDPoint.cs" />
     <EmbeddedResource Include="MainApp.resx">
       <DependentUpon>MainApp.cs</DependentUpon>
@@ -95,6 +101,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="TestPositionForm.resx">
+      <DependentUpon>TestPositionForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

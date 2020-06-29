@@ -221,7 +221,9 @@ namespace MTF_Calc
                             ycenter = (y_end - y_start) / 2;
                             zcenter = (z_end - z_start) / 2;
                             CenterStageButton.Visible = true;
-                            CalibrateImageButton.Visible = true;
+                            //CalibrateImageButton.Visible = true;
+                            FindUSAFButton.Visible = true;
+                            FindGraticuleButton.Visible = true;
                             stagecalibrated = true;
                             DialogResult result = MessageBox.Show("Calibration Complete. Send stage to center?", "Calibration complete", MessageBoxButtons.YesNo);
                             if (result == DialogResult.Yes)

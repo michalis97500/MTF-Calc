@@ -11,7 +11,7 @@ namespace MTF_Calc
     {
         public string filename;
         public Bitmap SelectedBMP;
-        public bool cameraconnected = true;
+        public bool cameraconnected = false;
         //Color[] ColorArray = new Color[100];
         int[] ColorAvgVert = new int[100];
         int[] ColorAvgHori = new int[100];
@@ -45,6 +45,7 @@ namespace MTF_Calc
         int positivetarget;
         int negativetarget;
         bool stagecalibrated = false;
+        public int[] PositionsToUse = new int[9];
         /// <summary>
         /// The wait time for the serial port response. Reset during the SendCommand
         /// </summary>
