@@ -272,7 +272,7 @@ namespace MTF_Calc
                         FindPeaks(ColorAvgHorizontal);
                         MTFCalc(Convert.ToDouble(i), 1);
                         FindPeaks(ColorAvgVertical);
-                        MTFCalc(Convert.ToDouble(i), 0);
+                        MTFCalc(Convert.ToDouble(i), 2);
                         ColorAvgHorizontal.Clear();
                         ColorAvgVertical.Clear();
                         Debug.Print(Convert.ToString(MTFData[i, 0, 0]));
@@ -309,17 +309,31 @@ namespace MTF_Calc
                 // Create the file, or overwrite if the file exists.
                 using (StreamWriter sw = new StreamWriter(path,true))
                 {
-                    for (int x = 0; x <= 30; x++)
+                    
+                    for (int x = 0; x <= 17; x++)
                     {
-                        for (int y = 0; y <= 8; y++)
+                     
+                        if(MTFData[x,0,0] == 0)
                         {
-                            for (int z = 0; z <= 1; z++)
+                            continue;
+                        }
+                        else
+                        {
+                            sw.WriteLine(Convert.ToString(MTFData[x, 0, 0]) + ",");
+                            sw.WriteLine(Convert.ToString(MTFData[x, 1, 0]) + ",");
+                            if (MTFData[x, 0, 1] == 2)
                             {
-                                sw.WriteLine(Convert.ToString(MTFData[x,y,z]) + ",");
-                                Debug.WriteLine(MTFData[x,y,z]);
-                               
+                                sw.WriteLine("Vertical");
+                            }
+                            if (MTFData[x, 0, 1] == 1)
+                            {
+                                sw.WriteLine("Horizontal");
                             }
                         }
+                        
+                        
+                        
+                            
                     }
                     
                 }
@@ -367,7 +381,7 @@ namespace MTF_Calc
             }
         }
 
-        private void MTFCalc(double value,int direction)
+        private void MTFCalc(double position,int direction)
         {
             //check that the global lists have any values + same number of values. 
             //if (PeakList.Count + positivetarget == TroughList.Count + negativetarget)
@@ -391,7 +405,8 @@ namespace MTF_Calc
                     upper = (peaks/PeakList.Count) - (troughs/TroughList.Count);
                     lower = (peaks/PeakList.Count) + (troughs/TroughList.Count);
                     mtf = upper / lower;
-                    for (int x = 0; x < MTFData.Length; x++)
+                    
+                    for (int x = 0; x <= 2*max_locations; x++)
                     {
                     ///Find the first empty element of the MTF Data 
                         if (MTFData[x, 0, 0] == 0)
@@ -399,9 +414,9 @@ namespace MTF_Calc
                             ///Write the MTF value to the 1st diemnsion, write the position value to the 2nd, write the direction to the 3rd
                             MTFData[x, 0, 0] = mtf;
                             Console.WriteLine(mtf);
-                            Console.WriteLine(value);
+                            Console.WriteLine(position);
                             Console.WriteLine(direction);
-                            MTFData[x, 1, 0] = value;
+                            MTFData[x, 1, 0] = position;
                             MTFData[x, 0, 1] = Convert.ToDouble(direction);
                             break;
 
