@@ -216,6 +216,12 @@ namespace MTF_Calc
                     double y_relative_horizontal = 0;
                     double x_relative_vertical = 0;
                     double y_relative_vertical = 0;
+
+                    if(GroupSelectionBox.SelectedIndex == -1)
+                    {
+                        MessageBox.Show("No group is selected. Please select a group to begin testing");
+                        return;
+                    }
                     if(GroupSelectionBox.SelectedIndex == 0)
                     {
                         x_relative_horizontal = GroupPositions.G1.Xhori;
@@ -231,8 +237,8 @@ namespace MTF_Calc
                         y_relative_horizontal = GroupPositions.G2.Yhori;
                         y_relative_vertical = GroupPositions.G2.Yvert;
                     }
-               
 
+                    Array.Clear(MTFData, 0, MTFData.Length);
                     for (int i = 0; i < 9; i++)
                     {
                         if(PositionsToUse[i] == 0 )
@@ -240,7 +246,7 @@ namespace MTF_Calc
                             continue;
                         }
                         ///Summary
-                        ///For all 5 positions of calibration this loop attempts to move the stage at each one, take a picture, 
+                        ///For all 9 positions of calibration this loop attempts to move the stage at each one, take a picture, 
                         ///analyze and record MTF and then move to the next one.
                         x = StageCalibrationPositions[i, 0, 0];
                         y = StageCalibrationPositions[i, 1, 0];
@@ -253,6 +259,7 @@ namespace MTF_Calc
                         int y_image = Convert.ToInt32(ImageCalibrationPositions[i, 1]);
                         Bitmap bitmap = (Bitmap)ImageDisplay.Image;
                         GenerateLineArrayHorizontal(x_image, y_image, bitmap, 45);
+                        
                         //Move to capture Vertical
                         var destination_vert = new ThreeDPoint(x + x_relative_vertical, y + y_relative_vertical, z);
                         MoveStage(destination_vert, Timeouts.ASYNC);
@@ -274,7 +281,7 @@ namespace MTF_Calc
 
 
                     }
-                    //SaveData();
+                    SaveData();
 
 
 
@@ -298,17 +305,17 @@ namespace MTF_Calc
             try
             {
                 string path = @"C:\Users\ChrisM18128\Documents\MyTest.txt";
-                FileStream fs = File.Create(path);
+                
                 // Create the file, or overwrite if the file exists.
                 using (StreamWriter sw = new StreamWriter(path,true))
                 {
-                    for (int x = 0; x < 29; x++)
+                    for (int x = 0; x <= 30; x++)
                     {
-                        for (int y = 0; y < 1; y++)
+                        for (int y = 0; y <= 8; y++)
                         {
-                            for (int z = 0; z < 1; z++)
+                            for (int z = 0; z <= 1; z++)
                             {
-                                //sw.WriteLine(Convert.ToString(MTFData[x,y,z]));
+                                sw.WriteLine(Convert.ToString(MTFData[x,y,z]) + ",");
                                 Debug.WriteLine(MTFData[x,y,z]);
                                
                             }
