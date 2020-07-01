@@ -304,7 +304,22 @@ namespace MTF_Calc
 
             try
             {
-                string path = @"C:\Users\ChrisM18128\Documents\MyTest.txt";
+                string path = @"C:\MyTest.txt";
+                MessageBox.Show("Choose a text document to save the results");
+                SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+                saveFileDialog1.InitialDirectory = @"C:\";      
+                saveFileDialog1.Title = "Save text file";
+                saveFileDialog1.CheckFileExists = true;
+                saveFileDialog1.CheckPathExists = true;
+                saveFileDialog1.DefaultExt = "txt";
+                saveFileDialog1.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+                saveFileDialog1.FilterIndex = 2;
+                saveFileDialog1.RestoreDirectory = true;
+                if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    path = saveFileDialog1.FileName;
+                }
+                
                 
                 // Create the file, or overwrite if the file exists.
                 using (StreamWriter sw = new StreamWriter(path,true))
