@@ -22,9 +22,10 @@ namespace MTF_Calc
         List<int> ColorAvgHorizontal = new List<int>();
         List<int> PeakList = new List<int>();
         List<int> TroughList = new List<int>();
-        double[,,] MTFData = new double[30, 2 ,2]; //MTF value,Position value (0-4 for 5 positions),Direction Value (1 Horizontal, 0 Vertical)
-        double[,] ImageCalibrationPositions = new double[8, 8];
-        double[,,] StageCalibrationPositions = new double[8, 8, 8];
+        double[,,] MTFData = new double[30, max_locations, 2]; //MTF value,Position value (0-4 for 5 positions),Direction Value (1 Horizontal, 0 Vertical)
+        double[,] ImageCalibrationPositions = new double[max_locations, max_locations];
+        double[,,] StageCalibrationPositions = new double[max_locations, max_locations, max_locations];
+        public const int max_locations = 9;
         public int xcenter;
         public int ycenter;
         public int zcenter;

@@ -97,6 +97,7 @@ namespace MTF_Calc
         private void cameraconnectbutton_Click(object sender, EventArgs e)
         {
             camera.ConnectCamera(cameraconnected);
+            cameraconnected = true;
             if(cameraconnected == true)
             {
                 LiveFeedButton.Visible = true;
@@ -191,10 +192,10 @@ namespace MTF_Calc
 
             if (StageSerialPort.IsOpen)
             {
-
+                camera.TerminateCapture();
                 if (cameraconnected == true)
                 {
-                    camera.TerminateCapture();
+                    
                     DialogResult result = MessageBox.Show("Is the USAF target positive? (Yes for positive, No for negative)", "Target select", MessageBoxButtons.YesNo);
                     if (result == DialogResult.Yes)
                     {

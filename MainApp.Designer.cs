@@ -100,7 +100,6 @@
             this.SingleImageButton.TabIndex = 2;
             this.SingleImageButton.Text = "Single Image";
             this.SingleImageButton.UseVisualStyleBackColor = true;
-            this.SingleImageButton.Visible = false;
             this.SingleImageButton.Click += new System.EventHandler(this.SingleImageButton_Click);
             // 
             // LiveFeedButton
@@ -111,7 +110,6 @@
             this.LiveFeedButton.TabIndex = 4;
             this.LiveFeedButton.Text = "Live Feed";
             this.LiveFeedButton.UseVisualStyleBackColor = true;
-            this.LiveFeedButton.Visible = false;
             this.LiveFeedButton.Click += new System.EventHandler(this.LiveFeedButton_Click);
             // 
             // StopLiveFeedButton
@@ -122,7 +120,6 @@
             this.StopLiveFeedButton.TabIndex = 5;
             this.StopLiveFeedButton.Text = "Stop Live";
             this.StopLiveFeedButton.UseVisualStyleBackColor = true;
-            this.StopLiveFeedButton.Visible = false;
             this.StopLiveFeedButton.Click += new System.EventHandler(this.StopLiveFeedButton_Click);
             // 
             // cameraconnectbutton
