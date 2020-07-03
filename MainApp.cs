@@ -261,11 +261,11 @@ namespace MTF_Calc
                         Bitmap bitmap = (Bitmap)ImageDisplay.Image;
                         GenerateLineArrayHorizontal(x_image, y_image, bitmap, 45);
 
-                        DateTime _dateTime = DateTime.Now;
-                        string format = "dd MM yy hh-mm";
-                        string dateTime = _dateTime.ToString(format);
-                        string _filename = Path.Combine(dateTime, Convert.ToString(i), "-Horiz.png") ;
-                        bitmap.Save(_filename, ImageFormat.Png);
+                        //DateTime _dateTime = DateTime.Now;
+                        //string format = "dd MM yy hh-mm";
+                        //string dateTime = _dateTime.ToString(format);
+                        //string _filename = Path.Combine(dateTime, Convert.ToString(i), "-Horiz.bmp") ;
+                        //bitmap.Save(_filename, ImageFormat.Bmp);
 
                         //Move to capture Vertical
                         var destination_vert = new ThreeDPoint(x + x_relative_vertical, y + y_relative_vertical, z);
