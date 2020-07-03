@@ -13,6 +13,7 @@ using System.Threading;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Drawing.Imaging;
 
 namespace MTF_Calc
 {
@@ -259,7 +260,13 @@ namespace MTF_Calc
                         int y_image = Convert.ToInt32(ImageCalibrationPositions[i, 1]);
                         Bitmap bitmap = (Bitmap)ImageDisplay.Image;
                         GenerateLineArrayHorizontal(x_image, y_image, bitmap, 45);
-                        
+
+                        DateTime _dateTime = DateTime.Now;
+                        string format = "dd MM yy hh-mm";
+                        string dateTime = _dateTime.ToString(format);
+                        string _filename = Path.Combine(dateTime, Convert.ToString(i), "-Horiz.png") ;
+                        bitmap.Save(_filename, ImageFormat.Png);
+
                         //Move to capture Vertical
                         var destination_vert = new ThreeDPoint(x + x_relative_vertical, y + y_relative_vertical, z);
                         MoveStage(destination_vert, Timeouts.ASYNC);
@@ -267,6 +274,8 @@ namespace MTF_Calc
                         x_image = Convert.ToInt32(ImageCalibrationPositions[i, 0]);
                         y_image = Convert.ToInt32(ImageCalibrationPositions[i, 1]);
                         bitmap = (Bitmap)ImageDisplay.Image;
+                        
+                        
                         GenerateLineArrayVertical(x_image, y_image, bitmap, 45);
                         //Do Math
                         FindPeaks(ColorAvgHorizontal);
