@@ -1,14 +1,19 @@
 ﻿using CameraInterfaceExample;
+using mv.impact.acquire;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Windows.Forms;
+using System.Windows;
+using System.Threading;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Drawing.Imaging;
 
 namespace MTF_Calc
 {
@@ -17,7 +22,7 @@ namespace MTF_Calc
         private ICamera camera;
         public MainApp()
         {
-
+            
 
             DialogResult result1 = MessageBox.Show("Is the connected camera a Basler? (Yes for Basler, No for MatrixVision)", "Camera select", MessageBoxButtons.YesNo);
             if (result1 == DialogResult.Yes)
@@ -79,9 +84,9 @@ namespace MTF_Calc
 
         private void LiveFeedButton_Click(object sender, EventArgs e)
         {
-
+            
             camera.LiveImage(ImageDisplay);
-
+            
 
         }
 
@@ -94,7 +99,7 @@ namespace MTF_Calc
         {
             camera.ConnectCamera(cameraconnected);
             cameraconnected = true;
-            if (cameraconnected == true)
+            if(cameraconnected == true)
             {
                 LiveFeedButton.Visible = true;
                 StopLiveFeedButton.Visible = true;
@@ -108,8 +113,8 @@ namespace MTF_Calc
         {
             if (bmp != null) //check that be BMP given is not empty
             {
-                Color[] TempColorArray = new Color[length + 1]; //create a temporary array to hold values for RGB
-
+                Color[] TempColorArray = new Color[length+1]; //create a temporary array to hold values for RGB
+                
                 for (int i = yposition; i < yposition + length; i++)
                 {
                     ///summary
@@ -191,7 +196,7 @@ namespace MTF_Calc
                 camera.TerminateCapture();
                 if (cameraconnected == true)
                 {
-
+                    
                     DialogResult result = MessageBox.Show("Is the USAF target positive? (Yes for positive, No for negative)", "Target select", MessageBoxButtons.YesNo);
                     if (result == DialogResult.Yes)
                     {
@@ -213,12 +218,12 @@ namespace MTF_Calc
                     double x_relative_vertical = 0;
                     double y_relative_vertical = 0;
 
-                    if (GroupSelectionBox.SelectedIndex == -1)
+                    if(GroupSelectionBox.SelectedIndex == -1)
                     {
                         MessageBox.Show("No group is selected. Please select a group to begin testing");
                         return;
                     }
-                    if (GroupSelectionBox.SelectedIndex == 0)
+                    if(GroupSelectionBox.SelectedIndex == 0)
                     {
                         x_relative_horizontal = GroupPositions.G1.Xhori;
                         x_relative_vertical = GroupPositions.G1.Xvert;
@@ -237,7 +242,7 @@ namespace MTF_Calc
                     Array.Clear(MTFData, 0, MTFData.Length);
                     for (int i = 0; i < 9; i++)
                     {
-                        if (PositionsToUse[i] == 0)
+                        if(PositionsToUse[i] == 0 )
                         {
                             continue;
                         }
@@ -246,15 +251,21 @@ namespace MTF_Calc
                         ///analyze and record MTF and then move to the next one.
                         x = StageCalibrationPositions[i, 0, 0];
                         y = StageCalibrationPositions[i, 1, 0];
-                        z = StageCalibrationPositions[i, 0, 1];
+                        z = StageCalibrationPositions[i, 0, 1]; 
                         //Move to Capture Horizontal
-                        var destination_hori = new ThreeDPoint(x + x_relative_horizontal, y + y_relative_horizontal, z);
+                        var destination_hori = new ThreeDPoint(x+x_relative_horizontal, y+y_relative_horizontal, z);
                         MoveStage(destination_hori, Timeouts.ASYNC);
                         camera.SingleImageCapture(ImageDisplay);
                         int x_image = Convert.ToInt32(ImageCalibrationPositions[i, 0]);
                         int y_image = Convert.ToInt32(ImageCalibrationPositions[i, 1]);
                         Bitmap bitmap = (Bitmap)ImageDisplay.Image;
                         GenerateLineArrayHorizontal(x_image, y_image, bitmap, 45);
+
+                        DateTime _dateTime = DateTime.Now;
+                        string format = "dd MM yy hh-mm";
+                        string dateTime = _dateTime.ToString(format);
+                        string _filename = Path.Combine(dateTime, Convert.ToString(i), "-Horiz.png") ;
+                        bitmap.Save(_filename, ImageFormat.Png);
 
                         //Move to capture Vertical
                         var destination_vert = new ThreeDPoint(x + x_relative_vertical, y + y_relative_vertical, z);
@@ -263,6 +274,8 @@ namespace MTF_Calc
                         x_image = Convert.ToInt32(ImageCalibrationPositions[i, 0]);
                         y_image = Convert.ToInt32(ImageCalibrationPositions[i, 1]);
                         bitmap = (Bitmap)ImageDisplay.Image;
+                        
+                        
                         GenerateLineArrayVertical(x_image, y_image, bitmap, 45);
                         //Do Math
                         FindPeaks(ColorAvgHorizontal);
@@ -303,7 +316,7 @@ namespace MTF_Calc
                 string path = @"C:\MyTest.txt";
                 MessageBox.Show("Choose a text document to save the results");
                 SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-                saveFileDialog1.InitialDirectory = @"C:\";
+                saveFileDialog1.InitialDirectory = @"C:\";      
                 saveFileDialog1.Title = "Save text file";
                 saveFileDialog1.CheckFileExists = true;
                 saveFileDialog1.CheckPathExists = true;
@@ -315,16 +328,16 @@ namespace MTF_Calc
                 {
                     path = saveFileDialog1.FileName;
                 }
-
-
+                
+                
                 // Create the file, or overwrite if the file exists.
-                using (StreamWriter sw = new StreamWriter(path, true))
+                using (StreamWriter sw = new StreamWriter(path,true))
                 {
-
+                    
                     for (int x = 0; x <= 17; x++)
                     {
-
-                        if (MTFData[x, 0, 0] == 0)
+                     
+                        if(MTFData[x,0,0] == 0)
                         {
                             continue;
                         }
@@ -341,12 +354,12 @@ namespace MTF_Calc
                                 sw.WriteLine("Horizontal");
                             }
                         }
-
-
-
-
+                        
+                        
+                        
+                            
                     }
-
+                    
                 }
             }
 
@@ -364,7 +377,7 @@ namespace MTF_Calc
                 TroughList.Clear();
                 for (int i = 0; i < list.Count; i++)
                 {
-                    if (i == 0 || i == (list.Count - 1))
+                    if (i == 0 || i == (list.Count -1))
                     {
                         Console.WriteLine("No adjacent values");
                     }
@@ -392,51 +405,51 @@ namespace MTF_Calc
             }
         }
 
-        private void MTFCalc(double position, int direction)
+        private void MTFCalc(double position,int direction)
         {
             //check that the global lists have any values + same number of values. 
             //if (PeakList.Count + positivetarget == TroughList.Count + negativetarget)
-            // {
-            if (PeakList.Any() && TroughList.Any())
-            {
-                double mtf;
-                double upper;
-                double lower;
-                double peaks = 0;
-                double troughs = 0;
-                for (int i = 0; i < PeakList.Count; i++)
+           // {
+                if (PeakList.Any() && TroughList.Any())
                 {
-                    peaks += Convert.ToDouble(PeakList[i]);
-                }
-                for (int i = 0; i < TroughList.Count; i++)
-                {
-                    troughs += Convert.ToDouble(TroughList[i]);
-                }
-
-                upper = (peaks / PeakList.Count) - (troughs / TroughList.Count);
-                lower = (peaks / PeakList.Count) + (troughs / TroughList.Count);
-                mtf = upper / lower;
-
-                for (int x = 0; x <= 2 * max_locations; x++)
-                {
-                    ///Find the first empty element of the MTF Data 
-                    if (MTFData[x, 0, 0] == 0)
+                    double mtf;
+                    double upper;
+                    double lower;
+                    double peaks = 0 ;
+                    double troughs = 0;
+                    for (int i = 0; i < PeakList.Count; i++)
                     {
-                        ///Write the MTF value to the 1st diemnsion, write the position value to the 2nd, write the direction to the 3rd
-                        MTFData[x, 0, 0] = mtf;
-                        Console.WriteLine(mtf);
-                        Console.WriteLine(position);
-                        Console.WriteLine(direction);
-                        MTFData[x, 1, 0] = position;
-                        MTFData[x, 0, 1] = Convert.ToDouble(direction);
-                        break;
-
+                        peaks += Convert.ToDouble(PeakList[i]);
+                    }
+                    for (int i = 0; i < TroughList.Count; i++)
+                    {
+                        troughs += Convert.ToDouble(TroughList[i]);
                     }
 
+                    upper = (peaks/PeakList.Count) - (troughs/TroughList.Count);
+                    lower = (peaks/PeakList.Count) + (troughs/TroughList.Count);
+                    mtf = upper / lower;
+                    
+                    for (int x = 0; x <= 2*max_locations; x++)
+                    {
+                    ///Find the first empty element of the MTF Data 
+                        if (MTFData[x, 0, 0] == 0)
+                        {
+                            ///Write the MTF value to the 1st diemnsion, write the position value to the 2nd, write the direction to the 3rd
+                            MTFData[x, 0, 0] = mtf;
+                            Console.WriteLine(mtf);
+                            Console.WriteLine(position);
+                            Console.WriteLine(direction);
+                            MTFData[x, 1, 0] = position;
+                            MTFData[x, 0, 1] = Convert.ToDouble(direction);
+                            break;
+
+                        }
+                            
+                    }
+
+                    
                 }
-
-
-            }
             //}
         }
 
@@ -468,7 +481,7 @@ namespace MTF_Calc
             try
             {
                 //Establish a center of field, and get coordinates for image+ stage
-
+                
                 ImageCalibrationPositions[0, 0] = CurrentPosition[0];
                 ImageCalibrationPositions[0, 1] = CurrentPosition[1];
                 PositionXYZ();
@@ -478,7 +491,7 @@ namespace MTF_Calc
                 StageCalibrationPositions[0, 0, 0] = x;
                 StageCalibrationPositions[0, 1, 0] = y;
                 StageCalibrationPositions[0, 0, 1] = z;
-                ThreeDPoint lcorner = new ThreeDPoint(x + (FieldSize.X * ((double)FieldSizeRatio.Value / 100) / 2), y - (FieldSize.Y * ((double)FieldSizeRatio.Value / 100) / 2), z);
+                ThreeDPoint lcorner = new ThreeDPoint(x + (FieldSize.X * ((double)FieldSizeRatio.Value/100) / 2), y - (FieldSize.Y * ((double)FieldSizeRatio.Value/100) / 2), z);
                 MoveStage(lcorner, Timeouts.ASYNC);
                 MessageBox.Show("Ensure the box is at the left bottom corner");
 
@@ -504,7 +517,7 @@ namespace MTF_Calc
                 StageCalibrationPositions[1, 0, 0] = x;
                 StageCalibrationPositions[1, 1, 0] = y;
                 StageCalibrationPositions[1, 0, 1] = z;
-                ThreeDPoint rcorner = new ThreeDPoint(x - (FieldSize.X * ((double)FieldSizeRatio.Value) / 100) / 2, y, z);
+                ThreeDPoint rcorner = new ThreeDPoint(x - (FieldSize.X * ((double)FieldSizeRatio.Value)/100)/2, y , z);
                 MoveStage(rcorner, Timeouts.ASYNC);
                 MessageBox.Show("Ensure the box is at the bottom edge");
             }
@@ -527,7 +540,7 @@ namespace MTF_Calc
                 StageCalibrationPositions[2, 0, 0] = x;
                 StageCalibrationPositions[2, 1, 0] = y;
                 StageCalibrationPositions[2, 0, 1] = z;
-                ThreeDPoint btedge = new ThreeDPoint(x - (FieldSize.X * ((double)FieldSizeRatio.Value) / 2 / 100), y, z);
+                ThreeDPoint btedge = new ThreeDPoint(x - (FieldSize.X * ((double)FieldSizeRatio.Value)/2 / 100), y, z);
                 MoveStage(btedge, Timeouts.ASYNC);
                 MessageBox.Show("Ensure the box is at right bottom corner");
 
@@ -551,7 +564,7 @@ namespace MTF_Calc
                 StageCalibrationPositions[3, 0, 0] = x;
                 StageCalibrationPositions[3, 1, 0] = y;
                 StageCalibrationPositions[3, 0, 1] = z;
-                ThreeDPoint rightedge = new ThreeDPoint(x, y + (FieldSize.Y * ((double)FieldSizeRatio.Value) / 2 / 100), z);
+                ThreeDPoint rightedge = new ThreeDPoint(x, y+ (FieldSize.Y * ((double)FieldSizeRatio.Value) /2 /100), z);
                 MoveStage(rightedge, Timeouts.ASYNC);
                 MessageBox.Show("Ensure the box is at right edge");
             }
@@ -590,7 +603,7 @@ namespace MTF_Calc
             try
             {
                 ImageCalibrationPositions[5, 0] = CurrentPosition[0];
-                ImageCalibrationPositions[5, 1] = CurrentPosition[1];
+                ImageCalibrationPositions[5, 1] = CurrentPosition[1]; 
                 PositionXYZ();
                 double x = Convert.ToDouble(xposition);
                 double y = Convert.ToDouble(yposition);
@@ -598,7 +611,7 @@ namespace MTF_Calc
                 StageCalibrationPositions[5, 0, 0] = x;
                 StageCalibrationPositions[5, 1, 0] = y;
                 StageCalibrationPositions[5, 0, 1] = z;
-                ThreeDPoint upperedge = new ThreeDPoint(x + (FieldSize.X * ((double)FieldSizeRatio.Value) / 2 / 100), y, z);
+                ThreeDPoint upperedge = new ThreeDPoint(x + (FieldSize.X * ((double)FieldSizeRatio.Value) /2 /100), y, z);
                 MoveStage(upperedge, Timeouts.ASYNC);
                 MessageBox.Show("Ensure the box is at the upper edge");
             }
@@ -644,8 +657,8 @@ namespace MTF_Calc
                 StageCalibrationPositions[7, 0, 0] = x;
                 StageCalibrationPositions[7, 1, 0] = y;
                 StageCalibrationPositions[7, 0, 1] = z;
-
-                ThreeDPoint leftedge = new ThreeDPoint(x, y - (FieldSize.Y * ((double)FieldSizeRatio.Value) / 2 / 100), z);
+                
+                ThreeDPoint leftedge = new ThreeDPoint(x , y - (FieldSize.Y * ((double)FieldSizeRatio.Value) / 2 / 100), z);
                 MoveStage(leftedge, Timeouts.ASYNC);
                 MessageBox.Show("Ensure the crosshair is at left edge");
             }
@@ -670,9 +683,9 @@ namespace MTF_Calc
                 StageCalibrationPositions[8, 1, 0] = y;
                 StageCalibrationPositions[8, 0, 1] = z;
 
-                // ThreeDPoint leftedge = new ThreeDPoint(x, y - (FieldSize.Y * ((double)FieldSizeRatio.Value) / 2 / 100), z);
-                //  MoveStage(leftedge, Timeouts.ASYNC);
-                // MessageBox.Show("Ensure the crosshair is at left edge");
+               // ThreeDPoint leftedge = new ThreeDPoint(x, y - (FieldSize.Y * ((double)FieldSizeRatio.Value) / 2 / 100), z);
+              //  MoveStage(leftedge, Timeouts.ASYNC);
+               // MessageBox.Show("Ensure the crosshair is at left edge");
             }
             catch (Exception ex)
             {
@@ -683,7 +696,7 @@ namespace MTF_Calc
         {
             try
             {
-
+                
                 if (Clickable == true)
                 {
                     camera.TerminateCapture();
@@ -693,7 +706,7 @@ namespace MTF_Calc
                     // coordinate in image pixels
                     widthInPixels = ImageDisplay.Image.Width;
                     heightInPixels = ImageDisplay.Image.Height;
-
+                    
                     int imagePixelX = widthInPixels * mouseEventArgs.X / ImageDisplay.Width;
                     int imagePixelY = heightInPixels * mouseEventArgs.Y / ImageDisplay.Height;
                     Debug.Print("{0} , {1}", imagePixelX, imagePixelY);
@@ -719,7 +732,7 @@ namespace MTF_Calc
                         if (counter == 7)
                         {
                             paint = true;
-                            DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
+                            DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]),Convert.ToInt32(CurrentPosition[1]));
                             DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
                             CalibrateImageLUCornerToLE();
                             counter++;
@@ -817,12 +830,12 @@ namespace MTF_Calc
             SerialConnection();
         }
 
-
+          
         private void SetIllumination(Decimal value)
         {
             try
             {
-                double targetIllumBottomLED = (1 * (Convert.ToDouble(value) / 100));
+                double targetIllumBottomLED = (1 * (Convert.ToDouble(value)/100));
                 if (StageSerialPort.IsOpen)
                 {
                     StringBuilder buffer = new StringBuilder();
@@ -892,7 +905,7 @@ namespace MTF_Calc
                         if (readbuffer[0] == '!' && readbuffer[1] == '~')
                         {
                             retValue = true;
-
+                           
                         }
                         else
                         {
@@ -914,36 +927,36 @@ namespace MTF_Calc
             {
                 retValue = false;
                 Debug.Print("Error in sending command : " + ex);
-
+                
             }
 
             return retValue;
         }
 
 
-        private void DrawRectangle(PictureBox picbox, int len, int hei, int xpos, int ypos)
+        private void DrawRectangle(PictureBox picbox, int len,int hei,int xpos,int ypos)
         {
 
             if (picbox.InvokeRequired)
             {
-                picbox.Invoke(new MethodInvoker(delegate ()
-               {
-                   if (paint == true)
-                   {
-                       using (Graphics graphics = Graphics.FromImage(picbox.Image))
-                       {
-                           Debug.Print(Convert.ToString(CurrentPosition[0]));
-                           Debug.Print(Convert.ToString(CurrentPosition[1]));
-                           Rectangle rectangle = new Rectangle(xpos - (len / 2), ypos - (hei / 2), len, hei);
-                           SolidBrush brush = new SolidBrush(Color.FromArgb(170, 254, 50, 50));
-                           graphics.FillRectangle(brush, rectangle);
-                       }
+                picbox.Invoke(new MethodInvoker( delegate ()
+                {
+                    if (paint == true)
+                    {
+                        using (Graphics graphics = Graphics.FromImage(picbox.Image))
+                        {
+                        Debug.Print(Convert.ToString(CurrentPosition[0]));
+                        Debug.Print(Convert.ToString(CurrentPosition[1]));
+                        Rectangle rectangle = new Rectangle(xpos - (len/2), ypos - (hei/2) , len, hei);
+                        SolidBrush brush = new SolidBrush(Color.FromArgb(170, 254, 50, 50));
+                        graphics.FillRectangle(brush, rectangle);
+                        }
+                
+                        picbox.Refresh();
+                    }
 
-                       picbox.Refresh();
-                   }
-
-               }));
-            }
+                }));
+             }
             else
             {
                 if (paint == true)
@@ -960,10 +973,10 @@ namespace MTF_Calc
                     picbox.Refresh();
                 }
             }
-
-
+   
+            
         }
-
+       
 
         private void FieldSizeRatio_ValueChanged(object sender, EventArgs e)
         {
@@ -973,62 +986,62 @@ namespace MTF_Calc
 
         private void IlluminationControl_ValueChanged(object sender, EventArgs e)
         {
-            if (StageSerialPort.IsOpen)
+            if(StageSerialPort.IsOpen)
             {
                 SetIllumination(IlluminationControl.Value);
             }
-
+            
         }
 
         private void MoveStageButton_Click(object sender, EventArgs e)
         {
             if (StageSerialPort.IsOpen)
-            {
-                try
                 {
-                    if ((xcoord.Text == "") | (zcoord.Text == "") | (ycoord.Text == ""))
+                    try
                     {
-                        MessageBox.Show("Please input stage coordinates ");
-                    }
-                    else
-                    {
-                        if ((xcoord.Text == xLabel.Text) & (zcoord.Text == zLabel.Text) & (ycoord.Text == yLabel.Text))
+                        if ((xcoord.Text == "") | (zcoord.Text == "") | (ycoord.Text == ""))
                         {
-                            MessageBox.Show("Stage already at coordinates ");
+                            MessageBox.Show("Please input stage coordinates ");
                         }
                         else
                         {
-                            //Get X,Y,Z -> convert to double
-                            double x = Convert.ToDouble(xcoord.Text);
-                            double y = Convert.ToDouble(ycoord.Text);
-                            double z = Convert.ToDouble(zcoord.Text);
-                            var destination = new ThreeDPoint(x, y, z);
-                            Debug.Print(string.Format("Moving stage to: ({0},{1},{2})", x, y, z));
-                            MoveStage(destination, Timeouts.ASYNC);
+                            if ((xcoord.Text == xLabel.Text) & (zcoord.Text == zLabel.Text) & (ycoord.Text == yLabel.Text))
+                            {
+                                MessageBox.Show("Stage already at coordinates ");
+                            }
+                            else
+                            {
+                                //Get X,Y,Z -> convert to double
+                                double x = Convert.ToDouble(xcoord.Text);
+                                double y = Convert.ToDouble(ycoord.Text);
+                                double z = Convert.ToDouble(zcoord.Text);
+                                var destination = new ThreeDPoint(x, y, z);
+                                Debug.Print(string.Format("Moving stage to: ({0},{1},{2})", x, y, z));
+                                MoveStage(destination, Timeouts.ASYNC);
+                            
 
 
+                            }
 
                         }
 
+
+
                     }
-
-
-
+                    catch (Exception ex)
+                    {
+                        Debug.Print("Stage error " + ex.Message);
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    Debug.Print("Stage error " + ex.Message);
+                    MessageBox.Show("No COM port connected ");
                 }
             }
-            else
-            {
-                MessageBox.Show("No COM port connected ");
-            }
-        }
 
         private void PositionButton_Click(object sender, EventArgs e)
         {
-
+            
             PositionXYZ();
             xLabel.Text = xposition;
             yLabel.Text = yposition;
@@ -1088,8 +1101,8 @@ namespace MTF_Calc
         {
             var form = new TestPositionForm();
             form.ShowDialog();
-            if (form.Center == true)
-            {
+            if( form.Center == true) 
+            { 
                 PositionsToUse[0] = 1;
             }
             else { PositionsToUse[0] = 0; }
