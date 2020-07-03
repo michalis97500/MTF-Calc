@@ -64,6 +64,7 @@
             this.FindUSAFButton = new System.Windows.Forms.Button();
             this.GroupSelectionBox = new System.Windows.Forms.ComboBox();
             this.TestPositionsButton = new System.Windows.Forms.Button();
+            this.SaveCalibrationButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.ImageDisplay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FieldSizeRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.IlluminationControl)).BeginInit();
@@ -416,17 +417,29 @@
             // 
             this.TestPositionsButton.Location = new System.Drawing.Point(9, 316);
             this.TestPositionsButton.Name = "TestPositionsButton";
-            this.TestPositionsButton.Size = new System.Drawing.Size(86, 31);
+            this.TestPositionsButton.Size = new System.Drawing.Size(89, 31);
             this.TestPositionsButton.TabIndex = 37;
             this.TestPositionsButton.Text = "Test Positions";
             this.TestPositionsButton.UseVisualStyleBackColor = true;
             this.TestPositionsButton.Click += new System.EventHandler(this.TestPositionsButton_Click);
+            // 
+            // SaveCalibrationButton
+            // 
+            this.SaveCalibrationButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
+            this.SaveCalibrationButton.Location = new System.Drawing.Point(104, 353);
+            this.SaveCalibrationButton.Name = "SaveCalibrationButton";
+            this.SaveCalibrationButton.Size = new System.Drawing.Size(89, 33);
+            this.SaveCalibrationButton.TabIndex = 38;
+            this.SaveCalibrationButton.Text = "Save Calib";
+            this.SaveCalibrationButton.UseVisualStyleBackColor = true;
+            this.SaveCalibrationButton.Click += new System.EventHandler(this.SaveCalibrationButton_Click);
             // 
             // MainApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1270, 639);
+            this.Controls.Add(this.SaveCalibrationButton);
             this.Controls.Add(this.TestPositionsButton);
             this.Controls.Add(this.GroupSelectionBox);
             this.Controls.Add(this.FindUSAFButton);
@@ -511,6 +524,7 @@
         private System.Windows.Forms.Button FindUSAFButton;
         private System.Windows.Forms.ComboBox GroupSelectionBox;
         private System.Windows.Forms.Button TestPositionsButton;
+        private System.Windows.Forms.Button SaveCalibrationButton;
     }
 }
 

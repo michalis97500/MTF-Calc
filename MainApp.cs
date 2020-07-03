@@ -36,6 +36,13 @@ namespace MTF_Calc
                 camera = new MatrixVision();
 
             }
+            DialogResult result = MessageBox.Show("Do you want to load a calibration file?", "Load calibration select", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+
+                LoadCalibration();
+
+            }
             InitializeComponent();
             Array.Clear(MTFData, 0, MTFData.Length);
             string[] ports = SerialPort.GetPortNames();
@@ -335,23 +342,24 @@ namespace MTF_Calc
                 using (StreamWriter sw = new StreamWriter(path,true))
                 {
                     sw.WriteLine("MTF Value, Position value, Line alignment, Stage X, Stage Y, Stage Z");
-                    for (int x = 0; x <= 17; x++)
+                    //Begin searching the MTF array for any values. 
+                    for (int x = 0; x <= (2*max_locations - 1); x++)
                     {
                      
                         if(MTFData[x,0,0] == 0)
                         {
-                            continue;
+                            continue; //value is 0, thus nothing is written at this place
                         }
                         else
                         {
+                            //Non-zero value found. Get the position of this value, and find its stage coordinates.
                             int position = Convert.ToInt32(MTFData[x,1,0]);
                             double stage_x = StageCalibrationPositions[position, 0, 0];
                             double stage_y = StageCalibrationPositions[position, 1, 0];
                             double stage_z = StageCalibrationPositions[position, 0, 1]; 
-                            //int x_image = Convert.ToInt32(ImageCalibrationPositions[i, 0]);
-                            //int y_image = Convert.ToInt32(ImageCalibrationPositions[i, 1]);
                             switch(MTFData[x,0,1])
                             {
+                                //Finally, write the data to a new line
                                 case 2:
                                     
                                     sw.WriteLine(Convert.ToString(MTFData[x, 0, 0]) + "," + Convert.ToString(MTFData[x, 1, 0]) + "," + "Vertical" + "," + stage_x + "," + stage_y + "," + stage_z );
@@ -361,17 +369,7 @@ namespace MTF_Calc
                                     break;
                                 
                             }
-                            /*
-                            if (MTFData[x, 0, 1] == 2)
-                            {
-                                sw.WriteLine(Convert.ToString(MTFData[x, 0, 0]) + "," + Convert.ToString(MTFData[x, 1, 0]) + "," + "Vertical" );
-                                
-                            }
-                            if (MTFData[x, 0, 1] == 1)
-                            {
-                                sw.WriteLine(Convert.ToString(MTFData[x, 0, 0]) + "," + Convert.ToString(MTFData[x, 1, 0]) + "," + "Horizontal" );
-                            }
-                            */
+                            
                         }
                         
                         
@@ -385,6 +383,87 @@ namespace MTF_Calc
             catch (Exception ex)
             {
                 Console.WriteLine("Error in savedata : " + ex.ToString());
+            }
+        }
+
+        private void SaveCalibration()
+        {
+            try
+            {
+                string path = @"C:\MyTest.txt";
+                MessageBox.Show("Choose a text document to save the calibration");
+                SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+                saveFileDialog1.InitialDirectory = @"C:\";
+                saveFileDialog1.Title = "Save text file";
+                saveFileDialog1.CheckFileExists = false;
+                saveFileDialog1.CreatePrompt = true;
+                saveFileDialog1.CheckPathExists = true;
+                saveFileDialog1.DefaultExt = "txt";
+                saveFileDialog1.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+                saveFileDialog1.FilterIndex = 2;
+                saveFileDialog1.RestoreDirectory = true;
+                if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    path = saveFileDialog1.FileName;
+                }
+
+
+                // Create the file, or overwrite if the file exists.
+                using (StreamWriter sw = new StreamWriter(path, true))
+                {
+                    sw.WriteLine("Stage X, Stage Y, Stage Z, Image X, Image Y");
+                    for (int i = 0; i < max_locations; i++ )
+                    {
+                        double x_image = ImageCalibrationPositions[i, 0];
+                        double y_image = ImageCalibrationPositions[i, 1];
+                        double x_stage = StageCalibrationPositions[i, 0, 0];
+                        double y_stage = StageCalibrationPositions[i, 1, 0];
+                        double z_stage = StageCalibrationPositions[i, 0, 1];
+                        sw.WriteLine(x_stage + "," + y_stage + "," + z_stage + "," + x_image + "," + y_image);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error in saving calibration : " + ex);
+            }
+        }
+
+        private void LoadCalibration()
+        {
+            try
+            {
+                OpenFileDialog dialog = new OpenFileDialog();
+                dialog.Filter = "text file|*.txt";
+                DialogResult image = dialog.ShowDialog();
+                if (image == DialogResult.OK)
+                {
+                    filename = dialog.FileName;
+                    using (StreamReader sr = new StreamReader(filename))
+                    {
+                        int i = 0;
+                        while (!sr.EndOfStream)
+                        {
+                            if (i < 0)
+                            {
+                                var line = sr.ReadLine();
+                                var values = line.Split(',');
+                                StageCalibrationPositions[i - 1, 0, 0] = Convert.ToDouble(values[0]);
+                                StageCalibrationPositions[i - 1, 1, 0] = Convert.ToDouble(values[1]);
+                                StageCalibrationPositions[i - 1, 0, 1] = Convert.ToDouble(values[2]);
+                                ImageCalibrationPositions[i - 1, 0] = Convert.ToDouble(values[3]);
+                                ImageCalibrationPositions[i - 1, 1] = Convert.ToDouble(values[4]);
+                                
+                            }
+                            i++;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error in loading calibartion : " + ex);
             }
         }
         private void FindPeaks(List<int> list)
@@ -451,14 +530,11 @@ namespace MTF_Calc
                     
                     for (int x = 0; x <= 2*max_locations; x++)
                     {
-                    ///Find the first empty element of the MTF Data 
+                    //Find the first empty element of the MTF Data 
                         if (MTFData[x, 0, 0] == 0)
                         {
                             ///Write the MTF value to the 1st diemnsion, write the position value to the 2nd, write the direction to the 3rd
                             MTFData[x, 0, 0] = mtf;
-                            Console.WriteLine(mtf);
-                            Console.WriteLine(position);
-                            Console.WriteLine(direction);
                             MTFData[x, 1, 0] = position;
                             MTFData[x, 0, 1] = Convert.ToDouble(direction);
                             break;
@@ -556,6 +632,7 @@ namespace MTF_Calc
                             MessageBox.Show("Calibration Complete");
                             Clickable = false;
                             StartTestButton.Visible = true;
+                            calibrationcomplete = true;
                             break;
                     }
                 }
@@ -942,6 +1019,16 @@ namespace MTF_Calc
             }
             else { PositionsToUse[8] = 0; }
             CalibrateImageButton.Visible = true;
+        }
+
+        private void SaveCalibrationButton_Click(object sender, EventArgs e)
+        {
+            if (calibrationcomplete == true)
+            {
+                SaveCalibration();
+            }
+            
+            
         }
     }
 }
