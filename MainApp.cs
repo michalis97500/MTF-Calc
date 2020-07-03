@@ -345,9 +345,9 @@ namespace MTF_Calc
                         else
                         {
                             int position = Convert.ToInt32(MTFData[x,1,0]);
-                            double stage_x = StageCalibrationPositions[x, 0, 0];
-                            double stage_y = StageCalibrationPositions[x, 1, 0];
-                            double stage_z = StageCalibrationPositions[x, 0, 1]; 
+                            double stage_x = StageCalibrationPositions[position, 0, 0];
+                            double stage_y = StageCalibrationPositions[position, 1, 0];
+                            double stage_z = StageCalibrationPositions[position, 0, 1]; 
                             int x_image = Convert.ToInt32(ImageCalibrationPositions[i, 0]);
                             int y_image = Convert.ToInt32(ImageCalibrationPositions[i, 1]);
                             switch(MTFData[x,0,1])
