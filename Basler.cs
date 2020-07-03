@@ -1,5 +1,4 @@
 ﻿using Basler.Pylon;
-using MTF_Calc;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -30,7 +29,7 @@ namespace CameraInterfaceExample
                 camera.Open();
                 _bool = true;
                 camera.StreamGrabber.ImageGrabbed += new EventHandler<ImageGrabbedEventArgs>(StreamGrabber_ImageGrabbed);
-                
+
                 //ResetToFactoryDefault();
             }
             catch (Exception ex)
@@ -47,11 +46,11 @@ namespace CameraInterfaceExample
                 camera.StreamGrabber.Start(GrabStrategy.LatestImages, GrabLoop.ProvidedByStreamGrabber);
                 Thread thread = new Thread(() =>
                 {
-                    while(!terminated)
+                    while (!terminated)
                     {
                         UpdateImage(picbox);
                     }
-                    
+
                 });
                 thread.Start();
             }
@@ -67,8 +66,8 @@ namespace CameraInterfaceExample
             {
                 terminated = true;
                 camera.StreamGrabber.Stop();
-                            
-                
+
+
             }
             catch (Exception ex)
             {
@@ -78,11 +77,11 @@ namespace CameraInterfaceExample
 
         public void SingleImageCapture(PictureBox picbox)
         {
-            if(camera.StreamGrabber.IsGrabbing)
+            if (camera.StreamGrabber.IsGrabbing)
             {
                 camera.StreamGrabber.Stop();
             }
-            
+
             camera.StreamGrabber.GrabOne(1000);
             UpdateImage(picbox);
         }
@@ -100,7 +99,7 @@ namespace CameraInterfaceExample
                 converter.Convert(ptrBmp, bmpData.Stride * bitmap.Height, grabResult);
                 bitmap.UnlockBits(bmpData);
 
-               
+
                 captured = (Bitmap)bitmap.Clone();
 
                 bitmap.Dispose();
@@ -200,19 +199,19 @@ namespace CameraInterfaceExample
 
         public void UpdateImage(PictureBox picbox)
         {
-            
-                if (picbox.InvokeRequired)
-                {
-                picbox.Invoke(new MethodInvoker( delegate ()
-                {
+
+            if (picbox.InvokeRequired)
+            {
+                picbox.Invoke(new MethodInvoker(delegate ()
+               {
+                   picbox.Image = captured;
+               }));
+            }
+            else
+            {
                 picbox.Image = captured;
-                }));
-                }
-                else
-                {
-                picbox.Image = captured;
-                }
-            
+            }
+
 
         }
     }

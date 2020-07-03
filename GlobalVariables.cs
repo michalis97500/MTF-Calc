@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
 
 namespace MTF_Calc
@@ -22,7 +21,7 @@ namespace MTF_Calc
         List<int> ColorAvgHorizontal = new List<int>();
         List<int> PeakList = new List<int>();
         List<int> TroughList = new List<int>();
-        double[,,] MTFData = new double[2*max_locations, 2, 2]; //Position identifier, MTF, direction, horizontal = 1,vertical = 2
+        double[,,] MTFData = new double[2 * max_locations, 2, 2]; //Position identifier, MTF, direction, horizontal = 1,vertical = 2
         double[,] ImageCalibrationPositions = new double[max_locations, max_locations];
         double[,,] StageCalibrationPositions = new double[max_locations, max_locations, max_locations];
         public const int max_locations = 9;
@@ -80,7 +79,7 @@ namespace MTF_Calc
 
 
         }
-        
+
 
 
         private void NumberCheck(object sender, KeyPressEventArgs e)
