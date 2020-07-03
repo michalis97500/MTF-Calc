@@ -354,10 +354,10 @@ namespace MTF_Calc
                             {
                                 case 2:
                                     
-                                    sw.WriteLine(Convert.ToString(MTFData[x, 0, 0]) + "," + Convert.ToString(MTFData[x, 1, 0]) + "," + "Vertical" + stage_x + "," + stage_y + "," + stage_z );
+                                    sw.WriteLine(Convert.ToString(MTFData[x, 0, 0]) + "," + Convert.ToString(MTFData[x, 1, 0]) + "," + "Vertical" + "," + stage_x + "," + stage_y + "," + stage_z );
                                     break;
                                 case 1:
-                                    sw.WriteLine(Convert.ToString(MTFData[x, 0, 0]) + "," + Convert.ToString(MTFData[x, 1, 0]) + "," + "Horizontal" + stage_x + "," + stage_y + "," + stage_z  );
+                                    sw.WriteLine(Convert.ToString(MTFData[x, 0, 0]) + "," + Convert.ToString(MTFData[x, 1, 0]) + "," + "Horizontal" + "," + stage_x + "," + stage_y + "," + stage_z  );
                                     break;
                                 
                             }
