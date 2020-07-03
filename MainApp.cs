@@ -318,7 +318,8 @@ namespace MTF_Calc
                 SaveFileDialog saveFileDialog1 = new SaveFileDialog();
                 saveFileDialog1.InitialDirectory = @"C:\";      
                 saveFileDialog1.Title = "Save text file";
-                saveFileDialog1.CheckFileExists = true;
+                saveFileDialog1.CheckFileExists = false;
+                saveFileDialog1.CreatePrompt = true;
                 saveFileDialog1.CheckPathExists = true;
                 saveFileDialog1.DefaultExt = "txt";
                 saveFileDialog1.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
@@ -333,7 +334,7 @@ namespace MTF_Calc
                 // Create the file, or overwrite if the file exists.
                 using (StreamWriter sw = new StreamWriter(path,true))
                 {
-                    
+                    sw.WriteLine("MTF Value, Position value, Line alignment, Stage X, Stage Y, Stage Z");
                     for (int x = 0; x <= 17; x++)
                     {
                      
@@ -343,16 +344,34 @@ namespace MTF_Calc
                         }
                         else
                         {
-                            sw.WriteLine(Convert.ToString(MTFData[x, 0, 0]) + ",");
-                            sw.WriteLine(Convert.ToString(MTFData[x, 1, 0]) + ",");
+                            int position = Convert.ToInt32(MTFData[x,1,0]);
+                            double stage_x = StageCalibrationPositions[x, 0, 0];
+                            double stage_y = StageCalibrationPositions[x, 1, 0];
+                            double stage_z = StageCalibrationPositions[x, 0, 1]; 
+                            int x_image = Convert.ToInt32(ImageCalibrationPositions[i, 0]);
+                            int y_image = Convert.ToInt32(ImageCalibrationPositions[i, 1]);
+                            switch(MTFData[x,0,1])
+                            {
+                                case 2:
+                                    
+                                    sw.WriteLine(Convert.ToString(MTFData[x, 0, 0]) + "," + Convert.ToString(MTFData[x, 1, 0]) + "," + "Vertical" + stage_x + "," + stage_y + "," + stage_z );
+                                    break;
+                                case 1:
+                                    sw.WriteLine(Convert.ToString(MTFData[x, 0, 0]) + "," + Convert.ToString(MTFData[x, 1, 0]) + "," + "Horizontal" + stage_x + "," + stage_y + "," + stage_z  );
+                                    break;
+                                
+                            }
+                            /*
                             if (MTFData[x, 0, 1] == 2)
                             {
-                                sw.WriteLine("Vertical");
+                                sw.WriteLine(Convert.ToString(MTFData[x, 0, 0]) + "," + Convert.ToString(MTFData[x, 1, 0]) + "," + "Vertical" );
+                                
                             }
                             if (MTFData[x, 0, 1] == 1)
                             {
-                                sw.WriteLine("Horizontal");
+                                sw.WriteLine(Convert.ToString(MTFData[x, 0, 0]) + "," + Convert.ToString(MTFData[x, 1, 0]) + "," + "Horizontal" );
                             }
+                            */
                         }
                         
                         
@@ -476,223 +495,6 @@ namespace MTF_Calc
             }
         }
 
-        private void CalibrateImageCenterToLB()
-        {
-            try
-            {
-                //Establish a center of field, and get coordinates for image+ stage
-                
-                ImageCalibrationPositions[0, 0] = CurrentPosition[0];
-                ImageCalibrationPositions[0, 1] = CurrentPosition[1];
-                PositionXYZ();
-                double x = Convert.ToDouble(xposition);
-                double y = Convert.ToDouble(yposition);
-                double z = Convert.ToDouble(zposition);
-                StageCalibrationPositions[0, 0, 0] = x;
-                StageCalibrationPositions[0, 1, 0] = y;
-                StageCalibrationPositions[0, 0, 1] = z;
-                ThreeDPoint lcorner = new ThreeDPoint(x + (FieldSize.X * ((double)FieldSizeRatio.Value/100) / 2), y - (FieldSize.Y * ((double)FieldSizeRatio.Value/100) / 2), z);
-                MoveStage(lcorner, Timeouts.ASYNC);
-                MessageBox.Show("Ensure the box is at the left bottom corner");
-
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error in image calibration : " + ex);
-            }
-
-        }
-        private void CalibrateImageLBCornerToBE()
-        {
-
-            try
-            {
-                ImageCalibrationPositions[1, 0] = CurrentPosition[0];
-                ImageCalibrationPositions[1, 1] = CurrentPosition[1];
-                PositionXYZ();
-                double x = Convert.ToDouble(xposition);
-                double y = Convert.ToDouble(yposition);
-                double z = Convert.ToDouble(zposition);
-                StageCalibrationPositions[1, 0, 0] = x;
-                StageCalibrationPositions[1, 1, 0] = y;
-                StageCalibrationPositions[1, 0, 1] = z;
-                ThreeDPoint rcorner = new ThreeDPoint(x - (FieldSize.X * ((double)FieldSizeRatio.Value)/100)/2, y , z);
-                MoveStage(rcorner, Timeouts.ASYNC);
-                MessageBox.Show("Ensure the box is at the bottom edge");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error in image calibration 2 : " + ex);
-            }
-        }
-
-        private void CalibrateImageBEToRB()
-        {
-            try
-            {
-                ImageCalibrationPositions[2, 0] = CurrentPosition[0];
-                ImageCalibrationPositions[2, 1] = CurrentPosition[1];
-                PositionXYZ();
-                double x = Convert.ToDouble(xposition);
-                double y = Convert.ToDouble(yposition);
-                double z = Convert.ToDouble(zposition);
-                StageCalibrationPositions[2, 0, 0] = x;
-                StageCalibrationPositions[2, 1, 0] = y;
-                StageCalibrationPositions[2, 0, 1] = z;
-                ThreeDPoint btedge = new ThreeDPoint(x - (FieldSize.X * ((double)FieldSizeRatio.Value)/2 / 100), y, z);
-                MoveStage(btedge, Timeouts.ASYNC);
-                MessageBox.Show("Ensure the box is at right bottom corner");
-
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Error in image calibration bt edge : " + ex);
-            }
-        }
-        private void CalibrateImageRBCornerToRE()
-        {
-
-            try
-            {
-                ImageCalibrationPositions[3, 0] = CurrentPosition[0];
-                ImageCalibrationPositions[3, 1] = CurrentPosition[1];
-                PositionXYZ();
-                double x = Convert.ToDouble(xposition);
-                double y = Convert.ToDouble(yposition);
-                double z = Convert.ToDouble(zposition);
-                StageCalibrationPositions[3, 0, 0] = x;
-                StageCalibrationPositions[3, 1, 0] = y;
-                StageCalibrationPositions[3, 0, 1] = z;
-                ThreeDPoint rightedge = new ThreeDPoint(x, y+ (FieldSize.Y * ((double)FieldSizeRatio.Value) /2 /100), z);
-                MoveStage(rightedge, Timeouts.ASYNC);
-                MessageBox.Show("Ensure the box is at right edge");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error in image calibration 3 : " + ex);
-            }
-        }
-        private void CalibrateImageREToRU()
-        {
-
-            try
-            {
-                ImageCalibrationPositions[4, 0] = CurrentPosition[0];
-                ImageCalibrationPositions[4, 1] = CurrentPosition[1];
-                PositionXYZ();
-                double x = Convert.ToDouble(xposition);
-                double y = Convert.ToDouble(yposition);
-                double z = Convert.ToDouble(zposition);
-                StageCalibrationPositions[4, 0, 0] = x;
-                StageCalibrationPositions[4, 1, 0] = y;
-                StageCalibrationPositions[4, 0, 1] = z;
-                ThreeDPoint rupper = new ThreeDPoint(x, y + (FieldSize.Y * ((double)FieldSizeRatio.Value) / 2 / 100), z);
-                MoveStage(rupper, Timeouts.ASYNC);
-                MessageBox.Show("Ensure the box is at right top corner");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error in image calibration 3 : " + ex);
-            }
-        }
-
-        private void CalibrateImageRUCornerToUE()
-        {
-
-            try
-            {
-                ImageCalibrationPositions[5, 0] = CurrentPosition[0];
-                ImageCalibrationPositions[5, 1] = CurrentPosition[1]; 
-                PositionXYZ();
-                double x = Convert.ToDouble(xposition);
-                double y = Convert.ToDouble(yposition);
-                double z = Convert.ToDouble(zposition);
-                StageCalibrationPositions[5, 0, 0] = x;
-                StageCalibrationPositions[5, 1, 0] = y;
-                StageCalibrationPositions[5, 0, 1] = z;
-                ThreeDPoint upperedge = new ThreeDPoint(x + (FieldSize.X * ((double)FieldSizeRatio.Value) /2 /100), y, z);
-                MoveStage(upperedge, Timeouts.ASYNC);
-                MessageBox.Show("Ensure the box is at the upper edge");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error in image calibration 4 : " + ex);
-            }
-        }
-        private void CalibrateImageUEToLU()
-        {
-
-            try
-            {
-                ImageCalibrationPositions[6, 0] = CurrentPosition[0];
-                ImageCalibrationPositions[6, 1] = CurrentPosition[1];
-                PositionXYZ();
-                double x = Convert.ToDouble(xposition);
-                double y = Convert.ToDouble(yposition);
-                double z = Convert.ToDouble(zposition);
-                StageCalibrationPositions[6, 0, 0] = x;
-                StageCalibrationPositions[6, 1, 0] = y;
-                StageCalibrationPositions[6, 0, 1] = z;
-                ThreeDPoint upperedge = new ThreeDPoint(x + (FieldSize.X * ((double)FieldSizeRatio.Value) / 2 / 100), y, z);
-                MoveStage(upperedge, Timeouts.ASYNC);
-                MessageBox.Show("Ensure the box is at the top left corner");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error in image calibration 4 : " + ex);
-            }
-        }
-        private void CalibrateImageLUCornerToLE()
-        {
-
-            try
-            {
-                ImageCalibrationPositions[7, 0] = CurrentPosition[0];
-                ImageCalibrationPositions[7, 1] = CurrentPosition[1];
-                PositionXYZ();
-                double x = Convert.ToDouble(xposition);
-                double y = Convert.ToDouble(yposition);
-                double z = Convert.ToDouble(zposition);
-                StageCalibrationPositions[7, 0, 0] = x;
-                StageCalibrationPositions[7, 1, 0] = y;
-                StageCalibrationPositions[7, 0, 1] = z;
-                
-                ThreeDPoint leftedge = new ThreeDPoint(x , y - (FieldSize.Y * ((double)FieldSizeRatio.Value) / 2 / 100), z);
-                MoveStage(leftedge, Timeouts.ASYNC);
-                MessageBox.Show("Ensure the crosshair is at left edge");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error in image calibration 5 : " + ex);
-            }
-        }
-
-        private void CalibrateImageLE()
-        {
-
-            try
-            {
-                ImageCalibrationPositions[8, 0] = CurrentPosition[0];
-                ImageCalibrationPositions[8, 1] = CurrentPosition[1];
-                PositionXYZ();
-                double x = Convert.ToDouble(xposition);
-                double y = Convert.ToDouble(yposition);
-                double z = Convert.ToDouble(zposition);
-                StageCalibrationPositions[8, 0, 0] = x;
-                StageCalibrationPositions[8, 1, 0] = y;
-                StageCalibrationPositions[8, 0, 1] = z;
-
-               // ThreeDPoint leftedge = new ThreeDPoint(x, y - (FieldSize.Y * ((double)FieldSizeRatio.Value) / 2 / 100), z);
-              //  MoveStage(leftedge, Timeouts.ASYNC);
-               // MessageBox.Show("Ensure the crosshair is at left edge");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error in image calibration 5 : " + ex);
-            }
-        }
-
         private void CalibrateImage(int position, bool _default)
         {
             try
@@ -797,104 +599,7 @@ namespace MTF_Calc
                             counter++;
                             camera.LiveImage(ImageDisplay);
                         }
-                        
-                        
-                        /*
-                        if (counter == 8)
-                        {
-                            paint = true;
-                            DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
-                            DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
-                            //CalibrateImageLE();
-                            CalibrateImage(counter,true);
-                            counter++;
-                            camera.LiveImage(ImageDisplay);
-                        }
-                        if (counter == 7)
-                        {
-                            paint = true;
-                            DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]),Convert.ToInt32(CurrentPosition[1]));
-                            DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
-                            //CalibrateImageLUCornerToLE();
-                            CalibrateImage(counter,true);
-                            counter++;
-                            camera.LiveImage(ImageDisplay);
-                        }
-                        if (counter == 6)
-                        {
-                            paint = true;
-                            DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
-                            DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
-                            //CalibrateImageUEToLU();
-                            CalibrateImage(counter,true);
-                            counter++;
-                            camera.LiveImage(ImageDisplay);
-                        }
-
-                        if (counter == 5)
-                        {
-                            paint = true;
-                            DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
-                            DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
-                            //CalibrateImageRUCornerToUE();
-                            CalibrateImage(counter,true);
-                            counter++;
-                            camera.LiveImage(ImageDisplay);
-                        }
-                        if (counter == 4)
-                        {
-                            paint = true;
-                            DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
-                            DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
-                            //CalibrateImageREToRU();
-                            CalibrateImage(counter,true);
-                            counter++;
-                            camera.LiveImage(ImageDisplay);
-                        }
-
-                        if (counter == 3)
-                        {
-                            paint = true;
-                            DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
-                            DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
-                            //CalibrateImageRBCornerToRE();
-                            CalibrateImage(counter,true);
-                            counter++;
-                            camera.LiveImage(ImageDisplay);
-                        }
-                        if (counter == 2)
-                        {
-                            paint = true;
-                            DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
-                            DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
-                            //CalibrateImageBEToRB();
-                            CalibrateImage(counter,true);
-                            counter++;
-                            camera.LiveImage(ImageDisplay);
-                        }
-
-                        if (counter == 1)
-                        {
-                            paint = true;
-                            DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
-                            DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
-                            //CalibrateImageLBCornerToBE();
-                            CalibrateImage(counter,true);
-                            counter++;
-                            camera.LiveImage(ImageDisplay);
-
-                        }
-                        if (counter == 0)
-                        {
-                            paint = true;
-                            DrawRectangle(ImageDisplay, 3, 10, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
-                            DrawRectangle(ImageDisplay, 10, 3, Convert.ToInt32(CurrentPosition[0]), Convert.ToInt32(CurrentPosition[1]));
-                            //CalibrateImageCenterToLB();
-                            CalibrateImage(counter,true);
-                            counter++;
-                            camera.LiveImage(ImageDisplay);
-                        }
-                        */
+                                                                       
                     }
 
                 }
