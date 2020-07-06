@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime.Remoting;
 using System.Windows.Forms;
 
 namespace MTF_Calc
@@ -21,10 +22,12 @@ namespace MTF_Calc
         List<int> ColorAvgHorizontal = new List<int>();
         List<int> PeakList = new List<int>();
         List<int> TroughList = new List<int>();
-        double[,,] MTFData = new double[2 * max_locations, 2, 2]; //MTF,Position identifier, direction( horizontal = 1,vertical = 2)
-        double[,] ImageCalibrationPositions = new double[max_locations, max_locations];
-        double[,,] StageCalibrationPositions = new double[max_locations, max_locations, max_locations];
+        double[,,] MTFData = new double[2 * array_size, 2, 2]; //MTF,Position identifier, direction( horizontal = 1,vertical = 2)
+        double[,] ImageCalibrationPositions = new double[array_size, 2];
+        double[,,] StageCalibrationPositions = new double[array_size, 2, 2];
         public const int max_locations = 9;
+        public const int array_size = 30;
+        public int locations = max_locations;
         public int xcenter;
         public int ycenter;
         public int zcenter;
@@ -51,6 +54,7 @@ namespace MTF_Calc
         /// The wait time for the serial port response. Reset during the SendCommand
         /// </summary>
         private DateTime waitTime = DateTime.Now;
+        bool defaultPositions = true;
         public struct FieldSize
         {
             public const double X = 400;
@@ -58,6 +62,7 @@ namespace MTF_Calc
         }
         int counter = 0;
         bool paint = false;
+        public int custom_max_locations = 0;
 
         public struct GroupPositions
         {
