@@ -22,8 +22,9 @@ namespace MTF_Calc
         private ICamera camera;
         public MainApp()
         {
-            
 
+
+            InitializeComponent();
             DialogResult result1 = MessageBox.Show("Is the connected camera a Basler? (Yes for Basler, No for MatrixVision)", "Camera select", MessageBoxButtons.YesNo);
             if (result1 == DialogResult.Yes)
             {
@@ -43,7 +44,7 @@ namespace MTF_Calc
                 LoadCalibration();
 
             }
-            InitializeComponent();
+            
             Array.Clear(MTFData, 0, MTFData.Length);
             string[] ports = SerialPort.GetPortNames();
             foreach (string port in ports)
@@ -442,13 +443,17 @@ namespace MTF_Calc
                     filename = dialog.FileName;
                     using (StreamReader sr = new StreamReader(filename))
                     {
+                        sr.ReadLine();
                         int i = 0;
                         while (!sr.EndOfStream)
                         {
-                            if (i < 0)
+                            
+                            if (i > 0)
                             {
                                 var line = sr.ReadLine();
                                 var values = line.Split(',');
+                                Console.WriteLine(values[0]);
+                                Console.WriteLine(i);
                                 StageCalibrationPositions[i - 1, 0, 0] = Convert.ToDouble(values[0]);
                                 StageCalibrationPositions[i - 1, 1, 0] = Convert.ToDouble(values[1]);
                                 StageCalibrationPositions[i - 1, 0, 1] = Convert.ToDouble(values[2]);
@@ -459,6 +464,8 @@ namespace MTF_Calc
                             i++;
                         }
                     }
+                    calibrationcomplete = true;
+                    StartTestButton.Visible = true ;
                 }
             }
             catch (Exception ex)
