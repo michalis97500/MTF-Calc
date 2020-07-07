@@ -220,11 +220,10 @@ namespace MTF_Calc
                             xcenter = (x_end - x_start) / 2;
                             ycenter = (y_end - y_start) / 2;
                             zcenter = (z_end - z_start) / 2;
-                            CenterStageButton.Visible = true;
-                            //CalibrateImageButton.Visible = true;
+                            CenterStageButton.Enabled = true;
                             FindUSAFButton.Visible = true;
-                            FindGraticuleButton.Visible = true;
                             stagecalibrated = true;
+                            CalibrateStageCenterButton.Enabled = true;
                             DialogResult result = MessageBox.Show("Calibration Complete. Send stage to center?", "Calibration complete", MessageBoxButtons.YesNo);
                             if (result == DialogResult.Yes)
                             {
@@ -285,7 +284,7 @@ namespace MTF_Calc
                     StageSerialPort.Handshake = Handshake.RequestToSend;
                     StageSerialPort.WriteTimeout = 500;
                     StageSerialPort.Open();
-                    CalibrateStageButton.Visible = true;
+                    CalibrateStageButton.Enabled = true;
                 }
             }
             catch (Exception ex)

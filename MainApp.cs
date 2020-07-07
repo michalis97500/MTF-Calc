@@ -374,9 +374,9 @@ namespace MTF_Calc
                         {
                             //Non-zero value found. Get the position of this value, and find its stage coordinates.
                             int position = Convert.ToInt32(MTFData[x,1,0]);
-                            double stage_x = StageCalibrationPositions[position, 0, 0];
-                            double stage_y = StageCalibrationPositions[position, 1, 0];
-                            double stage_z = StageCalibrationPositions[position, 0, 1]; 
+                            double stage_x = StageCalibrationPositions[position, 0, 0] - Convert.ToDouble(stage_x_center);
+                            double stage_y = StageCalibrationPositions[position, 1, 0] - Convert.ToDouble(stage_y_center);
+                            double stage_z = StageCalibrationPositions[position, 0, 1] - Convert.ToDouble(stage_z_center); 
                             switch(MTFData[x,0,1])
                             {
                                 //Finally, write the data to a new line
@@ -590,13 +590,26 @@ namespace MTF_Calc
 
         private void CenterStageButton_Click(object sender, EventArgs e)
         {
-            double x = Convert.ToDouble(xcenter);
-            double y = Convert.ToDouble(ycenter);
-            double z = Convert.ToDouble(zcenter);
-            var destination = new ThreeDPoint(x, y, z);
-            Debug.Print(string.Format("Moving stage to: ({0},{1},{2})", x, y, z));
-            MoveStage(destination, Timeouts.ASYNC);
-            PositionXYZ();
+            if (stagecenterfound == true)
+            {
+                double x = Convert.ToDouble(stage_x_center);
+                double y = Convert.ToDouble(stage_y_center);
+                double z = Convert.ToDouble(stage_z_center);
+                var destination = new ThreeDPoint(x, y, z);
+                Debug.Print(string.Format("Moving stage to: ({0},{1},{2})", x, y, z));
+                MoveStage(destination, Timeouts.ASYNC);
+                PositionXYZ();
+            }
+            else
+            {
+                double x = Convert.ToDouble(xcenter);
+                double y = Convert.ToDouble(ycenter);
+                double z = Convert.ToDouble(zcenter);
+                var destination = new ThreeDPoint(x, y, z);
+                Debug.Print(string.Format("Moving stage to: ({0},{1},{2})", x, y, z));
+                MoveStage(destination, Timeouts.ASYNC);
+                PositionXYZ();
+            }
         }
 
         private void CalibrateStageButton_Click(object sender, EventArgs e)
@@ -604,6 +617,12 @@ namespace MTF_Calc
             if (StageSerialPort.IsOpen)
             {
                 CalibrateStage();
+                DialogResult result = MessageBox.Show("Would you like to calibrate stage center now?", "Calibrate stage center", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    FindStageCenter();
+                }
+                
             }
             else
             {
@@ -680,8 +699,9 @@ namespace MTF_Calc
                         case 8:
                             MessageBox.Show("Calibration Complete");
                             Clickable = false;
-                            StartTestButton.Visible = true;
+                            StartTestButton.Enabled = true;
                             calibrationcomplete = true;
+                            SaveCalibrationButton.Enabled = true;
                             break;
                     }
                 }
@@ -729,6 +749,11 @@ namespace MTF_Calc
             stage_x_center = Convert.ToInt32(xposition);
             stage_y_center = Convert.ToInt32(yposition);
             stage_z_center = Convert.ToInt32(zposition);
+            MessageBox.Show("Stage center found and recorded. You may now calibrate the image");
+            CalibrateImageButton.Enabled = true;
+            Clickable = false;
+            camera.SingleImageCapture(ImageDisplay);
+            
         }
 
         private void ImageDisplay_Click(object sender, EventArgs e)
@@ -779,6 +804,7 @@ namespace MTF_Calc
             }
             catch (Exception ex)
             {
+
                 Debug.Print("Error : " + ex);
             }
         }
@@ -797,15 +823,16 @@ namespace MTF_Calc
                     if (cameraconnected == true)
                     {
                         camera.TerminateCapture();
+                        stagecenterfound = false;
+                        Clickable = true;
                         MessageBox.Show("Place the top left of the corner on the center of the crosshair");
-                        stagecentered = true;
                         Thread thread = new Thread(() =>
                         {
                             while (!stagecenterfound)
                             {
                                 camera.SingleImageCapture(ImageDisplay);
-                                DrawRectangle(ImageDisplay, 100, 3, ImageDisplay.Width / 2, ImageDisplay.Height / 2);
-                                DrawRectangle(ImageDisplay, 3, 100, ImageDisplay.Width / 2, ImageDisplay.Height / 2);
+                                DrawRectangle(ImageDisplay, 100, 3, ImageDisplay.Image.Width / 2, ImageDisplay.Image.Height / 2);
+                                DrawRectangle(ImageDisplay, 3, 100, ImageDisplay.Image.Width / 2, ImageDisplay.Image.Height / 2);
                             }
                             
                         });
@@ -835,43 +862,53 @@ namespace MTF_Calc
             ///stage to the first position. Restart live-capture
             /// </summary>
             camera.TerminateCapture();
-            paint = true;
-            DialogResult result = MessageBox.Show("Would you like to use the default calibration positions?", "Calibration", MessageBoxButtons.YesNo);
-            if (result == DialogResult.Yes)
+            if (stagecenterfound == true)
             {
-                defaultPositions = true;
-                double x = 40500;
-                double y = 23235;
-                double z = 9335;
-                var destination = new ThreeDPoint(x, y, z);
-                MoveStage(destination, Timeouts.ASYNC);
-                
-            }
-            if (result == DialogResult.No)
-            {
-                defaultPositions = false;
-                LoadCustomPositions();
-                double x, y, z;
-                x = StageCalibrationPositions[0, 0, 0];
-                y = StageCalibrationPositions[0, 1, 0];
-                z = StageCalibrationPositions[0, 0, 1];
-                ThreeDPoint destination = new ThreeDPoint(x,y,z);
-                MoveStage(destination, Timeouts.MOVE);
+                paint = true;
+                counter = 0;
+                Clickable = true;
+                DialogResult result = MessageBox.Show("Would you like to use the default calibration positions?", "Calibration", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    defaultPositions = true;
+                    TestPositionsButton.Enabled = true;
+                    double x = Convert.ToDouble(stage_x_center);
+                    double y = Convert.ToDouble(stage_y_center);
+                    double z = Convert.ToDouble(stage_z_center);
+                    var destination = new ThreeDPoint(x, y, z);
+                    MoveStage(destination, Timeouts.ASYNC);
+                    MessageBox.Show("Click on the top left corner of the box");
+                    camera.LiveImage(ImageDisplay);
 
-            }    
-            counter = 0;
-            Clickable = true;
-            /*
-            MessageBox.Show("Find the small box on the USAF target and click on the top left corner of the box");
-            camera.LiveImage(ImageDisplay);
-            */
-            FindStageCenter();
+                }
+                if (result == DialogResult.No)
+                {
+                    defaultPositions = false;
+                    LoadCustomPositions();
+                    double x, y, z;
+                    x = StageCalibrationPositions[0, 0, 0];
+                    y = StageCalibrationPositions[0, 1, 0];
+                    z = StageCalibrationPositions[0, 0, 1];
+                    ThreeDPoint destination = new ThreeDPoint(x, y, z);
+                    MoveStage(destination, Timeouts.ASYNC);
+                    MessageBox.Show("Click on the top left corner of the box");
+                    camera.LiveImage(ImageDisplay);
+
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please calibrate the stage center");
+
+            }
+                           
 
         }
 
         private void StageConnectButton_Click(object sender, EventArgs e)
         {
             SerialConnection();
+
         }
 
         private void LoadCustomPositions()
@@ -1237,7 +1274,7 @@ namespace MTF_Calc
                 PositionsToUse[8] = 1;
             }
             else { PositionsToUse[8] = 0; }
-            CalibrateImageButton.Visible = true;
+            
         }
 
         private void SaveCalibrationButton_Click(object sender, EventArgs e)
@@ -1250,6 +1287,12 @@ namespace MTF_Calc
             
         }
 
-        
+        private void CalibrateStageCenterButton_Click(object sender, EventArgs e)
+        {
+            camera.TerminateCapture();
+            paint = true;
+            counter = 0;
+            FindStageCenter();
+        }
     }
 }

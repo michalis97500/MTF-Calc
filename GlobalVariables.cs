@@ -48,7 +48,6 @@ namespace MTF_Calc
         int negativetarget;
         bool stagecalibrated = false;
         bool calibrationcomplete = false;
-        bool stagecentered = false;
         bool stagecenterfound = false;
         public int stage_x_center = 0;
         public int stage_y_center = 0;

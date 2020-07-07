@@ -63,6 +63,7 @@
             this.GroupSelectionBox = new System.Windows.Forms.ComboBox();
             this.TestPositionsButton = new System.Windows.Forms.Button();
             this.SaveCalibrationButton = new System.Windows.Forms.Button();
+            this.CalibrateStageCenterButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.ImageDisplay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FieldSizeRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.IlluminationControl)).BeginInit();
@@ -134,72 +135,75 @@
             // 
             // GetBMPValuesVer
             // 
-            this.GetBMPValuesVer.Location = new System.Drawing.Point(11, 184);
+            this.GetBMPValuesVer.Location = new System.Drawing.Point(57, 607);
             this.GetBMPValuesVer.Name = "GetBMPValuesVer";
-            this.GetBMPValuesVer.Size = new System.Drawing.Size(76, 48);
+            this.GetBMPValuesVer.Size = new System.Drawing.Size(58, 20);
             this.GetBMPValuesVer.TabIndex = 7;
             this.GetBMPValuesVer.Text = "Get BMP Values Vertical";
             this.GetBMPValuesVer.UseVisualStyleBackColor = true;
+            this.GetBMPValuesVer.Visible = false;
             this.GetBMPValuesVer.Click += new System.EventHandler(this.GetBMPValuesVer_Click);
             // 
             // XposVert
             // 
-            this.XposVert.Location = new System.Drawing.Point(12, 158);
+            this.XposVert.Location = new System.Drawing.Point(113, 607);
             this.XposVert.Name = "XposVert";
             this.XposVert.Size = new System.Drawing.Size(75, 20);
             this.XposVert.TabIndex = 8;
+            this.XposVert.Visible = false;
             this.XposVert.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NumberCheck);
             // 
             // YposVert
             // 
-            this.YposVert.Location = new System.Drawing.Point(93, 158);
+            this.YposVert.Location = new System.Drawing.Point(128, 607);
             this.YposVert.Name = "YposVert";
             this.YposVert.Size = new System.Drawing.Size(75, 20);
             this.YposVert.TabIndex = 9;
+            this.YposVert.Visible = false;
             this.YposVert.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NumberCheck);
             // 
             // StartTestButton
             // 
-            this.StartTestButton.Location = new System.Drawing.Point(9, 392);
+            this.StartTestButton.Enabled = false;
+            this.StartTestButton.Location = new System.Drawing.Point(5, 403);
             this.StartTestButton.Name = "StartTestButton";
             this.StartTestButton.Size = new System.Drawing.Size(89, 26);
             this.StartTestButton.TabIndex = 10;
             this.StartTestButton.Text = "Start Test";
             this.StartTestButton.UseVisualStyleBackColor = true;
-            this.StartTestButton.Visible = false;
             this.StartTestButton.Click += new System.EventHandler(this.StartTestButton_Click);
             // 
             // CenterStageButton
             // 
-            this.CenterStageButton.Location = new System.Drawing.Point(9, 353);
+            this.CenterStageButton.Enabled = false;
+            this.CenterStageButton.Location = new System.Drawing.Point(5, 289);
             this.CenterStageButton.Name = "CenterStageButton";
-            this.CenterStageButton.Size = new System.Drawing.Size(89, 33);
+            this.CenterStageButton.Size = new System.Drawing.Size(95, 41);
             this.CenterStageButton.TabIndex = 11;
             this.CenterStageButton.Text = "Center stage";
             this.CenterStageButton.UseVisualStyleBackColor = true;
-            this.CenterStageButton.Visible = false;
             this.CenterStageButton.Click += new System.EventHandler(this.CenterStageButton_Click);
             // 
             // CalibrateStageButton
             // 
-            this.CalibrateStageButton.Location = new System.Drawing.Point(9, 279);
+            this.CalibrateStageButton.Enabled = false;
+            this.CalibrateStageButton.Location = new System.Drawing.Point(5, 191);
             this.CalibrateStageButton.Name = "CalibrateStageButton";
-            this.CalibrateStageButton.Size = new System.Drawing.Size(89, 31);
+            this.CalibrateStageButton.Size = new System.Drawing.Size(95, 44);
             this.CalibrateStageButton.TabIndex = 13;
             this.CalibrateStageButton.Text = "Calibrate stage";
             this.CalibrateStageButton.UseVisualStyleBackColor = true;
-            this.CalibrateStageButton.Visible = false;
             this.CalibrateStageButton.Click += new System.EventHandler(this.CalibrateStageButton_Click);
             // 
             // CalibrateImageButton
             // 
-            this.CalibrateImageButton.Location = new System.Drawing.Point(104, 316);
+            this.CalibrateImageButton.Enabled = false;
+            this.CalibrateImageButton.Location = new System.Drawing.Point(5, 241);
             this.CalibrateImageButton.Name = "CalibrateImageButton";
-            this.CalibrateImageButton.Size = new System.Drawing.Size(89, 31);
+            this.CalibrateImageButton.Size = new System.Drawing.Size(95, 42);
             this.CalibrateImageButton.TabIndex = 14;
             this.CalibrateImageButton.Text = "Calibrate Image";
             this.CalibrateImageButton.UseVisualStyleBackColor = true;
-            this.CalibrateImageButton.Visible = false;
             this.CalibrateImageButton.Click += new System.EventHandler(this.CalibrateImageButton_Click);
             // 
             // StageConnectButton
@@ -222,7 +226,7 @@
             // 
             // FieldSizeRatio
             // 
-            this.FieldSizeRatio.Location = new System.Drawing.Point(106, 249);
+            this.FieldSizeRatio.Location = new System.Drawing.Point(102, 150);
             this.FieldSizeRatio.Minimum = new decimal(new int[] {
             10,
             0,
@@ -241,7 +245,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(16, 251);
+            this.label1.Location = new System.Drawing.Point(12, 152);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(84, 13);
             this.label1.TabIndex = 19;
@@ -249,7 +253,7 @@
             // 
             // IlluminationControl
             // 
-            this.IlluminationControl.Location = new System.Drawing.Point(116, 439);
+            this.IlluminationControl.Location = new System.Drawing.Point(106, 439);
             this.IlluminationControl.Name = "IlluminationControl";
             this.IlluminationControl.Size = new System.Drawing.Size(69, 20);
             this.IlluminationControl.TabIndex = 21;
@@ -364,17 +368,18 @@
             // 
             // FindGraticuleButton
             // 
-            this.FindGraticuleButton.Location = new System.Drawing.Point(93, 184);
+            this.FindGraticuleButton.Location = new System.Drawing.Point(89, 608);
             this.FindGraticuleButton.Name = "FindGraticuleButton";
-            this.FindGraticuleButton.Size = new System.Drawing.Size(84, 48);
+            this.FindGraticuleButton.Size = new System.Drawing.Size(58, 19);
             this.FindGraticuleButton.TabIndex = 34;
             this.FindGraticuleButton.Text = "Find Graticule";
             this.FindGraticuleButton.UseVisualStyleBackColor = true;
+            this.FindGraticuleButton.Visible = false;
             this.FindGraticuleButton.Click += new System.EventHandler(this.FindGraticuleButton_Click);
             // 
             // FindUSAFButton
             // 
-            this.FindUSAFButton.Location = new System.Drawing.Point(104, 279);
+            this.FindUSAFButton.Location = new System.Drawing.Point(106, 370);
             this.FindUSAFButton.Name = "FindUSAFButton";
             this.FindUSAFButton.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.FindUSAFButton.Size = new System.Drawing.Size(89, 31);
@@ -387,16 +392,17 @@
             // 
             this.GroupSelectionBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.GroupSelectionBox.FormattingEnabled = true;
-            this.GroupSelectionBox.Location = new System.Drawing.Point(104, 397);
+            this.GroupSelectionBox.Location = new System.Drawing.Point(106, 407);
             this.GroupSelectionBox.Name = "GroupSelectionBox";
             this.GroupSelectionBox.Size = new System.Drawing.Size(84, 21);
             this.GroupSelectionBox.TabIndex = 36;
             // 
             // TestPositionsButton
             // 
-            this.TestPositionsButton.Location = new System.Drawing.Point(9, 316);
+            this.TestPositionsButton.Enabled = false;
+            this.TestPositionsButton.Location = new System.Drawing.Point(106, 241);
             this.TestPositionsButton.Name = "TestPositionsButton";
-            this.TestPositionsButton.Size = new System.Drawing.Size(89, 31);
+            this.TestPositionsButton.Size = new System.Drawing.Size(89, 42);
             this.TestPositionsButton.TabIndex = 37;
             this.TestPositionsButton.Text = "Test Positions";
             this.TestPositionsButton.UseVisualStyleBackColor = true;
@@ -404,20 +410,33 @@
             // 
             // SaveCalibrationButton
             // 
+            this.SaveCalibrationButton.Enabled = false;
             this.SaveCalibrationButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
-            this.SaveCalibrationButton.Location = new System.Drawing.Point(104, 353);
+            this.SaveCalibrationButton.Location = new System.Drawing.Point(106, 289);
             this.SaveCalibrationButton.Name = "SaveCalibrationButton";
-            this.SaveCalibrationButton.Size = new System.Drawing.Size(89, 33);
+            this.SaveCalibrationButton.Size = new System.Drawing.Size(89, 41);
             this.SaveCalibrationButton.TabIndex = 38;
             this.SaveCalibrationButton.Text = "Save Calib";
             this.SaveCalibrationButton.UseVisualStyleBackColor = true;
             this.SaveCalibrationButton.Click += new System.EventHandler(this.SaveCalibrationButton_Click);
+            // 
+            // CalibrateStageCenterButton
+            // 
+            this.CalibrateStageCenterButton.Enabled = false;
+            this.CalibrateStageCenterButton.Location = new System.Drawing.Point(106, 191);
+            this.CalibrateStageCenterButton.Name = "CalibrateStageCenterButton";
+            this.CalibrateStageCenterButton.Size = new System.Drawing.Size(89, 44);
+            this.CalibrateStageCenterButton.TabIndex = 39;
+            this.CalibrateStageCenterButton.Text = "Calibrate stage center";
+            this.CalibrateStageCenterButton.UseVisualStyleBackColor = true;
+            this.CalibrateStageCenterButton.Click += new System.EventHandler(this.CalibrateStageCenterButton_Click);
             // 
             // MainApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1270, 639);
+            this.Controls.Add(this.CalibrateStageCenterButton);
             this.Controls.Add(this.SaveCalibrationButton);
             this.Controls.Add(this.TestPositionsButton);
             this.Controls.Add(this.GroupSelectionBox);
@@ -500,6 +519,7 @@
         private System.Windows.Forms.ComboBox GroupSelectionBox;
         private System.Windows.Forms.Button TestPositionsButton;
         private System.Windows.Forms.Button SaveCalibrationButton;
+        private System.Windows.Forms.Button CalibrateStageCenterButton;
     }
 }
 
