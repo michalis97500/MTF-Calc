@@ -720,6 +720,17 @@ namespace MTF_Calc
         
         }
 
+        private void SetStageCenter()
+        {
+            stagecenterfound = true;
+            image_x_center = Convert.ToInt32(CurrentPosition[0]);
+            image_y_center = Convert.ToInt32(CurrentPosition[1]);
+            PositionXYZ();
+            stage_x_center = Convert.ToInt32(xposition);
+            stage_y_center = Convert.ToInt32(yposition);
+            stage_z_center = Convert.ToInt32(zposition);
+        }
+
         private void ImageDisplay_Click(object sender, EventArgs e)
         {
             try
@@ -746,16 +757,22 @@ namespace MTF_Calc
                     DialogResult result = MessageBox.Show("Coordinates have been recorded. Proceed?", "Coordinates recorded", MessageBoxButtons.YesNo);
                     if (result == DialogResult.Yes)
                     {
-                        CurrentPosition[0] = imagePixelX;
-                        CurrentPosition[1] = imagePixelY;
-                        //if(counter < 9 )
-                        //{
-                            paint=true;
-                            CalibrateImage(counter,defaultPositions);
+                        if (stagecenterfound == true)
+                        {
+                            CurrentPosition[0] = imagePixelX;
+                            CurrentPosition[1] = imagePixelY;
+                            paint = true;
+                            CalibrateImage(counter, defaultPositions);
                             counter++;
                             camera.LiveImage(ImageDisplay);
-                        //}
-                                                                       
+                        }
+                        else
+                        {
+                            CurrentPosition[0] = imagePixelX;
+                            CurrentPosition[1] = imagePixelY;
+                            SetStageCenter();
+                        }
+                                                                                               
                     }
 
                 }
@@ -763,6 +780,50 @@ namespace MTF_Calc
             catch (Exception ex)
             {
                 Debug.Print("Error : " + ex);
+            }
+        }
+
+
+        private void FindStageCenter()
+        {
+            ///<summary>
+            ///This functions is used to calibrate the stage in relationship to the center of the field
+            /// </summary>
+            try
+            {
+                
+                if(StageSerialPort.IsOpen)
+                {
+                    if (cameraconnected == true)
+                    {
+                        camera.TerminateCapture();
+                        MessageBox.Show("Place the top left of the corner on the center of the crosshair");
+                        stagecentered = true;
+                        Thread thread = new Thread(() =>
+                        {
+                            while (!stagecenterfound)
+                            {
+                                camera.SingleImageCapture(ImageDisplay);
+                                DrawRectangle(ImageDisplay, 100, 3, ImageDisplay.Width / 2, ImageDisplay.Height / 2);
+                                DrawRectangle(ImageDisplay, 3, 100, ImageDisplay.Width / 2, ImageDisplay.Height / 2);
+                            }
+                            
+                        });
+                        thread.Start();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Camera is not connected");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Stage is not connected");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
             }
         }
 
@@ -774,6 +835,7 @@ namespace MTF_Calc
             ///stage to the first position. Restart live-capture
             /// </summary>
             camera.TerminateCapture();
+            paint = true;
             DialogResult result = MessageBox.Show("Would you like to use the default calibration positions?", "Calibration", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
@@ -799,8 +861,11 @@ namespace MTF_Calc
             }    
             counter = 0;
             Clickable = true;
+            /*
             MessageBox.Show("Find the small box on the USAF target and click on the top left corner of the box");
             camera.LiveImage(ImageDisplay);
+            */
+            FindStageCenter();
 
         }
 
@@ -975,8 +1040,6 @@ namespace MTF_Calc
                     {
                         using (Graphics graphics = Graphics.FromImage(picbox.Image))
                         {
-                        Debug.Print(Convert.ToString(CurrentPosition[0]));
-                        Debug.Print(Convert.ToString(CurrentPosition[1]));
                         Rectangle rectangle = new Rectangle(xpos - (len/2), ypos - (hei/2) , len, hei);
                         SolidBrush brush = new SolidBrush(Color.FromArgb(170, 254, 50, 50));
                         graphics.FillRectangle(brush, rectangle);
@@ -993,8 +1056,6 @@ namespace MTF_Calc
                 {
                     using (Graphics graphics = Graphics.FromImage(picbox.Image))
                     {
-                        Debug.Print(Convert.ToString(CurrentPosition[0]));
-                        Debug.Print(Convert.ToString(CurrentPosition[1]));
                         Rectangle rectangle = new Rectangle(xpos - (len / 2), ypos - (hei / 2), len, hei);
                         SolidBrush brush = new SolidBrush(Color.FromArgb(170, 254, 50, 50));
                         graphics.FillRectangle(brush, rectangle);

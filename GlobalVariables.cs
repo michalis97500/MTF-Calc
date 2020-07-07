@@ -48,6 +48,13 @@ namespace MTF_Calc
         int negativetarget;
         bool stagecalibrated = false;
         bool calibrationcomplete = false;
+        bool stagecentered = false;
+        bool stagecenterfound = false;
+        public int stage_x_center = 0;
+        public int stage_y_center = 0;
+        public int stage_z_center = 0;
+        public int image_x_center = 0;
+        public int image_y_center = 0;
         public int[] PositionsToUse = new int[9];
         /// <summary>
         /// The wait time for the serial port response. Reset during the SendCommand
