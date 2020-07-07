@@ -22,7 +22,10 @@ namespace MTF_Calc
         private ICamera camera;
         public MainApp()
         {
-
+            ///<Summary>
+            /// On program load we ask whether a Basler or a MV camera is connected to create the interface object
+            /// Then the user is asked to choose whether to load a calibration file or to start fresh
+            ///</Summary>
 
             InitializeComponent();
             DialogResult result1 = MessageBox.Show("Is the connected camera a Basler? (Yes for Basler, No for MatrixVision)", "Camera select", MessageBoxButtons.YesNo);
@@ -44,7 +47,6 @@ namespace MTF_Calc
                 LoadCalibration();
 
             }
-            
             Array.Clear(MTFData, 0, MTFData.Length);
             string[] ports = SerialPort.GetPortNames();
             foreach (string port in ports)
@@ -65,6 +67,7 @@ namespace MTF_Calc
         {
             try
             {
+                //Function to load an image on the main picturbox
                 OpenFileDialog dialog = new OpenFileDialog();
                 dialog.Filter = "bitmap file|*.bmp|png file|*.png|tiff file|*.tiff|raw16 file|*.raw16";
                 DialogResult image = dialog.ShowDialog();
@@ -198,6 +201,11 @@ namespace MTF_Calc
 
         private void StartTest(bool _default)
         {
+            ///<summary>
+            ///First we check that the COM port is open, a camera is connected and the calibration is complete.
+            ///Camera capture is terminated since this makes the software runs slower.
+            ///Some dummy variables are created and then the MTF data array is cleared.
+            /// </summary>
 
             if (StageSerialPort.IsOpen)
             {
@@ -262,7 +270,7 @@ namespace MTF_Calc
                                 }
                             }
                             ///Summary
-                            ///For all 9 positions of calibration this loop attempts to move the stage at each one, take a picture, 
+                            ///For all positions of calibration this loop attempts to move the stage at each one, take a picture, 
                             ///analyze and record MTF and then move to the next one.
                             x = StageCalibrationPositions[i, 0, 0];
                             y = StageCalibrationPositions[i, 1, 0];
@@ -402,6 +410,9 @@ namespace MTF_Calc
         {
             try
             {
+
+                ///This function gets the data from the StageCalibration array and ImageCalibration array
+                ///and saves it to a comma-seperated file. 
                 string path = @"C:\MyTest.txt";
                 MessageBox.Show("Choose a text document to save the calibration");
                 SaveFileDialog saveFileDialog1 = new SaveFileDialog();
@@ -445,7 +456,11 @@ namespace MTF_Calc
         private void LoadCalibration()
         {
             try
-            {
+            {   ///<summary>
+                ///This function attempts to read a file created by the SaveCalibration() function and
+                ///load the data into the arrays
+                ///</summary>
+
                 OpenFileDialog dialog = new OpenFileDialog();
                 dialog.Filter = "text file|*.txt";
                 DialogResult image = dialog.ShowDialog();
@@ -527,9 +542,12 @@ namespace MTF_Calc
 
         private void MTFCalc(double position,int direction)
         {
-            //check that the global lists have any values + same number of values. 
-            //if (PeakList.Count + positivetarget == TroughList.Count + negativetarget)
-           // {
+            ///<summary> 
+            ///This function runs through the global PeakList and TroughList and calculates the MTF. 
+            ///The function takes in 2 parameters that it uses to help identify at which position the MTF is calculated and
+            ///for which direction
+            ///</summary> 
+            
                 if (PeakList.Any() && TroughList.Any())
                 {
                     double mtf;
@@ -567,7 +585,7 @@ namespace MTF_Calc
 
                     
                 }
-            //}
+            
         }
 
         private void CenterStageButton_Click(object sender, EventArgs e)
@@ -597,6 +615,15 @@ namespace MTF_Calc
         {
             try
             {
+                ///<summary>
+                ///This function breaks down to 2 cases, default or not. In both cases the procedure is similar with the difference being
+                ///the positions of calibration. The default has some hard-coded positions where as the "custom" allows input of different positions.
+                ///The parameter "position" will allow identification of the position number and hence the position.
+                ///Once the picturebox is clicked this function is called, which gets the current coordinates of the click. It then stores 
+                ///the data to an array which holds all the positions. For the default calibration the stage coordinates are also saved in case the user
+                ///has fine-adjusted the stage. The software then attempts to move the stage to the next position to be calibrated
+                ///</summary>
+                
                 if (_default == true)
                 {
                     ImageCalibrationPositions[position, 0] = CurrentPosition[0];
@@ -697,6 +724,11 @@ namespace MTF_Calc
         {
             try
             {
+                ///<summary>
+                ///Check if the picturebox click must be handled (clickable = true). If so, get the coordinates of the click and ask
+                ///the user if the click was indeed intentional + correct. If this is the case write the coordinates to global variables
+                ///and call CalibrateImage function.
+                /// </summary>
                 
                 if (Clickable == true)
                 {
@@ -736,11 +768,22 @@ namespace MTF_Calc
 
         private void CalibrateImageButton_Click(object sender, EventArgs e)
         {
+            ///<summary>
+            ///Stop camera capture to avoid slow program. Ask the user if s/w should use default positions and if not load the custom positions. 
+            ///Either way, this will reset the counter (position identifying variable) and make the picturebox clickable (see ImageDisplay_click). Attempt to move the
+            ///stage to the first position. Restart live-capture
+            /// </summary>
             camera.TerminateCapture();
             DialogResult result = MessageBox.Show("Would you like to use the default calibration positions?", "Calibration", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
                 defaultPositions = true;
+                double x = 40500;
+                double y = 23235;
+                double z = 9335;
+                var destination = new ThreeDPoint(x, y, z);
+                MoveStage(destination, Timeouts.ASYNC);
+                
             }
             if (result == DialogResult.No)
             {
@@ -814,6 +857,9 @@ namespace MTF_Calc
         
         private void SetIllumination(Decimal value)
         {
+            ///<summary>
+            ///Copied from original spotlight test tool. This sends a command to change illumination level of the spotlight LED
+            /// </summary>
             try
             {
                 double targetIllumBottomLED = (1 * (Convert.ToDouble(value)/100));
@@ -917,7 +963,10 @@ namespace MTF_Calc
 
         private void DrawRectangle(PictureBox picbox, int len,int hei,int xpos,int ypos)
         {
-
+            ///<summary>
+            ///Function used to draw rectangle of length len, height hei, at xpos,ypos of picbox. Used in testing the software
+            /// </summary>
+            ///
             if (picbox.InvokeRequired)
             {
                 picbox.Invoke(new MethodInvoker( delegate ()

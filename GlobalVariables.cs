@@ -10,10 +10,9 @@ namespace MTF_Calc
 
     {
         public string filename;
-        public Bitmap SelectedBMP;
-        public bool cameraconnected = false;
-        //Color[] ColorArray = new Color[100];
-        int[] ColorAvgVert = new int[100];
+        public Bitmap SelectedBMP;                      //Bitmap object to hold bitmap loaded
+        public bool cameraconnected = false;            //Boolean to check whether camera is connected to avoid exceptions
+        int[] ColorAvgVert = new int[100];              //Arrays to hold pixel data
         int[] ColorAvgHori = new int[100];
         List<double> xlist = new List<double>();
         List<double> ylist = new List<double>();
@@ -22,9 +21,9 @@ namespace MTF_Calc
         List<int> ColorAvgHorizontal = new List<int>();
         List<int> PeakList = new List<int>();
         List<int> TroughList = new List<int>();
-        double[,,] MTFData = new double[2 * array_size, 2, 2]; //MTF,Position identifier, direction( horizontal = 1,vertical = 2)
-        double[,] ImageCalibrationPositions = new double[array_size, 2];
-        double[,,] StageCalibrationPositions = new double[array_size, 2, 2];
+        double[,,] MTFData = new double[2 * array_size, 2, 2];              //MTF,Position identifier, direction( horizontal = 1,vertical = 2)
+        double[,] ImageCalibrationPositions = new double[array_size, 2];    //Pixel coordinates 
+        double[,,] StageCalibrationPositions = new double[array_size, 2, 2];    //Stage coordinates
         public const int max_locations = 9;
         public const int array_size = 30;
         public int locations = max_locations;
@@ -66,6 +65,10 @@ namespace MTF_Calc
 
         public struct GroupPositions
         {
+            /// <summary>
+            /// Struct will hold the different Groups as objects within, and within each groups the relative coordinates of each line pair
+            /// with regard to the top left of the box are saved. 
+            /// </summary>
             public struct G1
             {
                 public const double Xvert = 80;
