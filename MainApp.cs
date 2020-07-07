@@ -512,19 +512,19 @@ namespace MTF_Calc
                 TroughList.Clear();
                 for (int i = 0; i < list.Count; i++)
                 {
-                    if (i == 0 || i == (list.Count -1))
+                    if (i == 0 || i == (list.Count - 1) || i == 1 || i== (list.Count - 2) )
                     {
                         Console.WriteLine("No adjacent values");
                     }
                     else
                     {
-                        if (list[i] > list[i - 1] && list[i] > list[i + 1])
+                        if (list[i] > list[i - 1] && list[i] > list[i + 1] && list[i] > list[i-2] && list[i] > list[i + 2])
                         {
                             Console.WriteLine("Peak found at " + i + " of value " + list[i]);
                             PeakList.Add(list[i]);
                         }
 
-                        if (list[i] < list[i - 1] && list[i] < list[i + 1])
+                        if (list[i] < list[i - 1] && list[i] < list[i + 1] && list[i] < list[i - 2] && list[i] < list[i + 2])
                         {
                             Console.WriteLine("Trough found at " + i + " of value " + list[i]);
                             TroughList.Add(list[i]);
