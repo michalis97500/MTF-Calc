@@ -39,11 +39,9 @@
             this.YposVert = new System.Windows.Forms.TextBox();
             this.StartTestButton = new System.Windows.Forms.Button();
             this.CenterStageButton = new System.Windows.Forms.Button();
-            this.FieldSizeTextbox = new System.Windows.Forms.TextBox();
             this.CalibrateStageButton = new System.Windows.Forms.Button();
             this.CalibrateImageButton = new System.Windows.Forms.Button();
             this.StageConnectButton = new System.Windows.Forms.Button();
-            this.FieldSizeButton = new System.Windows.Forms.Button();
             this.SerialSelect = new System.Windows.Forms.ComboBox();
             this.FieldSizeRatio = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
@@ -182,15 +180,6 @@
             this.CenterStageButton.Visible = false;
             this.CenterStageButton.Click += new System.EventHandler(this.CenterStageButton_Click);
             // 
-            // FieldSizeTextbox
-            // 
-            this.FieldSizeTextbox.Location = new System.Drawing.Point(116, 607);
-            this.FieldSizeTextbox.Name = "FieldSizeTextbox";
-            this.FieldSizeTextbox.Size = new System.Drawing.Size(72, 20);
-            this.FieldSizeTextbox.TabIndex = 12;
-            this.FieldSizeTextbox.Visible = false;
-            this.FieldSizeTextbox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NumberCheck);
-            // 
             // CalibrateStageButton
             // 
             this.CalibrateStageButton.Location = new System.Drawing.Point(9, 279);
@@ -222,16 +211,6 @@
             this.StageConnectButton.Text = "Connect Stage";
             this.StageConnectButton.UseVisualStyleBackColor = true;
             this.StageConnectButton.Click += new System.EventHandler(this.StageConnectButton_Click);
-            // 
-            // FieldSizeButton
-            // 
-            this.FieldSizeButton.Location = new System.Drawing.Point(15, 607);
-            this.FieldSizeButton.Name = "FieldSizeButton";
-            this.FieldSizeButton.Size = new System.Drawing.Size(85, 20);
-            this.FieldSizeButton.TabIndex = 16;
-            this.FieldSizeButton.Text = "Set field ratio";
-            this.FieldSizeButton.UseVisualStyleBackColor = true;
-            this.FieldSizeButton.Visible = false;
             // 
             // SerialSelect
             // 
@@ -460,11 +439,9 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.FieldSizeRatio);
             this.Controls.Add(this.SerialSelect);
-            this.Controls.Add(this.FieldSizeButton);
             this.Controls.Add(this.StageConnectButton);
             this.Controls.Add(this.CalibrateImageButton);
             this.Controls.Add(this.CalibrateStageButton);
-            this.Controls.Add(this.FieldSizeTextbox);
             this.Controls.Add(this.CenterStageButton);
             this.Controls.Add(this.StartTestButton);
             this.Controls.Add(this.YposVert);
@@ -477,7 +454,7 @@
             this.Controls.Add(this.ImageDisplay);
             this.Controls.Add(this.load_image_button);
             this.Name = "MainApp";
-            this.Text = "Form1";
+            this.Text = "Main";
             ((System.ComponentModel.ISupportInitialize)(this.ImageDisplay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.FieldSizeRatio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.IlluminationControl)).EndInit();
@@ -499,11 +476,9 @@
         private System.Windows.Forms.TextBox YposVert;
         private System.Windows.Forms.Button StartTestButton;
         private System.Windows.Forms.Button CenterStageButton;
-        private System.Windows.Forms.TextBox FieldSizeTextbox;
         private System.Windows.Forms.Button CalibrateStageButton;
         private System.Windows.Forms.Button CalibrateImageButton;
         private System.Windows.Forms.Button StageConnectButton;
-        private System.Windows.Forms.Button FieldSizeButton;
         private System.Windows.Forms.ComboBox SerialSelect;
         private System.Windows.Forms.NumericUpDown FieldSizeRatio;
         private System.Windows.Forms.Label label1;
