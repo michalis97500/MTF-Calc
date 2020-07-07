@@ -140,7 +140,7 @@ namespace CameraInterfaceExample
                 camera.Parameters[PLCamera.Gain].SetToMinimum();
 
                 // AcquisitionFrameRate can go to 1-100000 but our frame rate is usually 10-50 fps so set value above that.
-                camera.Parameters[PLCamera.AcquisitionFrameRate].SetValue(200.0);
+                camera.Parameters[PLCamera.AcquisitionFrameRate].SetValue(20.0);
 
                 // Exposure time (auto off)
                 camera.Parameters[PLCamera.ExposureAuto].SetValue(PLCamera.ExposureAuto.Off);
