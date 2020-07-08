@@ -53,11 +53,11 @@ namespace MTF_Calc
             {
                 SerialSelect.Items.Add(port);
             }
-            GroupSelectionBox.Items.Add("G1");
-            GroupSelectionBox.Items.Add("G2");
-            GroupSelectionBox.Items.Add("G3");
-            GroupSelectionBox.Items.Add("G4");
-            GroupSelectionBox.Items.Add("G5");
+            GroupSelectionBox.Items.Add("G7.1");
+            GroupSelectionBox.Items.Add("G7.2");
+            GroupSelectionBox.Items.Add("G7.3");
+            GroupSelectionBox.Items.Add("G7.4");
+            GroupSelectionBox.Items.Add("G7.5");
 
 
         }
@@ -361,7 +361,8 @@ namespace MTF_Calc
                 // Create the file, or overwrite if the file exists.
                 using (StreamWriter sw = new StreamWriter(path,true))
                 {
-                    sw.WriteLine("MTF Value, Position value, Line alignment, Stage X, Stage Y, Stage Z");
+                    
+                    sw.WriteLine("MTF Value, Position value, Line alignment, Stage X, Stage Y, Stage Z," + GroupSelectionBox.SelectedItem.ToString());
                     //Begin searching the MTF array for any values. 
                     for (int x = 0; x <= (2*locations - 1); x++)
                     {
