@@ -501,7 +501,10 @@ namespace MTF_Calc
                         }
                     }
                     calibrationcomplete = true;
-                    StartTestButton.Visible = true ;
+                    stagecenterfound = true;
+                    TestPositionsButton.Enabled = true;
+                    CalibrateImageButton.Enabled = true;
+                    StartTestButton.Enabled = true ;
                 }
             }
             catch (Exception ex)
@@ -1213,8 +1216,8 @@ namespace MTF_Calc
             {
                 if (stagecalibrated == true)
                 {
-                    double x = 40500;
-                    double y = 23235;
+                    double x = 40493;
+                    double y = 23199;
                     double z = 9335;
                     var destination = new ThreeDPoint(x, y, z);
                     MoveStage(destination, Timeouts.ASYNC);
@@ -1287,7 +1290,9 @@ namespace MTF_Calc
         {
             if (calibrationcomplete == true)
             {
+                camera.TerminateCapture();
                 SaveCalibration();
+                camera.LiveImage(ImageDisplay);
             }
             
             
