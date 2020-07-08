@@ -434,6 +434,8 @@ namespace MTF_Calc
                 // Create the file, or overwrite if the file exists.
                 using (StreamWriter sw = new StreamWriter(path, true))
                 {
+                    sw.WriteLine("Stage X center, Stage Y center, Stage Z center, Illumination value, Field size ratio value,");
+                    sw.WriteLine(stage_x_center + "," + stage_y_center + "," + stage_z_center + "," + IlluminationControl.Value + "," + FieldSizeRatio.Value);
                     sw.WriteLine("Stage X, Stage Y, Stage Z, Image X, Image Y," + IlluminationControl.Value + "," + FieldSizeRatio.Value);
                     for (int i = 0; i < locations; i++ )
                     {
@@ -469,11 +471,15 @@ namespace MTF_Calc
                     filename = dialog.FileName;
                     using (StreamReader sr = new StreamReader(filename))
                     {
-                        var line1 = sr.ReadLine();
+                        var line0 = sr.ReadLine(); //Read the first line, containing strings (useless to the program)
+                        var line1 = sr.ReadLine();  //Read the second line, containing usefull data
                         var value1 = line1.Split(',');
-                        IlluminationControl.Value = Convert.ToDecimal(value1[5]);
-                        FieldSizeRatio.Value = Convert.ToDecimal(value1[6]);
-
+                        stage_x_center = Convert.ToInt32(value1[0]);
+                        stage_y_center = Convert.ToInt32(value1[1]);
+                        stage_z_center = Convert.ToInt32(value1[2]);
+                        IlluminationControl.Value = Convert.ToDecimal(value1[3]);
+                        FieldSizeRatio.Value = Convert.ToDecimal(value1[4]);
+                        sr.ReadLine();
                         int i = 0;
                         while (!sr.EndOfStream)
                         {
@@ -938,9 +944,9 @@ namespace MTF_Calc
                                 var values = line.Split(',');
                                 Console.WriteLine(values[0]);
                                 Console.WriteLine(i);
-                                StageCalibrationPositions[i - 1, 0, 0] = Convert.ToDouble(values[0]);
-                                StageCalibrationPositions[i - 1, 1, 0] = Convert.ToDouble(values[1]);
-                                StageCalibrationPositions[i - 1, 0, 1] = Convert.ToDouble(values[2]);
+                                StageCalibrationPositions[i - 1, 0, 0] = Convert.ToDouble(values[0]) + Convert.ToDouble(stage_x_center);
+                                StageCalibrationPositions[i - 1, 1, 0] = Convert.ToDouble(values[1]) + Convert.ToDouble(stage_y_center);
+                                StageCalibrationPositions[i - 1, 0, 1] = Convert.ToDouble(values[2]) + Convert.ToDouble(stage_z_center);
                                 custom_max_locations++;
 
                             }
