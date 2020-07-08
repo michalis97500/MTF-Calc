@@ -826,7 +826,7 @@ namespace MTF_Calc
             /// </summary>
             try
             {
-                
+                paint = true;   
                 if(StageSerialPort.IsOpen)
                 {
                     if (cameraconnected == true)
