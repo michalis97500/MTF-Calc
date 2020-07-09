@@ -219,7 +219,6 @@ namespace MTF_Calc
                         DialogResult result = MessageBox.Show("Is the USAF target positive? (Yes for positive, No for negative)", "Target select", MessageBoxButtons.YesNo);
                         if (result == DialogResult.Yes)
                         {
-
                             positivetarget = 1;
                             negativetarget = 0;
 
@@ -237,27 +236,55 @@ namespace MTF_Calc
                         double x_relative_vertical = 0;
                         double y_relative_vertical = 0;
 
-                        if (GroupSelectionBox.SelectedIndex == -1)
+                        switch (GroupSelectionBox.SelectedIndex)
                         {
-                            MessageBox.Show("No group is selected. Please select a group to begin testing");
-                            return;
-                        }
-                        if (GroupSelectionBox.SelectedIndex == 0)
-                        {
-                            x_relative_horizontal = GroupPositions.G1.Xhori;
-                            x_relative_vertical = GroupPositions.G1.Xvert;
-                            y_relative_horizontal = GroupPositions.G1.Yhori;
-                            y_relative_vertical = GroupPositions.G1.Yvert;
+                            case -1:
+                                MessageBox.Show("No group is selected. Please select a group to begin testing");
+                                return;
+                            case 0:
+                                x_relative_horizontal = GroupPositions.G1.Xhori;
+                                x_relative_vertical = GroupPositions.G1.Xvert;
+                                y_relative_horizontal = GroupPositions.G1.Yhori;
+                                y_relative_vertical = GroupPositions.G1.Yvert;
+                                break;
+
+                            case 1:
+                                x_relative_horizontal = GroupPositions.G2.Xhori;
+                                x_relative_vertical = GroupPositions.G2.Xvert;
+                                y_relative_horizontal = GroupPositions.G2.Yhori;
+                                y_relative_vertical = GroupPositions.G2.Yvert;
+                                break;
+                            case 2:
+                                x_relative_horizontal = GroupPositions.G3.Xhori;
+                                x_relative_vertical = GroupPositions.G3.Xvert;
+                                y_relative_horizontal = GroupPositions.G3.Yhori;
+                                y_relative_vertical = GroupPositions.G3.Yvert;
+                                break;
+
+                            case 3:
+                                x_relative_horizontal = GroupPositions.G4.Xhori;
+                                x_relative_vertical = GroupPositions.G4.Xvert;
+                                y_relative_horizontal = GroupPositions.G4.Yhori;
+                                y_relative_vertical = GroupPositions.G4.Yvert;
+                                break;
+                            case 4:
+                                x_relative_horizontal = GroupPositions.G5.Xhori;
+                                x_relative_vertical = GroupPositions.G5.Xvert;
+                                y_relative_horizontal = GroupPositions.G5.Yhori;
+                                y_relative_vertical = GroupPositions.G5.Yvert;
+                                break;
+
+                            case 5:
+                                x_relative_horizontal = GroupPositions.G6.Xhori;
+                                x_relative_vertical = GroupPositions.G6.Xvert;
+                                y_relative_horizontal = GroupPositions.G6.Yhori;
+                                y_relative_vertical = GroupPositions.G6.Yvert;
+                                break;
+
+
 
                         }
-                        if (GroupSelectionBox.SelectedIndex == 1)
-                        {
-                            x_relative_horizontal = GroupPositions.G2.Xhori;
-                            x_relative_vertical = GroupPositions.G2.Xvert;
-                            y_relative_horizontal = GroupPositions.G2.Yhori;
-                            y_relative_vertical = GroupPositions.G2.Yvert;
-                        }
-
+                   
                         Array.Clear(MTFData, 0, MTFData.Length);
                         
                         for (int i = 0; i < locations; i++)
@@ -313,6 +340,7 @@ namespace MTF_Calc
 
 
                         }
+                        
                         SaveData();
 
 
