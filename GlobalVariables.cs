@@ -85,12 +85,45 @@ namespace MTF_Calc
             }
             public struct G2
             {
-                public const double Xvert = 77;
-                public const double Yvert = 10;
-                public const double Xhori = 44;
-                public const double Yhori = -13;
+                public const double Xvert = 81;
+                public const double Yvert = 22;
+                public const double Xhori = 45;
+                public const double Yhori = 35;
 
             }
+            public struct G3
+            {
+                public const double Xvert = 83;
+                public const double Yvert = 48;
+                public const double Xhori = 52;
+                public const double Yhori = 59;
+
+            }
+            public struct G4
+            {
+                public const double Xvert = 83;
+                public const double Yvert = 67;
+                public const double Xhori = 54;
+                public const double Yhori = 79;
+
+            }
+            public struct G5
+            {
+                public const double Xvert = 85;
+                public const double Yvert = 89;
+                public const double Xhori = 58;
+                public const double Yhori = 98;
+
+            }
+            public struct G6
+            {
+                public const double Xvert = 86;
+                public const double Yvert = 106;
+                public const double Xhori = 62;
+                public const double Yhori = 114;
+
+            }
+
 
 
         }
