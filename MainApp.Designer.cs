@@ -60,7 +60,6 @@
             this.PositionButton = new System.Windows.Forms.Button();
             this.FindGraticuleButton = new System.Windows.Forms.Button();
             this.FindUSAFButton = new System.Windows.Forms.Button();
-            this.GroupSelectionBox = new System.Windows.Forms.ComboBox();
             this.TestPositionsButton = new System.Windows.Forms.Button();
             this.SaveCalibrationButton = new System.Windows.Forms.Button();
             this.CalibrateStageCenterButton = new System.Windows.Forms.Button();
@@ -389,15 +388,6 @@
             this.FindUSAFButton.UseVisualStyleBackColor = true;
             this.FindUSAFButton.Click += new System.EventHandler(this.FindUSAFButton_Click);
             // 
-            // GroupSelectionBox
-            // 
-            this.GroupSelectionBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.GroupSelectionBox.FormattingEnabled = true;
-            this.GroupSelectionBox.Location = new System.Drawing.Point(9, 376);
-            this.GroupSelectionBox.Name = "GroupSelectionBox";
-            this.GroupSelectionBox.Size = new System.Drawing.Size(84, 21);
-            this.GroupSelectionBox.TabIndex = 36;
-            // 
             // TestPositionsButton
             // 
             this.TestPositionsButton.Enabled = false;
@@ -452,7 +442,6 @@
             this.Controls.Add(this.CalibrateStageCenterButton);
             this.Controls.Add(this.SaveCalibrationButton);
             this.Controls.Add(this.TestPositionsButton);
-            this.Controls.Add(this.GroupSelectionBox);
             this.Controls.Add(this.FindUSAFButton);
             this.Controls.Add(this.FindGraticuleButton);
             this.Controls.Add(this.PositionButton);
@@ -529,7 +518,6 @@
         private System.Windows.Forms.Button PositionButton;
         private System.Windows.Forms.Button FindGraticuleButton;
         private System.Windows.Forms.Button FindUSAFButton;
-        private System.Windows.Forms.ComboBox GroupSelectionBox;
         private System.Windows.Forms.Button TestPositionsButton;
         private System.Windows.Forms.Button SaveCalibrationButton;
         private System.Windows.Forms.Button CalibrateStageCenterButton;

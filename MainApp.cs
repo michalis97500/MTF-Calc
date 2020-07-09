@@ -53,12 +53,13 @@ namespace MTF_Calc
             {
                 SerialSelect.Items.Add(port);
             }
+            /*
             GroupSelectionBox.Items.Add("G7.1");
             GroupSelectionBox.Items.Add("G7.2");
             GroupSelectionBox.Items.Add("G7.3");
             GroupSelectionBox.Items.Add("G7.4");
             GroupSelectionBox.Items.Add("G7.5");
-
+            */
 
         }
 
@@ -239,11 +240,9 @@ namespace MTF_Calc
                         {
                             if (GroupsToUse[Group] == 1)
                             {
-                                switch (GroupSelectionBox.SelectedIndex)
+                                switch (Group)
                                 {
-                                    case -1:
-                                        MessageBox.Show("No group is selected. Please select a group to begin testing");
-                                        return;
+                                    
                                     case 0:
                                         x_relative_horizontal = GroupPositions.G1.Xhori;
                                         x_relative_vertical = GroupPositions.G1.Xvert;
@@ -394,7 +393,7 @@ namespace MTF_Calc
                 using (StreamWriter sw = new StreamWriter(path,true))
                 {
                     
-                    sw.WriteLine("MTF Value, Position value, Line alignment, Stage X, Stage Y, Stage Z," + GroupSelectionBox.SelectedItem.ToString());
+                    sw.WriteLine("MTF Value, Position value, Line alignment, Stage X, Stage Y, Stage Z," + gNumber.ToString());
                     //Begin searching the MTF array for any values. 
                     for (int x = 0; x <= (2*locations - 1); x++)
                     {
