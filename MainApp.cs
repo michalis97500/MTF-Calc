@@ -346,6 +346,7 @@ namespace MTF_Calc
                             {
                                 continue;
                             }
+                            MessageBox.Show("Test complete");
                         }
                         
 
@@ -372,7 +373,7 @@ namespace MTF_Calc
             try
             {
                 string path = @"C:\MyTest.txt";
-                MessageBox.Show("Choose a text document to save the results for Group7.{0}", gNumber.ToString());
+                MessageBox.Show(string.Format("Choose a text document to save the results for Group7.{0}", gNumber.ToString()));
                 SaveFileDialog saveFileDialog1 = new SaveFileDialog();
                 saveFileDialog1.InitialDirectory = @"C:\";      
                 saveFileDialog1.Title = "Save text file";
@@ -393,7 +394,7 @@ namespace MTF_Calc
                 using (StreamWriter sw = new StreamWriter(path,true))
                 {
                     
-                    sw.WriteLine("MTF Value, Position value, Line alignment, Stage X, Stage Y, Stage Z," + gNumber.ToString());
+                    sw.WriteLine("MTF Value, Position value, Line alignment, Stage X, Stage Y, Stage Z, G7." + gNumber.ToString());
                     //Begin searching the MTF array for any values. 
                     for (int x = 0; x <= (2*locations - 1); x++)
                     {
