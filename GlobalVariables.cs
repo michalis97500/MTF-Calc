@@ -55,6 +55,7 @@ namespace MTF_Calc
         public int image_x_center = 0;
         public int image_y_center = 0;
         public int[] PositionsToUse = new int[9];
+        public int[] GroupsToUse = new int[6];
         /// <summary>
         /// The wait time for the serial port response. Reset during the SendCommand
         /// </summary>

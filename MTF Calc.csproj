@@ -66,6 +66,12 @@
   <ItemGroup>
     <Compile Include="Basler.cs" />
     <Compile Include="FrameEventArgs.cs" />
+    <Compile Include="GroupSelectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GroupSelectionForm.Designer.cs">
+      <DependentUpon>GroupSelectionForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MatrixVision.cs" />
     <Compile Include="GlobalVariables.cs">
       <SubType>Form</SubType>
@@ -89,6 +95,9 @@
       <DependentUpon>TestPositionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ThreeDPoint.cs" />
+    <EmbeddedResource Include="GroupSelectionForm.resx">
+      <DependentUpon>GroupSelectionForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainApp.resx">
       <DependentUpon>MainApp.cs</DependentUpon>
     </EmbeddedResource>

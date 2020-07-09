@@ -64,6 +64,7 @@
             this.TestPositionsButton = new System.Windows.Forms.Button();
             this.SaveCalibrationButton = new System.Windows.Forms.Button();
             this.CalibrateStageCenterButton = new System.Windows.Forms.Button();
+            this.GroupSelectionButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.ImageDisplay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FieldSizeRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.IlluminationControl)).BeginInit();
@@ -379,10 +380,10 @@
             // 
             // FindUSAFButton
             // 
-            this.FindUSAFButton.Location = new System.Drawing.Point(106, 370);
+            this.FindUSAFButton.Location = new System.Drawing.Point(121, 12);
             this.FindUSAFButton.Name = "FindUSAFButton";
             this.FindUSAFButton.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.FindUSAFButton.Size = new System.Drawing.Size(89, 31);
+            this.FindUSAFButton.Size = new System.Drawing.Size(67, 31);
             this.FindUSAFButton.TabIndex = 35;
             this.FindUSAFButton.Text = "Find USAF";
             this.FindUSAFButton.UseVisualStyleBackColor = true;
@@ -392,7 +393,7 @@
             // 
             this.GroupSelectionBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.GroupSelectionBox.FormattingEnabled = true;
-            this.GroupSelectionBox.Location = new System.Drawing.Point(106, 407);
+            this.GroupSelectionBox.Location = new System.Drawing.Point(9, 376);
             this.GroupSelectionBox.Name = "GroupSelectionBox";
             this.GroupSelectionBox.Size = new System.Drawing.Size(84, 21);
             this.GroupSelectionBox.TabIndex = 36;
@@ -431,11 +432,23 @@
             this.CalibrateStageCenterButton.UseVisualStyleBackColor = true;
             this.CalibrateStageCenterButton.Click += new System.EventHandler(this.CalibrateStageCenterButton_Click);
             // 
+            // GroupSelectionButton
+            // 
+            this.GroupSelectionButton.Enabled = false;
+            this.GroupSelectionButton.Location = new System.Drawing.Point(100, 388);
+            this.GroupSelectionButton.Name = "GroupSelectionButton";
+            this.GroupSelectionButton.Size = new System.Drawing.Size(88, 41);
+            this.GroupSelectionButton.TabIndex = 40;
+            this.GroupSelectionButton.Text = "Group selection";
+            this.GroupSelectionButton.UseVisualStyleBackColor = true;
+            this.GroupSelectionButton.Click += new System.EventHandler(this.GroupSelectionButton_Click);
+            // 
             // MainApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1270, 639);
+            this.Controls.Add(this.GroupSelectionButton);
             this.Controls.Add(this.CalibrateStageCenterButton);
             this.Controls.Add(this.SaveCalibrationButton);
             this.Controls.Add(this.TestPositionsButton);
@@ -520,6 +533,7 @@
         private System.Windows.Forms.Button TestPositionsButton;
         private System.Windows.Forms.Button SaveCalibrationButton;
         private System.Windows.Forms.Button CalibrateStageCenterButton;
+        private System.Windows.Forms.Button GroupSelectionButton;
     }
 }
 

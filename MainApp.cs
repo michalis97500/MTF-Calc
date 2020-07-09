@@ -235,116 +235,120 @@ namespace MTF_Calc
                         double y_relative_horizontal = 0;
                         double x_relative_vertical = 0;
                         double y_relative_vertical = 0;
-
-                        switch (GroupSelectionBox.SelectedIndex)
+                        for(int Group = 0; Group < GroupsToUse.Length;Group++)
                         {
-                            case -1:
-                                MessageBox.Show("No group is selected. Please select a group to begin testing");
-                                return;
-                            case 0:
-                                x_relative_horizontal = GroupPositions.G1.Xhori;
-                                x_relative_vertical = GroupPositions.G1.Xvert;
-                                y_relative_horizontal = GroupPositions.G1.Yhori;
-                                y_relative_vertical = GroupPositions.G1.Yvert;
-                                break;
-
-                            case 1:
-                                x_relative_horizontal = GroupPositions.G2.Xhori;
-                                x_relative_vertical = GroupPositions.G2.Xvert;
-                                y_relative_horizontal = GroupPositions.G2.Yhori;
-                                y_relative_vertical = GroupPositions.G2.Yvert;
-                                break;
-                            case 2:
-                                x_relative_horizontal = GroupPositions.G3.Xhori;
-                                x_relative_vertical = GroupPositions.G3.Xvert;
-                                y_relative_horizontal = GroupPositions.G3.Yhori;
-                                y_relative_vertical = GroupPositions.G3.Yvert;
-                                break;
-
-                            case 3:
-                                x_relative_horizontal = GroupPositions.G4.Xhori;
-                                x_relative_vertical = GroupPositions.G4.Xvert;
-                                y_relative_horizontal = GroupPositions.G4.Yhori;
-                                y_relative_vertical = GroupPositions.G4.Yvert;
-                                break;
-                            case 4:
-                                x_relative_horizontal = GroupPositions.G5.Xhori;
-                                x_relative_vertical = GroupPositions.G5.Xvert;
-                                y_relative_horizontal = GroupPositions.G5.Yhori;
-                                y_relative_vertical = GroupPositions.G5.Yvert;
-                                break;
-
-                            case 5:
-                                x_relative_horizontal = GroupPositions.G6.Xhori;
-                                x_relative_vertical = GroupPositions.G6.Xvert;
-                                y_relative_horizontal = GroupPositions.G6.Yhori;
-                                y_relative_vertical = GroupPositions.G6.Yvert;
-                                break;
-
-
-
-                        }
-                   
-                        Array.Clear(MTFData, 0, MTFData.Length);
-                        
-                        for (int i = 0; i < locations; i++)
-                        {
-                            if (_default == true)
+                            if (GroupsToUse[Group] == 1)
                             {
-                                if (PositionsToUse[i] == 0)
+                                switch (GroupSelectionBox.SelectedIndex)
                                 {
-                                    continue;
+                                    case -1:
+                                        MessageBox.Show("No group is selected. Please select a group to begin testing");
+                                        return;
+                                    case 0:
+                                        x_relative_horizontal = GroupPositions.G1.Xhori;
+                                        x_relative_vertical = GroupPositions.G1.Xvert;
+                                        y_relative_horizontal = GroupPositions.G1.Yhori;
+                                        y_relative_vertical = GroupPositions.G1.Yvert;
+                                        break;
+
+                                    case 1:
+                                        x_relative_horizontal = GroupPositions.G2.Xhori;
+                                        x_relative_vertical = GroupPositions.G2.Xvert;
+                                        y_relative_horizontal = GroupPositions.G2.Yhori;
+                                        y_relative_vertical = GroupPositions.G2.Yvert;
+                                        break;
+                                    case 2:
+                                        x_relative_horizontal = GroupPositions.G3.Xhori;
+                                        x_relative_vertical = GroupPositions.G3.Xvert;
+                                        y_relative_horizontal = GroupPositions.G3.Yhori;
+                                        y_relative_vertical = GroupPositions.G3.Yvert;
+                                        break;
+
+                                    case 3:
+                                        x_relative_horizontal = GroupPositions.G4.Xhori;
+                                        x_relative_vertical = GroupPositions.G4.Xvert;
+                                        y_relative_horizontal = GroupPositions.G4.Yhori;
+                                        y_relative_vertical = GroupPositions.G4.Yvert;
+                                        break;
+                                    case 4:
+                                        x_relative_horizontal = GroupPositions.G5.Xhori;
+                                        x_relative_vertical = GroupPositions.G5.Xvert;
+                                        y_relative_horizontal = GroupPositions.G5.Yhori;
+                                        y_relative_vertical = GroupPositions.G5.Yvert;
+                                        break;
+
+                                    case 5:
+                                        x_relative_horizontal = GroupPositions.G6.Xhori;
+                                        x_relative_vertical = GroupPositions.G6.Xvert;
+                                        y_relative_horizontal = GroupPositions.G6.Yhori;
+                                        y_relative_vertical = GroupPositions.G6.Yvert;
+                                        break;
+
+
+
                                 }
+                                Array.Clear(MTFData, 0, MTFData.Length);
+                                for (int i = 0; i < locations; i++)
+                                {
+                                    if (_default == true)
+                                    {
+                                        if (PositionsToUse[i] == 0)
+                                        {
+                                            continue;
+                                        }
+                                    }
+                                    ///Summary
+                                    ///For all positions of calibration this loop attempts to move the stage at each one, take a picture, 
+                                    ///analyze and record MTF and then move to the next one.
+                                    x = StageCalibrationPositions[i, 0, 0];
+                                    y = StageCalibrationPositions[i, 1, 0];
+                                    z = StageCalibrationPositions[i, 0, 1];
+                                    //Move to Capture Horizontal
+                                    var destination_hori = new ThreeDPoint(x + x_relative_horizontal, y + y_relative_horizontal, z);
+                                    MoveStage(destination_hori, Timeouts.ASYNC);
+                                    camera.SingleImageCapture(ImageDisplay);
+                                    int x_image = Convert.ToInt32(ImageCalibrationPositions[i, 0]);
+                                    int y_image = Convert.ToInt32(ImageCalibrationPositions[i, 1]);
+                                    Bitmap bitmap = (Bitmap)ImageDisplay.Image;
+                                    GenerateLineArrayHorizontal(x_image, y_image, bitmap, 45);
+
+                                    //DateTime _dateTime = DateTime.Now;
+                                    //string format = "dd MM yy hh-mm";
+                                    //string dateTime = _dateTime.ToString(format);
+                                    //string _filename = Path.Combine(dateTime, Convert.ToString(i), "-Horiz.bmp") ;
+                                    //bitmap.Save(_filename, ImageFormat.Bmp);
+
+                                    //Move to capture Vertical
+                                    var destination_vert = new ThreeDPoint(x + x_relative_vertical, y + y_relative_vertical, z);
+                                    MoveStage(destination_vert, Timeouts.ASYNC);
+                                    camera.SingleImageCapture(ImageDisplay);
+                                    x_image = Convert.ToInt32(ImageCalibrationPositions[i, 0]);
+                                    y_image = Convert.ToInt32(ImageCalibrationPositions[i, 1]);
+                                    bitmap = (Bitmap)ImageDisplay.Image;
+
+
+                                    GenerateLineArrayVertical(x_image, y_image, bitmap, 45);
+                                    //Do Math
+                                    FindPeaks(ColorAvgHorizontal);
+                                    MTFCalc(Convert.ToDouble(i), 1);
+                                    FindPeaks(ColorAvgVertical);
+                                    MTFCalc(Convert.ToDouble(i), 2);
+                                    ColorAvgHorizontal.Clear();
+                                    ColorAvgVertical.Clear();
+                                    Debug.Print(Convert.ToString(MTFData[i, 0, 0]));
+                                    Debug.Print(Convert.ToString(MTFData[i, 1, 0]));
+                                    Debug.Print(Convert.ToString(MTFData[i, 0, 1]));
+
+
+                                }
+                                SaveData(Group+1);
                             }
-                            ///Summary
-                            ///For all positions of calibration this loop attempts to move the stage at each one, take a picture, 
-                            ///analyze and record MTF and then move to the next one.
-                            x = StageCalibrationPositions[i, 0, 0];
-                            y = StageCalibrationPositions[i, 1, 0];
-                            z = StageCalibrationPositions[i, 0, 1];
-                            //Move to Capture Horizontal
-                            var destination_hori = new ThreeDPoint(x + x_relative_horizontal, y + y_relative_horizontal, z);
-                            MoveStage(destination_hori, Timeouts.ASYNC);
-                            camera.SingleImageCapture(ImageDisplay);
-                            int x_image = Convert.ToInt32(ImageCalibrationPositions[i, 0]);
-                            int y_image = Convert.ToInt32(ImageCalibrationPositions[i, 1]);
-                            Bitmap bitmap = (Bitmap)ImageDisplay.Image;
-                            GenerateLineArrayHorizontal(x_image, y_image, bitmap, 45);
-
-                            //DateTime _dateTime = DateTime.Now;
-                            //string format = "dd MM yy hh-mm";
-                            //string dateTime = _dateTime.ToString(format);
-                            //string _filename = Path.Combine(dateTime, Convert.ToString(i), "-Horiz.bmp") ;
-                            //bitmap.Save(_filename, ImageFormat.Bmp);
-
-                            //Move to capture Vertical
-                            var destination_vert = new ThreeDPoint(x + x_relative_vertical, y + y_relative_vertical, z);
-                            MoveStage(destination_vert, Timeouts.ASYNC);
-                            camera.SingleImageCapture(ImageDisplay);
-                            x_image = Convert.ToInt32(ImageCalibrationPositions[i, 0]);
-                            y_image = Convert.ToInt32(ImageCalibrationPositions[i, 1]);
-                            bitmap = (Bitmap)ImageDisplay.Image;
-
-
-                            GenerateLineArrayVertical(x_image, y_image, bitmap, 45);
-                            //Do Math
-                            FindPeaks(ColorAvgHorizontal);
-                            MTFCalc(Convert.ToDouble(i), 1);
-                            FindPeaks(ColorAvgVertical);
-                            MTFCalc(Convert.ToDouble(i), 2);
-                            ColorAvgHorizontal.Clear();
-                            ColorAvgVertical.Clear();
-                            Debug.Print(Convert.ToString(MTFData[i, 0, 0]));
-                            Debug.Print(Convert.ToString(MTFData[i, 1, 0]));
-                            Debug.Print(Convert.ToString(MTFData[i, 0, 1]));
-
-
+                            else
+                            {
+                                continue;
+                            }
                         }
                         
-                        SaveData();
-
-
-
 
                     }
                     else
@@ -362,14 +366,14 @@ namespace MTF_Calc
                 MessageBox.Show("Serial port is not connected");
             }
         }
-        private void SaveData()
+        private void SaveData(int gNumber)
         {
             //saves data in MTFData[] to a txt file
 
             try
             {
                 string path = @"C:\MyTest.txt";
-                MessageBox.Show("Choose a text document to save the results");
+                MessageBox.Show("Choose a text document to save the results for Group7.{0}", gNumber.ToString());
                 SaveFileDialog saveFileDialog1 = new SaveFileDialog();
                 saveFileDialog1.InitialDirectory = @"C:\";      
                 saveFileDialog1.Title = "Save text file";
@@ -533,7 +537,8 @@ namespace MTF_Calc
                     stagecenterfound = true;
                     TestPositionsButton.Enabled = true;
                     CalibrateImageButton.Enabled = true;
-                    StartTestButton.Enabled = true ;
+                    GroupSelectionButton.Enabled = true;
+                    //StartTestButton.Enabled = true ;
                 }
             }
             catch (Exception ex)
@@ -737,7 +742,8 @@ namespace MTF_Calc
                         case 8:
                             MessageBox.Show("Calibration Complete");
                             Clickable = false;
-                            StartTestButton.Enabled = true;
+                            //StartTestButton.Enabled = true;
+                            GroupSelectionButton.Enabled = true;
                             calibrationcomplete = true;
                             SaveCalibrationButton.Enabled = true;
                             break;
@@ -1333,6 +1339,44 @@ namespace MTF_Calc
             paint = true;
             counter = 0;
             FindStageCenter();
+        }
+
+        private void GroupSelectionButton_Click(object sender, EventArgs e)
+        {
+            var form = new GroupSelectionForm();
+            form.ShowDialog();
+            if (form.G1 == true)
+            {
+                GroupsToUse[0] = 1;
+            }
+            else { GroupsToUse[0] = 0; }
+            if (form.G2 == true)
+            {
+                GroupsToUse[1] = 1;
+            }
+            else { GroupsToUse[1] = 0; }
+            if (form.G3 == true)
+            {
+                GroupsToUse[2] = 1;
+            }
+            else { GroupsToUse[2] = 0; }
+            if (form.G4 == true)
+            {
+                GroupsToUse[3] = 1;
+            }
+            else { GroupsToUse[3] = 0; }
+            if (form.G5 == true)
+            {
+                GroupsToUse[4] = 1;
+            }
+            else { GroupsToUse[4] = 0; }
+            if (form.G6 == true)
+            {
+                GroupsToUse[5] = 1;
+            }
+            else { GroupsToUse[5] = 0; }
+            StartTestButton.Enabled = true;
+
         }
     }
 }
