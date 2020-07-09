@@ -4,7 +4,7 @@ namespace MTF_Calc
 {
     interface ICamera
     {
-        void ConnectCamera(bool cameraconnected);
+        void ConnectCamera(ref bool cameraconnected);
 
         void SingleImageCapture(PictureBox picbox);
 

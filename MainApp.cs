@@ -109,8 +109,8 @@ namespace MTF_Calc
 
         private void cameraconnectbutton_Click(object sender, EventArgs e)
         {
-            camera.ConnectCamera(cameraconnected);
-            cameraconnected = true;
+            camera.ConnectCamera(ref cameraconnected);
+            //cameraconnected = true;
             if(cameraconnected == true)
             {
                 LiveFeedButton.Visible = true;

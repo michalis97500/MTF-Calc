@@ -18,7 +18,7 @@ namespace CameraInterfaceExample
         public bool terminated = false;
         public event EventHandler<FrameEventArgs> NewFrame;
 
-        public void ConnectCamera(bool _bool)
+        public void ConnectCamera(ref bool _bool)
         {
             try
             {

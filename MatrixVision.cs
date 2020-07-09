@@ -100,7 +100,7 @@ namespace MTF_Calc
 
 
         }
-        public void ConnectCamera(bool _bool)
+        public void ConnectCamera(ref bool _bool)
         {
             mv.impact.acquire.LibraryPath.init(); // this will add the folders containing unmanaged libraries to the PATH variable.
             try
