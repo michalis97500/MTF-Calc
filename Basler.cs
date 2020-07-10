@@ -164,8 +164,8 @@ namespace CameraInterfaceExample
                 camera.Parameters[PLCamera.OffsetY].SetValue(86, IntegerValueCorrection.Nearest);
 
                 // Set contrast and gamma to give a response similar to Videology, (this also affects the Visual Image Quality metric)
-                const double IMAGE_CONSTRAST = 0.5;
-                const double IMAGE_GAMMA = 1.6;
+                const double IMAGE_CONSTRAST = 0.0;
+                const double IMAGE_GAMMA = 1.0;
 
                 // The name of the Contrast property changed between model 8 and 11 of the daA2500-14uc camera  
                 // Recent firmware should support BslContrast, older firmware might support  'ContrastEnhancement' but this is not
