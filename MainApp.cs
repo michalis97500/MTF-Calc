@@ -302,32 +302,79 @@ namespace MTF_Calc
                                     x = StageCalibrationPositions[i, 0, 0];
                                     y = StageCalibrationPositions[i, 1, 0];
                                     z = StageCalibrationPositions[i, 0, 1];
+                                    int x_image, y_image;
+                                    double MTFHori = 0;
+                                    int division = 0;
+                                    Bitmap bitmap;
                                     //Move to Capture Horizontal
                                     var destination_hori = new ThreeDPoint(x + x_relative_horizontal, y + y_relative_horizontal, z);
                                     MoveStage(destination_hori, Timeouts.ASYNC);
                                     camera.SingleImageCapture(ImageDisplay);
+                                    bitmap = (Bitmap)ImageDisplay.Image;
+                                    for (int pixel = -variance; pixel < variance + 1; pixel++)
+                                    {
+                                        x_image = Convert.ToInt32(ImageCalibrationPositions[i, 0]);
+                                        y_image = pixel + Convert.ToInt32(ImageCalibrationPositions[i, 1]);
+                                        GenerateLineArrayHorizontal(x_image, y_image, bitmap, 45);
+                                        FindPeaks(ColorAvgHorizontal);
+                                        double Hori_result = MTFCalc2(Convert.ToDouble(i), 2);
+                                        if (Hori_result != -1)
+                                        {
+                                            MTFHori += Hori_result;
+                                            division++;
+                                        }
+
+                                    }
+                                    if (division > 0)
+                                    {
+                                        MTFHori = MTFHori / division;
+                                        Console.WriteLine(MTFHori);
+                                        PopulateMTFData(MTFHori, Convert.ToDouble(i), 1);
+                                    }
+                                    /*
                                     int x_image = Convert.ToInt32(ImageCalibrationPositions[i, 0]);
                                     int y_image = Convert.ToInt32(ImageCalibrationPositions[i, 1]);
                                     Bitmap bitmap = (Bitmap)ImageDisplay.Image;
                                     GenerateLineArrayHorizontal(x_image, y_image, bitmap, 45);
-
+                                    */
                                     //DateTime _dateTime = DateTime.Now;
                                     //string format = "dd MM yy hh-mm";
                                     //string dateTime = _dateTime.ToString(format);
                                     //string _filename = Path.Combine(dateTime, Convert.ToString(i), "-Horiz.bmp") ;
-                                    //bitmap.Save(_filename, ImageFormat.Bmp);
+                                    bitmap.Save("Horiz.bmp", ImageFormat.Bmp);
 
                                     //Move to capture Vertical
                                     var destination_vert = new ThreeDPoint(x + x_relative_vertical, y + y_relative_vertical, z);
                                     MoveStage(destination_vert, Timeouts.ASYNC);
                                     camera.SingleImageCapture(ImageDisplay);
-                                    x_image = Convert.ToInt32(ImageCalibrationPositions[i, 0]);
-                                    y_image = Convert.ToInt32(ImageCalibrationPositions[i, 1]);
+                                    double MTFVert = 0;
                                     bitmap = (Bitmap)ImageDisplay.Image;
+                                    for (int pixel = -variance; pixel < variance+1; pixel++)
+                                    {
+                                        x_image = pixel + Convert.ToInt32(ImageCalibrationPositions[i, 0]);
+                                        y_image = Convert.ToInt32(ImageCalibrationPositions[i, 1]);
+                                        GenerateLineArrayVertical(x_image, y_image, bitmap, 45);
+                                        FindPeaks(ColorAvgVertical);
+                                        double Vert_result = MTFCalc2(Convert.ToDouble(i), 2);
+                                        if (Vert_result != -1)
+                                        {
+                                            MTFVert += Vert_result;
+                                            division++;
+                                        }
 
-
-                                    GenerateLineArrayVertical(x_image, y_image, bitmap, 45);
+                                    }
+                                    if (division > 0)
+                                    {
+                                        MTFVert = MTFVert / division;
+                                        Console.WriteLine(MTFVert);
+                                        PopulateMTFData(MTFVert, Convert.ToDouble(i), 2);
+                                    }
+                                    bitmap.Save("Vert.bmp", ImageFormat.Bmp);
+                                    ColorAvgHorizontal.Clear();
+                                    ColorAvgVertical.Clear();
                                     //Do Math
+                                    
+                                    /*
                                     FindPeaks(ColorAvgHorizontal);
                                     MTFCalc(Convert.ToDouble(i), 1);
                                     FindPeaks(ColorAvgVertical);
@@ -337,6 +384,7 @@ namespace MTF_Calc
                                     Debug.Print(Convert.ToString(MTFData[i, 0, 0]));
                                     Debug.Print(Convert.ToString(MTFData[i, 1, 0]));
                                     Debug.Print(Convert.ToString(MTFData[i, 0, 1]));
+                                    */
 
 
                                 }
@@ -346,10 +394,10 @@ namespace MTF_Calc
                             {
                                 continue;
                             }
-                            MessageBox.Show("Test complete");
+                            
                         }
-                        
 
+                        MessageBox.Show("Test complete");
                     }
                     else
                     {
@@ -364,6 +412,24 @@ namespace MTF_Calc
             else
             {
                 MessageBox.Show("Serial port is not connected");
+            }
+        }
+
+        private void PopulateMTFData(double mtf, double position, int direction)
+        {
+            for (int x = 0; x <= 2 * locations; x++)
+            {
+                //Find the first empty element of the MTF Data 
+                if (MTFData[x, 0, 0] == 0)
+                {
+                    ///Write the MTF value to the 1st diemnsion, write the position value to the 2nd, write the direction to the 3rd
+                    MTFData[x, 0, 0] = mtf;
+                    MTFData[x, 1, 0] = position;
+                    MTFData[x, 0, 1] = Convert.ToDouble(direction);
+                    break;
+
+                }
+
             }
         }
         private void SaveData(int gNumber)
@@ -629,6 +695,45 @@ namespace MTF_Calc
                     
                 }
             
+        }
+
+        private double MTFCalc2(double position,int direction)
+        {
+            ///<summary> 
+            ///This function runs through the global PeakList and TroughList and calculates the MTF. 
+            ///The function takes in 2 parameters that it uses to help identify at which position the MTF is calculated and
+            ///for which direction
+            ///</summary> 
+
+            if (PeakList.Any() && TroughList.Any())
+            {
+                double mtf;
+                double upper;
+                double lower;
+                double peaks = 0;
+                double troughs = 0;
+                for (int i = 0; i < PeakList.Count; i++)
+                {
+                    peaks += Convert.ToDouble(PeakList[i]);
+                }
+                for (int i = 0; i < TroughList.Count; i++)
+                {
+                    troughs += Convert.ToDouble(TroughList[i]);
+                }
+
+                upper = (peaks / PeakList.Count) - (troughs / TroughList.Count);
+                lower = (peaks / PeakList.Count) + (troughs / TroughList.Count);
+                mtf = upper / lower;
+
+                return mtf;
+
+
+            }
+            else
+            {
+                return -1;
+            }
+
         }
 
         private void CenterStageButton_Click(object sender, EventArgs e)

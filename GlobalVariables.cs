@@ -27,6 +27,7 @@ namespace MTF_Calc
         public const int max_locations = 9;
         public const int array_size = 30;
         public int locations = max_locations;
+        public const int variance = 5;
         public int xcenter;
         public int ycenter;
         public int zcenter;
